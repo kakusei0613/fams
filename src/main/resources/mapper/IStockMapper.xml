@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IStockMapper">
+    <resultMap id="stockMap" type="xyz.kakusei.fams.entity.Stock">
+        <id property="id" column="id" />
+        <result property="quantity" column="quantity" />
+        <association property="warehouse" javaType="xyz.kakusei.fams.entity.Warehouse" columnPrefix="w_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="position" column="position" />
+            <result property="comments" column="comments" />
+        </association>
+        <association property="material" javaType="xyz.kakusei.fams.entity.Material" columnPrefix="m_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="parameter" column="parameter" />
+            <association property="type" javaType="xyz.kakusei.fams.entity.MaterialType" columnPrefix="mt_">
+                <id property="id" column="id" />
+                <result property="name" column="name" />
+            </association>
+        </association>
+    </resultMap>
+    <select id="queryAll" resultMap="stockMap">
+        SELECT s.id, m.id AS m_id, m.name AS m_name,
+               mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
+               w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
+               s.quantity
+        FROM stocks AS s LEFT JOIN materials AS m ON(s.mate_id = m.id)
+            LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
+            LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
+    </select>
+    <select id="queryById" resultMap="stockMap" parameterType="Long">
+        SELECT s.id, m.id AS m_id, m.name AS m_name,
+               mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
+               w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
+               s.quantity
+        FROM stocks AS s LEFT JOIN materials AS m ON(s.mate_id = m.id)
+                         LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
+                         LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
+        WHERE s.id = #{id}
+    </select>
+    <select id="queryByCriteria" resultMap="stockMap" parameterType="xyz.kakusei.fams.query.StockQueryObject">
+        SELECT s.id, m.id AS m_id, m.name AS m_name,
+               mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
+               w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
+               s.quantity
+        FROM stocks AS s LEFT JOIN materials AS m ON(s.mate_id = m.id)
+                         LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
+                         LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
+        <where>
+            1 = 1
+            <if test="typeId != null and typeId != -1">
+                AND mt.id = #{typeId}
+            </if>
+            <if test="warehouseId != null and warehouseId != -1">
+                AND w.id = #{warehouseId}
+            </if>
+            <if test="materialName != null and materialName != ''">
+                AND m.name LIKE CONCAT('%',#{materialName},'%')
+            </if>
+            <if test="parameter != null and parameter != ''">
+                AND m.parameter LIKE CONCAT('%',#{parameter},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO stocks(mate_id, warehouse_id, quantity) VALUES(#{material.id}, #{warehouse.id}, #{quantity})
+    </insert>
+    <update id="update">
+        UPDATE stocks SET mate_id = #{material.id}, warehouse_id = #{warehouse.id}, quantity = #{quantity} WHERE id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM stocks WHERE id = #{id}
+    </delete>
+</mapper>

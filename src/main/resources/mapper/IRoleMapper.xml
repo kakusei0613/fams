@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IRoleMapper">
+    <resultMap id="roleMap" type="xyz.kakusei.fams.entity.Role">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="comments" property="comments"></result>
+        <collection property="permissionList" column="id" ofType="xyz.kakusei.fams.entity.Permission" select="xyz.kakusei.fams.mapper.IPermissionMapper.queryByRoleId"></collection>
+    </resultMap>
+
+    <select id="queryAll" resultMap="roleMap">
+        SELECT id, name, comments FROM roles;
+    </select>
+
+    <select id="queryByRoleId" resultMap="roleMap" parameterType="java.lang.Byte">
+        SELECT id, name, comments FROM roles WHERE id = #{id};
+    </select>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.Byte">
+        DELETE FROM roles WHERE id = #{id};
+    </delete>
+
+    <update id="update" parameterType="xyz.kakusei.fams.entity.Role">
+        UPDATE roles SET name = #{name}, comments = #{comments} WHERE id = #{id};
+    </update>
+
+    <insert id="insert" parameterType="xyz.kakusei.fams.entity.Role" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO roles(name, comments) VALUES(#{name}, #{comments});
+    </insert>
+
+    <insert id="insertRolePermission">
+        INSERT INTO role_permission(role_id, per_id) VALUES(#{roleId}, #{permissionId});
+    </insert>
+
+    <delete id="deleteRolePermission" parameterType="java.lang.Byte">
+        DELETE FROM role_permission WHERE role_id = #{roleId};
+    </delete>
+
+    <select id="queryRoleByEmployeeId" parameterType="java.lang.Long" resultMap="roleMap">
+        SELECT r.id, r.name, r.comments FROM employee_role AS er LEFT JOIN roles AS r ON (er.emp_id = r.id) WHERE er.emp_id = #{id};
+    </select>
+
+    <insert id="insertEmployeeRoleById">
+        INSERT INTO employee_role(emp_id, role_id) VALUES(#{employeeId}, #{roleId});
+    </insert>
+
+    <delete id="deleteEmployeeRoleById">
+        DELETE FROM employee_role WHERE emp_id = #{employeeId};
+    </delete>
+</mapper>

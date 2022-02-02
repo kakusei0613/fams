@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IMaterialMapper">
+    <resultMap id="materialMap" type="xyz.kakusei.fams.entity.Material">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="parameter" property="parameter"></result>
+        <association property="type" javaType="xyz.kakusei.fams.entity.MaterialType" columnPrefix="mt_">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+    <select id="queryAll" resultMap="materialMap">
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id
+    </select>
+    <select id="queryById" parameterType="Long" resultMap="materialMap">
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id WHERE m.id = #{id}
+    </select>
+    <select id="queryByTypeId" parameterType="Integer" resultMap="materialMap">
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id WHERE mt_id = #{id}
+    </select>
+    <insert id="insert" parameterType="xyz.kakusei.fams.entity.Material" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO materials(name, type_id, parameter) VALUES(#{name}, #{type.id}, #{parameter})
+    </insert>
+    <update id="update" parameterType="xyz.kakusei.fams.entity.Material">
+        UPDATE materials SET name = #{name}, type_id = #{type.id}, parameter = #{parameter} WHERE id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM materials WHERE id = #{id}
+    </delete>
+</mapper>

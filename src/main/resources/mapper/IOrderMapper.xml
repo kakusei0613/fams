@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IOrderMapper">
+    <resultMap id="orderMap" type="xyz.kakusei.fams.entity.Order">
+        <id property="id" column="id" />
+        <result property="price" column="price" />
+        <result property="ddl" column="ddl" />
+        <result property="createTime" column="create_time" />
+        <result property="processTime" column="process_time" />
+        <association property="creator" javaType="xyz.kakusei.fams.entity.Employee" columnPrefix="e_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+        </association>
+        <association property="customer" javaType="xyz.kakusei.fams.entity.Customer" columnPrefix="c_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="contact" column="contact" />
+            <result property="comments" column="comments" />
+        </association>
+        <association property="state" javaType="xyz.kakusei.fams.entity.OrderState" columnPrefix="os_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+        </association>
+    </resultMap>
+    <resultMap id="orderStateChangeMap" type="xyz.kakusei.fams.entity.OrderStateChange">
+        <result property="orderId" column="order_id" />
+        <result property="state" column="state_name" />
+        <result property="occurrenceTime" column="occurrence_time" />
+        <result property="operator" column="operator_name" />
+    </resultMap>
+    <select id="queryAll" resultMap="orderMap">
+        SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
+               o.price, o.ddl, o.create_time, e.name AS e_name, os.id AS os_id, os.name AS os_name,
+               o.process_time, e.id AS e_id
+        FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
+            LEFT JOIN employees AS e ON(o.creator_id = e.id)
+            LEFT JOIN order_states AS os ON(o.state_id = os.id)
+    </select>
+    <select id="queryById" parameterType="java.lang.Long" resultMap="orderMap">
+        SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
+               o.price, o.ddl, o.create_time, e.name AS e_name, os.id AS os_id, os.name AS os_name,
+               o.process_time, e.id AS e_id
+        FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
+                         LEFT JOIN employees AS e ON(o.creator_id = e.id)
+                         LEFT JOIN order_states AS os ON(o.state_id = os.id)
+        WHERE o.id = #{orderId}
+    </select>
+    <select id="queryOrderStateChangeByOrderId" parameterType="java.lang.Long" resultMap="orderStateChangeMap">
+        SELECT osc.order_id, os.name AS state_name, osc.occurrence_time, e.name
+        FROM order_state_change AS osc LEFT JOIN order_states AS os ON(osc.state_id = os.id)
+                                       LEFT JOIN employees AS e ON(osc.operator_id = e.id)
+        WHERE osc.order_id = #{orderId}
+    </select>
+    <insert id="insert" parameterType="xyz.kakusei.fams.entity.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO orders(cust_id, price, ddl, create_time, creator_id, state_id, process_time)
+            VALUES(#{customer.id}, #{price}, #{ddl}, #{createTime}, #{creator.id}, #{state.id}, #{processTime})
+    </insert>
+    <insert id="insertOrderStateChange">
+        INSERT INTO order_state_change(order_id, state_id, occurrence_time, operator_id) VALUES(#{orderId}, #{stateId}, #{occurrenceTime}, #{operatorId})
+    </insert>
+    <update id="update" parameterType="xyz.kakusei.fams.entity.Order">
+        UPDATE orders SET cust_id = #{customer.id}, price = #{price}, ddl = #{ddl}, create_time = #{createTime},
+                          creator_id = #{creator.id}, state_id = #{state.id}, process_time = #{processTime}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM orders WHERE id = #{id}
+    </delete>
+    <delete id="deleteOrderStateChangeByOrderId" parameterType="java.lang.Long">
+        DELETE FROM order_state_change WHERE order_id = #{id}
+    </delete>
+</mapper>
