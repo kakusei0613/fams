@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IEmployeeMapper {
     List<Employee> queryAll();
-    Employee queryByEmployeeId(@Param("id") Long id);
+    Employee queryById(@Param("id") Long id);
     void insert(Employee employee);
     void update(Employee employee);
     void deleteById(@Param("id") Long id);

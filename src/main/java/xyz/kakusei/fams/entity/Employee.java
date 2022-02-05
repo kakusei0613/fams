@@ -18,5 +18,5 @@ public class Employee {
     private Department department;
     private List<Role> roleList;
     private String hireDate;
-    private EmployeeState employeeState;
+    private State employeeState;
 }

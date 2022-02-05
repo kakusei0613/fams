@@ -7,5 +7,5 @@ public class Stock {
     private Long id;
     private Material material;
     private Warehouse warehouse;
-    private Long quantity;
+    private Integer quantity;
 }

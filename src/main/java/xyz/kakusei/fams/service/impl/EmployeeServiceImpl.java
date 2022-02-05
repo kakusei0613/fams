@@ -1,6 +1,5 @@
 package xyz.kakusei.fams.service.impl;
 
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Employee;
@@ -28,7 +27,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public Employee queryByEmployeeId(Long id) {
-        return employeeMapper.queryByEmployeeId(id);
+        return employeeMapper.queryById(id);
     }
 
     @Override

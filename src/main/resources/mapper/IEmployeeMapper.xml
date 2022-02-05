@@ -19,7 +19,7 @@
             <result property="contact" column="contact" />
             <result property="comments" column="comments" />
         </association>
-        <association property="employeeState" columnPrefix="es_" javaType="xyz.kakusei.fams.entity.EmployeeState">
+        <association property="employeeState" columnPrefix="es_" javaType="xyz.kakusei.fams.entity.State">
             <id property="id" column="id" />
             <result property="name" column="name" />
         </association>
@@ -32,7 +32,7 @@
         FROM employees AS e LEFT JOIN departments AS d ON(e.dept_id = d.id)
             LEFT JOIN employee_states AS es ON (e.state_id = es.id)
     </select>
-    <select id="queryByEmployeeId" parameterType="Long" resultMap="EmployeeMap">
+    <select id="queryById" parameterType="Long" resultMap="EmployeeMap">
         SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
                d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
                es.id AS es_id, es.name AS es_name

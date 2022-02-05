@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="xyz.kakusei.fams.mapper.IOrderStateMapper">
+<mapper namespace="xyz.kakusei.fams.mapper.IStateMapper">
     <select id="queryAll" resultType="xyz.kakusei.fams.entity.State">
-        SELECT id, name FROM order_states;
+        SELECT id, name FROM ${tableName}
     </select>
     <select id="queryById" parameterType="java.lang.Byte" resultType="xyz.kakusei.fams.entity.State">
-        SELECT id, name FROM order_states WHERE id = #{id};
+        SELECT id, name FROM ${tableName} WHERE id = #{id}
     </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.State" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO order_states(name) VALUES(#{name});
+        INSERT INTO ${tableName}(name) VALUES(#{state.name})
     </insert>
     <update id="update" parameterType="xyz.kakusei.fams.entity.State">
-        UPDATE order_states SET name = #{name} WHERE id = #{id};
+        UPDATE ${tableName} SET name = #{state.name} WHERE id = #{state.id}
     </update>
     <delete id="deleteById" parameterType="java.lang.Byte">
-        DELETE FROM order_states WHERE id = #{id};
+        DELETE FROM ${tableName} WHERE id #{state.id}
     </delete>
 </mapper>

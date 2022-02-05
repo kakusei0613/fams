@@ -8,20 +8,19 @@
         <result property="ddl" column="ddl" />
         <result property="createTime" column="create_time" />
         <result property="processTime" column="process_time" />
-        <association property="creator" javaType="xyz.kakusei.fams.entity.Employee" columnPrefix="e_">
-            <id property="id" column="id" />
-            <result property="name" column="name" />
-        </association>
+        <result property="comments" column="comments" />
+        <association property="creator" resultMap="xyz.kakusei.fams.mapper.IEmployeeMapper.EmployeeMap" columnPrefix="e_" />
         <association property="customer" javaType="xyz.kakusei.fams.entity.Customer" columnPrefix="c_">
             <id property="id" column="id" />
             <result property="name" column="name" />
             <result property="contact" column="contact" />
             <result property="comments" column="comments" />
         </association>
-        <association property="state" javaType="xyz.kakusei.fams.entity.OrderState" columnPrefix="os_">
+        <association property="state" javaType="xyz.kakusei.fams.entity.State" columnPrefix="os_">
             <id property="id" column="id" />
             <result property="name" column="name" />
         </association>
+        <collection property="staffs" ofType="xyz.kakusei.fams.entity.Employee" select="xyz.kakusei.fams.mapper.IOrderMapper.queryEmployeeByOrderId" column="id" />
     </resultMap>
     <resultMap id="orderStateChangeMap" type="xyz.kakusei.fams.entity.OrderStateChange">
         <result property="orderId" column="order_id" />
@@ -32,19 +31,39 @@
     <select id="queryAll" resultMap="orderMap">
         SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
                o.price, o.ddl, o.create_time, e.name AS e_name, os.id AS os_id, os.name AS os_name,
-               o.process_time, e.id AS e_id
+               o.process_time, e.id AS e_id,e.birthday AS e_birthday, e.gender AS e_gender,
+               e.phone AS e_phone, e.email AS e_email, e.password AS e_password, e.address AS e_address,
+               e.admin AS e_admin, e.hiredate AS e_hiredate, es.id AS e_es_id, es.name AS e_es_name,
+               d.id AS e_d_id, d.name AS e_d_name, d.contact AS e_d_contact, d.comments AS e_d_comments
         FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
             LEFT JOIN employees AS e ON(o.creator_id = e.id)
             LEFT JOIN order_states AS os ON(o.state_id = os.id)
+            LEFT JOIN departments AS d ON(e.dept_id = d.id)
+            LEFT JOIN employee_states AS es ON (e.state_id = es.id)
     </select>
     <select id="queryById" parameterType="java.lang.Long" resultMap="orderMap">
         SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
                o.price, o.ddl, o.create_time, e.name AS e_name, os.id AS os_id, os.name AS os_name,
-               o.process_time, e.id AS e_id
+               o.process_time, e.id AS e_id,e.birthday AS e_birthday, e.gender AS e_gender,
+               e.phone AS e_phone, e.email AS e_email, e.password AS e_password, e.address AS e_address,
+               e.admin AS e_admin, e.hiredate AS e_hiredate, es.id AS e_es_id, es.name AS e_es_name,
+               d.id AS e_d_id, d.name AS e_d_name, d.contact AS e_d_contact, d.comments AS e_d_comments
         FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
                          LEFT JOIN employees AS e ON(o.creator_id = e.id)
                          LEFT JOIN order_states AS os ON(o.state_id = os.id)
+                         LEFT JOIN departments AS d ON(e.dept_id = d.id)
+                         LEFT JOIN employee_states AS es ON (e.state_id = es.id)
         WHERE o.id = #{orderId}
+    </select>
+    <select id="queryEmployeeByOrderId" parameterType="java.lang.Long" resultMap="xyz.kakusei.fams.mapper.IEmployeeMapper.EmployeeMap">
+        SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
+               d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
+               es.id AS es_id, es.name AS es_name
+        FROM order_employee AS oe
+            LEFT JOIN employees AS e ON(oe.emp_id = e.id)
+            LEFT JOIN departments AS d ON(e.dept_id = d.id)
+            LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+        WHERE oe.order_id = #{id}
     </select>
     <select id="queryOrderStateChangeByOrderId" parameterType="java.lang.Long" resultMap="orderStateChangeMap">
         SELECT osc.order_id, os.name AS state_name, osc.occurrence_time, e.name

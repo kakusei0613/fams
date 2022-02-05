@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IMaterialApplicationMapper">
+    <resultMap id="materialApplicationMap" type="xyz.kakusei.fams.entity.MaterialApplication">
+        <id property="id" column="id" />
+        <result property="quantity" column="quantity" />
+        <result property="applicationTime" column="application_time" />
+        <result property="comments" column="comments" />
+        <result property="operationTime" column="operation_time" />
+        <association property="state" javaType="xyz.kakusei.fams.entity.State" columnPrefix="mas_">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+        </association>
+        <association property="order" resultMap="xyz.kakusei.fams.mapper.IOrderMapper.orderMap" columnPrefix="o_" />
+        <association property="employee" resultMap="xyz.kakusei.fams.mapper.IEmployeeMapper.EmployeeMap" columnPrefix="e_"/>
+        <association property="operator" resultMap="xyz.kakusei.fams.mapper.IEmployeeMapper.EmployeeMap" columnPrefix="op_" />
+        <association property="stock" resultMap="xyz.kakusei.fams.mapper.IStockMapper.stockMap" columnPrefix="s_" />
+    </resultMap>
+    <select id="queryAll" resultMap="materialApplicationMap">
+        SELECT ma.id, ma.quantity, ma.application_time, ma.operation_time, ma.comments, mas.id AS mas_id, mas.name AS mas_name,
+               o.id AS o_id, c.id AS o_c_id, c.name AS o_c_name, c.contact AS o_c_contact, c.comments AS o_c_comments,
+               o.price AS o_price, o.ddl AS o_ddl, o.create_time AS o_create_time,
+               oe.id AS o_e_id, oe.name AS o_e_name, oe.birthday AS o_e_birthday, oe.gender AS o_e_gender,
+               oe.phone AS o_e_phone, oe.email AS o_e_email, oe.password AS o_e_password, oe.address AS o_e_address,
+               oe.admin AS o_e_admin, oed.id AS o_e_d_id, oed.name AS o_e_d_name, oed.contact AS o_e_d_contact,
+               oed.comments AS o_e_d_comments, oe.hiredate AS o_e_hiredate, oes.id AS o_e_es_id, oes.name AS o_e_es_name,
+               e.id AS e_id, e.name AS e_name, e.birthday AS e_birthday, e.gender AS e_gender,
+               e.phone AS e_phone, e.email AS e_email, e.password AS e_password, e.address AS e_address,
+               e.admin AS e_admin, d1.id AS e_d_id, d1.name AS e_d_name, d1.contact AS e_d_contact,
+               d1.comments AS e_d_comments, e.hiredate AS e_hiredate, es1.id AS e_es_id, es1.name AS e_es_name,
+               op.id AS op_e_id, op.name AS op_e_name, op.birthday AS op_e_birthday, op.gender AS op_e_gender,
+               op.phone AS op_e_phone, op.email AS op_e_email, op.password AS op_e_password, op.address AS op_e_address,
+               op.admin AS op_e_admin, d2.id AS op_e_d_id, d2.name AS op_e_d_name, d2.contact AS op_e_d_contact,
+               d2.comments AS op_e_d_comments, op.hiredate AS op_e_hiredate, es2.id AS op_e_es_id, es2.name AS op_e_es_name,
+               s.id AS s_id, s.quantity AS s_quantity,
+               m.id AS s_m_id, m.name AS s_m_name, m.parameter AS s_m_parameter, mt.id AS s_m_st_id, mt.name AS s_m_st_name,
+               w.id AS s_w_id, w.name AS s_w_name, w.position AS s_w_position, w.comments AS s_w_comments
+        FROM material_application AS ma
+            LEFT JOIN orders AS o ON(ma.order_id = o.id)
+            LEFT JOIN customers AS c ON(o.cust_id = c.id)
+            LEFT JOIN employees AS oe ON(o.creator_id = oe.id)
+            LEFT JOIN departments AS oed ON(oe.dept_id = oed.id)
+            LEFT JOIN employee_states AS oes ON(oe.state_id = oes.id)
+            LEFT JOIN employees AS e ON(ma.emp_id = e.id)
+            LEFT JOIN departments AS d1 ON(e.dept_id = d1.id)
+            LEFT JOIN employee_states AS es1 ON(e.state_id = es1.id)
+            LEFT JOIN material_application_states AS mas ON (ma.state_id = mas.id)
+            LEFT JOIN employees AS op ON (ma.operator_id = op.id)
+            LEFT JOIN departments AS d2 ON(e.dept_id = d2.id)
+            LEFT JOIN employee_states AS es2 ON(e.state_id = es2.id)
+            LEFT JOIN stocks AS s ON(ma.stock_id = s.id)
+            LEFT JOIN materials AS m ON(s.mate_id = m.id)
+            LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
+            LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
+    </select>
+    <select id="queryById" parameterType="java.lang.Long">
+        SELECT ma.id, ma.quantity, ma.application_time, ma.operation_time, ma.comments, mas.id AS mas_id, mas.name AS mas_name,
+               o.id AS o_id, c.id AS o_c_id, c.name AS o_c_name, c.contact AS o_c_contact, c.comments AS o_c_comments,
+               o.price AS o_price, o.ddl AS o_ddl, o.create_time AS o_create_time,
+               oe.id AS o_e_id, oe.name AS o_e_name, oe.birthday AS o_e_birthday, oe.gender AS o_e_gender,
+               oe.phone AS o_e_phone, oe.email AS o_e_email, oe.password AS o_e_password, oe.address AS o_e_address,
+               oe.admin AS o_e_admin, oed.id AS o_e_d_id, oed.name AS o_e_d_name, oed.contact AS o_e_d_contact,
+               oed.comments AS o_e_d_comments, oe.hiredate AS o_e_hiredate, oes.id AS o_e_es_id, oes.name AS o_e_es_name,
+               e.id AS e_id, e.name AS e_name, e.birthday AS e_birthday, e.gender AS e_gender,
+               e.phone AS e_phone, e.email AS e_email, e.password AS e_password, e.address AS e_address,
+               e.admin AS e_admin, d1.id AS e_d_id, d1.name AS e_d_name, d1.contact AS e_d_contact,
+               d1.comments AS e_d_comments, e.hiredate AS e_hiredate, es1.id AS e_es_id, es1.name AS e_es_name,
+               op.id AS op_e_id, op.name AS op_e_name, op.birthday AS op_e_birthday, op.gender AS op_e_gender,
+               op.phone AS op_e_phone, op.email AS op_e_email, op.password AS op_e_password, op.address AS op_e_address,
+               op.admin AS op_e_admin, d2.id AS op_e_d_id, d2.name AS op_e_d_name, d2.contact AS op_e_d_contact,
+               d2.comments AS op_e_d_comments, op.hiredate AS op_e_hiredate, es2.id AS op_e_es_id, es2.name AS op_e_es_name,
+               s.id AS s_id, s.quantity AS s_quantity,
+               m.id AS s_m_id, m.name AS s_m_name, m.parameter AS s_m_parameter, mt.id AS s_m_st_id, mt.name AS s_m_st_name,
+               w.id AS s_w_id, w.name AS s_w_name, w.position AS s_w_position, w.comments AS s_w_comments
+        FROM material_application AS ma
+                 LEFT JOIN orders AS o ON(ma.order_id = o.id)
+                 LEFT JOIN customers AS c ON(o.cust_id = c.id)
+                 LEFT JOIN employees AS oe ON(o.creator_id = oe.id)
+                 LEFT JOIN departments AS oed ON(oe.dept_id = oed.id)
+                 LEFT JOIN employee_states AS oes ON(oe.state_id = oes.id)
+                 LEFT JOIN employees AS e ON(ma.emp_id = e.id)
+                 LEFT JOIN departments AS d1 ON(e.dept_id = d1.id)
+                 LEFT JOIN employee_states AS es1 ON(e.state_id = es1.id)
+                 LEFT JOIN material_application_states AS mas ON (ma.state_id = mas.id)
+                 LEFT JOIN employees AS op ON (ma.operator_id = op.id)
+                 LEFT JOIN departments AS d2 ON(e.dept_id = d2.id)
+                 LEFT JOIN employee_states AS es2 ON(e.state_id = es2.id)
+                 LEFT JOIN stocks AS s ON(ma.stock_id = s.id)
+                 LEFT JOIN materials AS m ON(s.mate_id = m.id)
+                 LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
+                 LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
+        WHERE id = #{id}
+    </select>
+    <insert id="insert" parameterType="xyz.kakusei.fams.entity.MaterialApplication">
+        INSERT INTO material_application_states(order_id, emp_id, stock_id, quantity, state_id, application_time, operator_id, operation_time, comments)
+            VALUES(#{order.id}, #{employee.id}, #{stock.id}, #{quantity}, #{state.id}, #{applicationTime}, #{operator.id}, #{operationTime}, #{comments})
+    </insert>
+    <update id="update" parameterType="xyz.kakusei.fams.entity.MaterialApplication">
+        UPDATE material_application_states
+            SET order_id = #{order.id}, emp_id = #{employee.id}, stock_id = #{stock.id},
+                quantity = #{quantity}, state_id = #{state.id}, application_time = #{applicationTime},
+                operator_id = #{operator.id}, operation_time = #{operationTime}, comments = #{comments}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM material_application_states WHERE id = #{id}
+    </delete>
+</mapper>

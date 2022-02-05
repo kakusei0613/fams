@@ -2,7 +2,7 @@ package xyz.kakusei.fams.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.kakusei.fams.entity.EmployeeState;
+import xyz.kakusei.fams.entity.State;
 import xyz.kakusei.fams.mapper.IEmployeeStateMapper;
 import xyz.kakusei.fams.service.IEmployeeStateService;
 
@@ -15,12 +15,12 @@ public class EmployeeStateServiceImpl implements IEmployeeStateService {
     private IEmployeeStateMapper employeeStateMapper;
 
     @Override
-    public List<EmployeeState> queryAll() {
+    public List<State> queryAll() {
         return employeeStateMapper.queryAll();
     }
 
     @Override
-    public EmployeeState queryById(Byte id) {
+    public State queryById(Byte id) {
         return employeeStateMapper.queryById(id);
     }
 
@@ -30,7 +30,7 @@ public class EmployeeStateServiceImpl implements IEmployeeStateService {
     }
 
     @Override
-    public void saveOrUpdate(EmployeeState employeeState) {
+    public void saveOrUpdate(State employeeState) {
         if (employeeState.getId() == null) {
             employeeStateMapper.insert(employeeState);
         }

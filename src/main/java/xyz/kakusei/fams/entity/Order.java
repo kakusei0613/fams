@@ -3,6 +3,7 @@ package xyz.kakusei.fams.entity;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class Order {
@@ -12,6 +13,8 @@ public class Order {
     private String ddl;
     private String createTime;
     private Employee creator;
-    private OrderState state;
+    private State state;
     private String processTime;
+    private String comments;
+    private List<Employee> staffs;
 }

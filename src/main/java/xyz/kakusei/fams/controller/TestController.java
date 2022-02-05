@@ -4,13 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xyz.kakusei.fams.entity.Employee;
-import xyz.kakusei.fams.entity.Material;
-import xyz.kakusei.fams.entity.Order;
-import xyz.kakusei.fams.entity.Stock;
-import xyz.kakusei.fams.mapper.IMaterialMapper;
-import xyz.kakusei.fams.mapper.IPermissionMapper;
-import xyz.kakusei.fams.mapper.IRoleMapper;
+import xyz.kakusei.fams.entity.*;
+import xyz.kakusei.fams.mapper.*;
 import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.query.StockQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
@@ -35,6 +30,12 @@ public class TestController {
     @Autowired
     IMaterialMapper materialMapper;
 
+    @Autowired
+    IMaterialApplicationMapper materialApplicationMapper;
+
+    @Autowired
+    IStateMapper stateMapper;
+
     @GetMapping("/order/queryAll")
     public PageInfo<Order> orderQueryAll() {
         PageHelper.startPage(1,10);
@@ -53,5 +54,22 @@ public class TestController {
     public void modify(Material material) {
         System.out.println("===========In controller" + material);
         materialMapper.insert(material);
+    }
+    @GetMapping("/ma/all")
+    public List<MaterialApplication> maall() {
+        return materialApplicationMapper.queryAll();
+    }
+
+    @GetMapping("/s/all")
+    public List<State> sqall() {
+        return stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE);
+    }
+    @GetMapping("/s/{id}")
+    public State sqi(@PathVariable("id") Byte id) {
+        return stateMapper.queryById(IStateMapper.EMPLOYEE_STATES_TABLE, id);
+    }
+    @PostMapping("/s/in")
+    public void sin(State state) {
+        stateMapper.insert(IStateMapper.EMPLOYEE_STATES_TABLE, state);
     }
 }
