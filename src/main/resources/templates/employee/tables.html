@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+</head>
+
+<body data-type="widgets">
+<script th:src="@{/assets/js/theme.js}" src="../../static/assets/js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <div th:replace="common/topbar :: topbar"></div>
+    <!-- 风格切换 -->
+    <div th:replace="common/skin-selecter :: skin-selecter"></div>
+    <!-- 侧边导航栏 -->
+    <div th:replace="common/left_sidebar :: left-sidebar"></div>
+
+
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 员工管理 <small>Amaze UI</small></div>
+                    <p class="page-header-description">你可以在此处对员工进行管理。</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row-content am-cf">
+            <div class="row">
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">员工列表</div>
+                        </div>
+                        <div class="widget-body am-fr">
+                            <form action="/employee/query" class="am-form-inline" method="post" role="form">
+                                <div class="am-form-group">
+                                    <label>关键字：</label>
+                                    <input type="text" name="keyword" placeholder="姓名/电话/邮箱" value=""/>&nbsp;
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="gender-select">性别：</label>
+                                    <select id="gender-select" name="gender">
+                                        <option value="">全部</option>
+                                        <option value="true">男</option>
+                                        <option value="false">女</option>
+                                    </select>&nbsp;
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="department-select">部门：</label>
+                                    <select id="department-select" name="department">
+                                        <option value="">全部</option>
+                                        <option th:each="dept:${departments}" value="${dept.id}" th:text="${dept.name}"></option>
+                                    </select>&nbsp;
+                                </div>
+                                <div class="am-form-group">
+                                    <label>状态：</label>
+                                    <select name="employeeState">
+                                        <option value="">全部</option>
+                                        <option th:each="state:${states}" value="${state.id}" th:text="${state.name}"></option>
+                                    </select>&nbsp;
+                                </div>
+                                <div class="am-form-group">
+                                    <button type="submit" class="am-btn am-btn-sm">搜索</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="widget-body  widget-body-lg am-fr am-scrollable-horizontal">
+
+                            <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
+                                <thead>
+                                <tr>
+                                    <th>员工号</th>
+                                    <th>姓名</th>
+                                    <th>出生日期</th>
+                                    <th>性别</th>
+                                    <th>联系方式</th>
+                                    <th>电子邮箱</th>
+                                    <th>住址</th>
+                                    <th>管理员</th>
+                                    <th>所属部门</th>
+                                    <th>入职时间</th>
+                                    <th>当前状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="employee,employeeStat:${employees}">
+                                    <td th:text="${employee.id}"></td>
+                                    <td th:text="${employee.name}"></td>
+                                    <td th:text="${employee.birthday}"></td>
+
+                                    <td th:if="${employee.gender} == true">男</td>
+                                    <td th:if="${employee.gender} == false">女</td>
+
+                                    <td th:text="${employee.phone}"></td>
+                                    <td th:text="${employee.email}"></td>
+                                    <td th:text="${employee.address}"></td>
+
+                                    <td th:if="${employee.admin} == true">是</td>
+                                    <td th:if="${employee.admin} == false">否</td>
+
+                                    <td th:text="${employee.department.name}"></td>
+                                    <td th:text="${employee.hireDate}"></td>
+                                    <td th:text="${employee.employeeState.name}"></td>
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <a href="#">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a href="#" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+<!--                                even gradeC-->
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<script th:src="@{/assets/js/amazeui.min.js}" src="../../static/assets/js/amazeui.min.js"></script>
+<script th:src="@{/assets/js/amazeui.datatables.min.js}" src="../../static/assets/js/amazeui.datatables.min.js"></script>
+<script th:src="@{/assets/js/dataTables.responsive.min.js}" src="../../static/assets/js/dataTables.responsive.min.js"></script>
+<script th:src="@{/assets/js/app.js}" src="../../static/assets/js/app.js"></script>
+
+</body>
+
+</html>

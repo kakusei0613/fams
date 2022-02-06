@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class EmployeeQueryObject {
-    private String name;
+    private String keyword;
     private Byte department;
     private Byte employeeState;
-    private String phone;
     private Boolean gender;
 }

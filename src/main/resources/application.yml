@@ -9,6 +9,14 @@ spring:
     url: jdbc:mysql://localhost:3306/fams?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: root
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+    cache: false
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
 
@@ -24,3 +32,4 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+

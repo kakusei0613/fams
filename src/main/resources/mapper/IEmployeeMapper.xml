@@ -48,17 +48,19 @@
                             LEFT JOIN employee_states AS es ON (e.state_id = es.id)
         <where>
             1 = 1
-            <if test="name != null and name != ''">
-                AND e.name LIKE CONCAT('%',#{name},'%')
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                e.name LIKE CONCAT('%',#{keyword},'%')
+                OR e.phone LIKE CONCAT('%',#{keyword},'%')
+                OR e.email LIKE CONCAT('%',#{keyword},'%')
+                )
             </if>
             <if test="department != null">
                 AND d.id = #{department}
             </if>
             <if test="employeeState != null">
                 AND es.id = #{employeeState}
-            </if>
-            <if test="phone != null and phone != ''">
-                AND e.phone LIKE CONCAT('%',#{phone},'%')
             </if>
             <if test="gender != null">
                 AND e.gender = #{gender}
