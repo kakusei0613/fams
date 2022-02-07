@@ -23,9 +23,6 @@
     <div th:replace="common/skin-selecter :: skin-selecter"></div>
     <!-- 侧边导航栏 -->
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
-
-
-
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
 
@@ -38,50 +35,70 @@
             </div>
 
         </div>
-
         <div class="row-content am-cf">
             <div class="row">
-
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">条件查询</div>
+                        </div>
+                        <div class="widget-body am-fr am-form-inline">
+                            <form action="/employee/query" class="tpl-form-border-form tpl-form-border-br" method="post">
+                                <input type="hidden" name="pageSize" value="15"/>
+                                <input type="hidden" name="pageNum" value="1">
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-4 am-form-label">索引：</label>
+                                    <div class="am-u-sm-8">
+                                        <input type="text" style="height: 37.19px;width: 200px;" name="keyword" placeholder="姓名/电话/邮箱"/>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="gender-select" class="am-u-sm-4 am-form-label">性别：</label>
+                                    <div class="am-u-sm-8">
+                                        <select id="gender-select" data-am-selected="{searchBox: 1}" name="gender" style="display: none;">
+                                            <option value=""></option>
+                                            <option value="true">男</option>
+                                            <option value="false">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="department-select" class="am-u-sm-4 am-form-label">部门：</label>
+                                    <div class="am-u-sm-8">
+                                        <select id="department-select" data-am-selected="{searchBox: 1}" name="department" style="display: none;">
+                                            <option value=""></option>
+                                            <option th:each="dept:${departments}" value="${dept.id}" th:text="${dept.name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-4 am-form-label">状态：</label>
+                                    <div class="am-u-sm-8">
+                                        <select name="employeeState" data-am-selected="{searchBox: 1}" style="display: none;">
+                                            <option value=""></option>
+                                            <option th:each="state:${states}" value="${state.id}" th:text="${state.name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-12 am-u-sm-push-3">
+                                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success">搜索</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
                             <div class="widget-title am-fl">员工列表</div>
+                            <div class="widget-function am-fr"><a href="#" class="am-icon-cog"></a></div>
+                            <div class="widget-title am-fr">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
                         </div>
-                        <div class="widget-body am-fr">
-                            <form action="/employee/query" class="am-form-inline" method="post" role="form">
-                                <div class="am-form-group">
-                                    <label>关键字：</label>
-                                    <input type="text" name="keyword" placeholder="姓名/电话/邮箱" value=""/>&nbsp;
-                                </div>
-                                <div class="am-form-group">
-                                    <label for="gender-select">性别：</label>
-                                    <select id="gender-select" name="gender">
-                                        <option value="">全部</option>
-                                        <option value="true">男</option>
-                                        <option value="false">女</option>
-                                    </select>&nbsp;
-                                </div>
-                                <div class="am-form-group">
-                                    <label for="department-select">部门：</label>
-                                    <select id="department-select" name="department">
-                                        <option value="">全部</option>
-                                        <option th:each="dept:${departments}" value="${dept.id}" th:text="${dept.name}"></option>
-                                    </select>&nbsp;
-                                </div>
-                                <div class="am-form-group">
-                                    <label>状态：</label>
-                                    <select name="employeeState">
-                                        <option value="">全部</option>
-                                        <option th:each="state:${states}" value="${state.id}" th:text="${state.name}"></option>
-                                    </select>&nbsp;
-                                </div>
-                                <div class="am-form-group">
-                                    <button type="submit" class="am-btn am-btn-sm">搜索</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="widget-body  widget-body-lg am-fr am-scrollable-horizontal">
-
+                        <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
                             <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
                                 <thead>
                                 <tr>
@@ -100,7 +117,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="employee,employeeStat:${employees}">
+                                <tr th:each="employee,employeeStat:${pageResult.list}">
                                     <td th:text="${employee.id}"></td>
                                     <td th:text="${employee.name}"></td>
                                     <td th:text="${employee.birthday}"></td>
@@ -129,20 +146,15 @@
                                         </div>
                                     </td>
                                 </tr>
-<!--                                even gradeC-->
                                 </tbody>
                             </table>
-
                         </div>
+
                     </div>
                 </div>
-
-
-
-
             </div>
-
-        </div>
+            <!-- 分页 -->
+            <div th:replace="common/pagination :: pagination"></div>
     </div>
 </div>
 </div>

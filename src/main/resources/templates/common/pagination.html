@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="pagination">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-body widget-body-sm am-fr tpl-form-border-form tpl-form-border-br am-form-inline">
+                    <!--                            <div th:replace="common/pagination :: pagination"></div>-->
+                    <div style="align-content: center">
+                        <ul class="am-pagination am-pagination-centered" id="pagination">
+                        </ul>
+                    </div>
+                    <script type="text/javascript">
+                        $("#pagination").twbsPagination({
+                            totalPages: [[${pageResult.pages}]] || 1,
+                            startPage: [[${pageResult.pageNum}]] || 1,
+                            visiblePages: 5,
+                            first: "首页",
+                            prev: "&laquo;",
+                            next: "&raquo;",
+                            last: "尾页",
+                            activeClass: "am-active",
+                            disabledClass: "am-disabled",
+                            initiateStartPageClick: false,
+                            onPageClick: function (event,page) {
+                                alert("Pagination:" + page);
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</html>

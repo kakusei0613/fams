@@ -77,4 +77,11 @@ public class TestController {
     public String employee() {
         return "/employee/tables";
     }
+
+    @GetMapping("/empp")
+    @ResponseBody
+    public PageInfo<Employee> empp() {
+        PageHelper.startPage(1,4);
+        return new PageInfo<Employee>(employeeService.queryAll());
+    }
 }
