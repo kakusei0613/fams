@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IEmployeeService {
     List<Employee> queryAll();
-    Employee queryByEmployeeId(Long id);
+    Employee queryById(Long id);
     void saveOrUpdate(Employee employee);
     void deleteByEmployeeId(Long id);
     List<Employee> queryByCriteria(EmployeeQueryObject employeeQueryObject);

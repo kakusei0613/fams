@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public Employee queryByEmployeeId(Long id) {
+    public Employee queryById(Long id) {
         return employeeMapper.queryById(id);
     }
 

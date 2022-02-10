@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+
+</head>
+
+<body data-type="widgets">
+    <script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <div th:replace="common/topbar :: topbar"></div>
+        <!-- 风格切换 -->
+        <div th:replace="common/skin-selecter :: skin-selecter"></div>
+        <!-- 侧边导航栏 -->
+        <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑员工 <small>Amaze UI</small></div>
+                        <p class="page-header-description">您可以在此编辑员工信息。</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">员工信息</div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form action="/employee/new" id="editForm" class="am-form tpl-form-line-form" method="post">
+                                    <div class="am-form-group" th:if="${employee.id} != null">
+                                        <label class="am-u-sm-3 am-form-label">员工号 <span class="tpl-form-line-small-title">ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${employee.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">姓名 <span class="tpl-form-line-small-title">Name</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${employee.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入姓名">
+                                            <small>姓名为必填</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">出生日期 <span class="tpl-form-line-small-title">Birthday</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${employee.birthday}" name="birthday" class="am-form-field tpl-form-no-bg" placeholder="出生日期" data-am-datepicker="" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">性别 <span class="tpl-form-line-small-title">Gender</span></label>
+                                        <div class="am-u-sm-9">
+                                            <select id="gender-select" name="gender" data-am-selected="{searchBox: 1}" style="display: none;">
+                                                <option value=""></option>
+                                                <option value="true">男</option>
+                                                <option value="false">女</option>
+                                            </select>
+                                            <script th:if="${employee.gender} != null">
+                                                if ([[${employee.gender}]] == true)
+                                                    $("#gender-select").val("true");
+                                                else
+                                                    $("#gender-select").val("false");
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">联系方式 <span class="tpl-form-line-small-title">Phone</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="phone" th:value="${employee.phone}" placeholder="输入联系方式">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">电子邮箱 <span class="tpl-form-line-small-title">E-Mail</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="email" th:value="${employee.email}" placeholder="输入电子邮箱">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">管理员 <span class="tpl-form-line-small-title">Administrator</span></label>
+                                        <div class="am-u-sm-9">
+                                            <div class="tpl-switch">
+                                                <input type="checkbox" name="admin" id="admin-checkbox" class="ios-switch bigswitch tpl-switch-btn">
+                                                <div class="tpl-switch-btn-view">
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                if ([[${employee.admin}]] == true) {
+                                                    $("#admin-checkbox").attr("checked", true);
+                                                    $("#admin-checkbox").val(true);
+                                                }
+                                                else {
+                                                    $("#admin-checkbox").attr("checked", false);
+                                                    $("#admin-checkbox").val(false);
+                                                }
+                                                $("#admin-checkbox").click(function () {
+                                                    // alert("You clicked me! before change value:" + $("#admin-checkbox").val());
+                                                    var value = $("#admin-checkbox").val();
+                                                    $("#admin-checkbox").val(value ? false: true);
+                                                    // alert("You clicked me! after change value:" + $("#admin-checkbox").val());
+                                                })
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">部门 <span class="tpl-form-line-small-title">Department</span></label>
+                                        <div class="am-u-sm-9">
+                                            <select id="department-select" name="department.id" data-am-selected="{searchBox: 1}" style="display: none;">
+                                                <option value=""></option>
+                                                <option th:each="dept:${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                                            </select>
+                                            <script th:if="${employee.department} != null">
+                                                $("#department-select").val([[${employee.department.id}]]);
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">入职时间 <span class="tpl-form-line-small-title">HireDate</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="hireDate" th:value="${employee.hireDate}" class="am-form-field tpl-form-no-bg" placeholder="入职时间" data-am-datepicker="" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">状态 <span class="tpl-form-line-small-title">State</span></label>
+                                        <div class="am-u-sm-9">
+                                            <select id="state-select" name="employeeState.id" data-am-selected="{searchBox: 1}" style="display: none;">
+                                                <option value=""></option>
+                                                <option th:each="state:${states}" th:value="${state.id}" th:text="${state.name}"></option>
+                                            </select>
+                                            <script th:if="${employee.employeeState} != null">
+                                                $("#state-select").val([[${employee.employeeState.id}]]);
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">Role</span></label>
+                                        <div class="am-u-sm-2">
+                                            <select multiple style="height: 150px;" id="selfRoles" name="roleList">
+                                                <option th:each="role:${employee.roleList}" th:value="${role.id}" th:text="${role.name}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="am-u-sm-1" style="text-align: center" >
+                                            <a class="am-btn" onclick="moveAll('selfRoles','allRoles')">>></a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('selfRoles','allRoles')">></a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('allRoles','selfRoles')"><</a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveAll('allRoles','selfRoles')"><<</a>
+                                        </div>
+                                        <div class="am-u-sm-2">
+                                            <select multiple style="height: 150px;" id="allRoles">
+                                                <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="am-u-sm-4"></div>
+                                        <script>
+                                            function moveSelected(src, desc) {
+                                                $("#" + src + " option:selected").appendTo($("#" + desc));
+                                            }
+                                            function moveAll(src,desc) {
+                                                $("#" + src + " option").appendTo($("#" + desc));
+                                            }
+                                            $(function () {
+                                                //获取右边框中option的value,存到数组中
+                                                var ids = [];
+                                                $.each($("#selfRoles option"), function (index,option) {
+                                                    ids.push(option.value);
+                                                })
+                                                // console.log(ids);
+                                            })
+
+                                            $(function () {
+                                                //排重
+                                                var ids = $.map($("#selfRoles option"), function (item) {
+                                                    return item.value;
+                                                })
+                                                //遍历左边框中的所有option,判断其value值是否在上面的数组中
+                                                //在,则删除
+                                                $.each($("#allRoles option"), function (index, item) {
+                                                    if ($.inArray(item.value, ids) >= 0) {
+                                                        $(item).remove();
+                                                    }
+                                                })
+                                                $("#submitBtn").click(function () {
+                                                    $("#selfRoles option").prop("selected", true);
+                                                    console.log($("#selfRoles option").prop("selected", true));
+                                                    // $("#editForm").submit();
+                                                })
+                                            })
+
+
+                                        </script>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button id="submitBtn" type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="common/footer :: footer_script"></div>
+
+</body>
+
+</html>
