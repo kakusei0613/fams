@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>部门管理</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+</head>
+
+<body data-type="widgets">
+<script th:src="@{/assets/js/theme.js}" src="../../static/assets/js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <div th:replace="common/topbar :: topbar"></div>
+    <!-- 风格切换 -->
+    <div th:replace="common/skin-selecter :: skin-selecter"></div>
+    <!-- 侧边导航栏 -->
+    <div th:replace="common/left_sidebar :: left-sidebar"></div>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 部门管理 <small>Department</small></div>
+                    <p class="page-header-description">你可以在此处对部门进行管理。</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf tpl-form-border-form tpl-form-border-br">
+                        <!--                        <form action="/employee/query" class="tpl-form-border-form tpl-form-border-br" method="post">-->
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">条件查询</div>
+                            <div class="am-fr">
+                                <input type="text" id="pageSize" size=1 name="pageSize" value="15" th:value="${pageResult.pageSize}"/>
+                            </div>
+                            <div class="am-form-label am-fr">每页记录数：</div>
+                        </div>
+                        <div class="widget-body am-fr am-form-inline">
+                            <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
+                            <div class="am-form-group">
+                                <label class="am-u-sm-4 am-form-label">索引：</label>
+                                <div class="am-u-sm-8">
+                                    <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="部门名称"/>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <div class="am-u-sm-12 am-u-sm-push-3">
+                                    <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="search">搜索</button>
+                                </div>
+                                <!--  ajax脚本  -->
+                                <script th:src="@{/assets/js/ajax/ajax.employee.js}" src="../../static/assets/js/ajax/ajax.employee.js"></script>
+                            </div>
+
+                        </div>
+                        <!--                        </form>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">部门列表</div>
+                            <div class="widget-title am-fr">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
+                        </div>
+                        <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                            <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>部门编号</th>
+                                    <th>部门名称</th>
+                                    <th>联系方式</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                <tr th:each="dept,deptStat:${pageResult.list}">
+                                    <td th:text="${deptStat.count}"></td>
+                                    <td th:text="${dept.id}"></td>
+                                    <td th:text="${dept.name}"></td>
+                                    <td th:text="${dept.contact}"></td>
+                                    <td th:text="${dept.comments}">男</td>
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <a href="#">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a href="#" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 分页 -->
+            <div th:replace="common/pagination :: pagination"></div>
+    </div>
+</div>
+</div>
+<script th:src="@{/assets/js/amazeui.min.js}" src="../../static/assets/js/amazeui.min.js"></script>
+<script th:src="@{/assets/js/amazeui.datatables.min.js}" src="../../static/assets/js/amazeui.datatables.min.js"></script>
+<script th:src="@{/assets/js/dataTables.responsive.min.js}" src="../../static/assets/js/dataTables.responsive.min.js"></script>
+<script th:src="@{/assets/js/app.js}" src="../../static/assets/js/app.js"></script>
+
+</body>
+
+</html>

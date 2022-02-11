@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+
+</head>
+
+<body data-type="widgets">
+    <script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <div th:replace="common/topbar :: topbar"></div>
+        <!-- 风格切换 -->
+        <div th:replace="common/skin-selecter :: skin-selecter"></div>
+        <!-- 侧边导航栏 -->
+        <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑部门 <small>Amaze UI</small></div>
+                        <p class="page-header-description">您可以在此编辑部门信息。</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">部门信息</div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form action="/department/new" id="editForm" class="am-form tpl-form-line-form" method="post">
+                                    <div class="am-form-group" th:if="${department.id} != null">
+                                        <label class="am-u-sm-3 am-form-label">部门编号 <span class="tpl-form-line-small-title">ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${department.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">部门名称 <span class="tpl-form-line-small-title">Name</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${department.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入部门名称">
+                                            <small>部门名称为必填</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">联系方式 <span class="tpl-form-line-small-title">Contact</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${department.contact}" name="birthday" class="am-form-field tpl-form-no-bg" placeholder="联系方式" data-am-datepicker="" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">备注 <span class="tpl-form-line-small-title">Comments</span></label>
+                                        <div class="am-u-sm-9">
+<!--                                            <input type="text" name="email" th:value="${department.comments}" placeholder="输入备注">-->
+                                            <textarea class="" rows="5" name="comments" th:value="${department.comments}"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button id="submitBtn" type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="common/footer :: footer_script"></div>
+
+</body>
+
+</html>

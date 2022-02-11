@@ -67,8 +67,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/new")
-    public String addEmployee(Employee employee) {
-        System.out.println(employee);
+    public String modify(Employee employee) {
+        employeeService.saveOrUpdate(employee);
         return "redirect:/employee/tables";
     }
 

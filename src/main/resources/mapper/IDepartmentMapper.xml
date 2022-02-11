@@ -8,6 +8,9 @@
     <select id="queryById" resultType="xyz.kakusei.fams.entity.Department" parameterType="java.lang.Byte">
         SELECT id, name, contact, comments FROM departments WHERE id = #{id};
     </select>
+    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.DepartmentQueryObject" resultType="xyz.kakusei.fams.entity.Department">
+        SELECT id, name, contact, comments FROM departments WHERE name LIKE CONCAT('%',#{keyword},'%');
+    </select>
     <update id="update" parameterType="xyz.kakusei.fams.entity.Department">
         UPDATE departments SET name = #{name}, contact = #{contact}, comments = #{comments} WHERE id = #{id};
     </update>
