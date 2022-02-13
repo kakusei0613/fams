@@ -9,4 +9,5 @@ public interface IRoleService {
     Role queryByRoleId(Byte id);
     void saveOrUpdate(Role role);
     void deleteByRoleId(Byte id);
+    void deleteEmployeeRoles(Long employeeId);
 }

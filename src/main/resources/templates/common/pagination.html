@@ -7,7 +7,8 @@
                 <div class="widget-body widget-body-sm am-fr">
                     <ul class="am-pagination am-pagination-centered" id="pagination"></ul>
                     <script type="text/javascript">
-                        $("#pagination").twbsPagination({
+                        // 默认配置
+                        var defaultOpts = {
                             totalPages: [[${pageResult.pages}]] || 1,
                             startPage: [[${pageResult.pageNum}]] || 1,
                             visiblePages: 5,
@@ -19,9 +20,27 @@
                             disabledClass: "am-disabled",
                             initiateStartPageClick: false,
                             onPageClick: function (event,page) {
-                                alert("Pagination:" + page);
+                                $("#pageNum").val(page);
+                                $("#search").click();
                             }
-                        });
+                        }
+                        $("#pagination").twbsPagination(defaultOpts);
+                        //创建AJAX后列表的编辑、删除按钮
+                        function createOperation(desc, id) {
+                            var tempNode = document.createElement("div");
+                            tempNode.innerHTML = "<td><div class='tpl-table-black-operation'><a href='/" + desc + "/" + id + "'><i class='am-icon-pencil'></i> 编辑</a>&nbsp;<a href='/" + desc + "/delete/" + id + "' class='tpl-table-black-operation-del'><i class='am-icon-trash'></i> 删除</a></div></td>";
+                            return tempNode.firstChild;
+                        }
+                        //AJAX查询后更新页码表
+                        function updatePagination(result) {
+                            $("#pagination").twbsPagination('destroy');
+                            $("#pagination").twbsPagination($.extend({}, defaultOpts,
+                                {
+                                    totalPages: result.pages || 1,
+                                    startPage: result.pageNum || 1,
+                                })
+                            );
+                        }
                     </script>
                 </div>
             </div>

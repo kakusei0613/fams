@@ -12,11 +12,8 @@
         SELECT id, name, contact, comments FROM customers
         <where>
             1 = 1
-            <if test="name != null and name != ''">
-                AND name LIKE CONCAT('%',#{name},'%')
-            </if>
             <if test="keyword != null and keyword != ''">
-                AND (contact LIKE CONCAT('%',#{keyword},'%') OR comments LIKE CONCAT('%',#{keyword},'%')
+                AND (contact LIKE CONCAT('%',#{keyword},'%') OR comments LIKE CONCAT('%',#{keyword},'%' OR name LIKE CONCAT('%',#{name},'%'))
             </if>
         </where>
     </select>

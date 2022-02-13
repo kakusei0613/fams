@@ -46,4 +46,9 @@ public class RoleServiceImpl implements IRoleService {
     public void deleteByRoleId(Byte id) {
         roleMapper.deleteByRoleId(id);
     }
+
+    @Override
+    public void deleteEmployeeRoles(Long employeeId) {
+        deleteEmployeeRoles(employeeId);
+    }
 }

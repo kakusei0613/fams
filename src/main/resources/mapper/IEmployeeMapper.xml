@@ -6,13 +6,16 @@
         <id property="id" column="id" />
         <result property="name" column="name" />
         <result property="birthday" column="birthday" />
-        <result property="gender" column="gender" />
         <result property="phone" column="phone" />
         <result property="email" column="email" />
         <result property="address" column="address" />
         <result property="password" column="password" />
         <result property="admin" column="admin" />
         <result property="hireDate" column="hiredate" />
+        <association property="gender" columnPrefix="g_" javaType="xyz.kakusei.fams.entity.Gender">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+        </association>
         <association property="department" columnPrefix="d_" javaType="xyz.kakusei.fams.entity.Department">
             <id property="id" column="id"/>
             <result property="name" column="name" />
@@ -23,29 +26,32 @@
             <id property="id" column="id" />
             <result property="name" column="name" />
         </association>
-        <collection property="roleList" ofType="xyz.kakusei.fams.entity.Role" select="xyz.kakusei.fams.mapper.IRoleMapper.queryRoleByEmployeeId" column="id" />
+        <collection property="roleList" ofType="xyz.kakusei.fams.entity.Role" select="xyz.kakusei.fams.mapper.IRoleMapper.queryRoleByEmployeeId" column="id" columnPrefix="emp_"/>
     </resultMap>
     <select id="queryAll" resultMap="EmployeeMap" >
-        SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
+        SELECT e.id, e.name, e.birthday, g.id AS g_id, g.name AS g_name, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
                d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
                es.id AS es_id, es.name AS es_name
         FROM employees AS e LEFT JOIN departments AS d ON(e.dept_id = d.id)
             LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+            LEFT JOIN gender AS g ON(e.gender = g.id)
     </select>
     <select id="queryById" parameterType="Long" resultMap="EmployeeMap">
-        SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
+        SELECT e.id, e.name, e.birthday, g.id AS g_id, g.name AS g_name, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
                d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
                es.id AS es_id, es.name AS es_name
         FROM employees AS e LEFT JOIN departments AS d ON(e.dept_id = d.id)
                             LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+                            LEFT JOIN gender AS g ON(e.gender = g.id)
         WHERE e.id = #{id}
     </select>
     <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.EmployeeQueryObject" resultMap="EmployeeMap">
-        SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
+        SELECT e.id, e.name, e.birthday, g.id AS g_id, g.name AS g_name, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
                d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
                es.id AS es_id, es.name AS es_name
         FROM employees AS e LEFT JOIN departments AS d ON(e.dept_id = d.id)
                             LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+                            LEFT JOIN gender AS g ON(e.gender = g.id)
         <where>
             1 = 1
             <if test="keyword != null and keyword != ''">
@@ -56,23 +62,23 @@
                 OR e.email LIKE CONCAT('%',#{keyword},'%')
                 )
             </if>
-            <if test="department != null">
+            <if test="department != null and department > 0">
                 AND d.id = #{department}
             </if>
-            <if test="employeeState != null">
+            <if test="employeeState != null and employeeState > 0">
                 AND es.id = #{employeeState}
             </if>
-            <if test="gender != null">
-                AND e.gender = #{gender}
+            <if test="gender != null and gender > 0">
+                AND g.id = #{gender}
             </if>
         </where>
     </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO employees(name, birthday, gender, phone, email, password, address, admin, hiredate, dept_id, state_id)
-            VALUES(#{name}, #{birthday}, #{gender}, #{phone}, #{email}, #{password}, #{address}, #{admin}, #{hireDate}, #{department.id}, #{employeeState.id})
+            VALUES(#{name}, #{birthday}, #{gender.id}, #{phone}, #{email}, #{password}, #{address}, #{admin}, #{hireDate}, #{department.id}, #{employeeState.id})
     </insert>
     <update id="update" parameterType="xyz.kakusei.fams.entity.Employee">
-        UPDATE employees SET name = #{name}, birthday = #{birthday}, gender = #{gender},
+        UPDATE employees SET name = #{name}, birthday = #{birthday}, gender = #{gender.id},
                              phone = #{phone}, email = #{email},  password = #{password}, address = #{address},
                              admin = #{admin}, hiredate = #{hireDate}, dept_id = #{department.id}, state_id = #{employeeState.id}
             WHERE id = #{id}

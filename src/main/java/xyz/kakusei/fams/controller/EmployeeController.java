@@ -7,10 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Employee;
+import xyz.kakusei.fams.mapper.IGenderMapper;
+import xyz.kakusei.fams.mapper.IStateMapper;
 import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
-import xyz.kakusei.fams.service.IEmployeeStateService;
 import xyz.kakusei.fams.service.IRoleService;
 
 @Controller
@@ -21,16 +22,19 @@ public class EmployeeController {
     @Autowired
     private IDepartmentService departmentService;
     @Autowired
-    private IEmployeeStateService employeeStateService;
-    @Autowired
     private IRoleService roleService;
+    @Autowired
+    private IStateMapper stateMapper;
+    @Autowired
+    private IGenderMapper genderMapper;
 
     @GetMapping("/tables")
     public String tables(Model model) {
         PageHelper.startPage(1,15);
         model.addAttribute("pageResult", new PageInfo<Employee>(employeeService.queryAll()));
         model.addAttribute("departments", departmentService.queryAll());
-        model.addAttribute("states", employeeStateService.queryAll());
+        model.addAttribute("states", stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE));
+        model.addAttribute("genders", genderMapper.queryAll());
         return "/employee/tables";
     }
 
@@ -45,7 +49,8 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public String employee(Model model, @PathVariable("id") Long id) {
         model.addAttribute("employee", employeeService.queryById(id));
-        model.addAttribute("states", employeeStateService.queryAll());
+        model.addAttribute("states", stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE));
+        model.addAttribute("genders", employeeService.queryAllGender());
         model.addAttribute("departments", departmentService.queryAll());
         model.addAttribute("roles", roleService.queryAll());
         return "/employee/form";
@@ -60,15 +65,20 @@ public class EmployeeController {
     @GetMapping("/new")
     public String newEmployee(Model model) {
         model.addAttribute("employee", new Employee());
-        model.addAttribute("states", employeeStateService.queryAll());
+        model.addAttribute("states", stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE));
+        model.addAttribute("genders", employeeService.queryAllGender());
         model.addAttribute("departments", departmentService.queryAll());
         model.addAttribute("roles", roleService.queryAll());
         return "/employee/form";
     }
 
     @PostMapping("/new")
-    public String modify(Employee employee) {
-        employeeService.saveOrUpdate(employee);
+    public String modify(Employee employee, Byte[] roleIds) {
+        System.out.println(employee);
+        for (Byte temp:roleIds) {
+            System.out.println(temp);
+        }
+        employeeService.saveOrUpdate(employee, roleIds);
         return "redirect:/employee/tables";
     }
 

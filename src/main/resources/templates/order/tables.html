@@ -25,14 +25,14 @@
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
     <!-- 内容区域 -->
     <script>
-        $("#employee_a").addClass("active");
+        $("#order_a").addClass("active");
     </script>
     <div class="tpl-content-wrapper">
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 员工管理 <small>Amaze UI</small></div>
-                    <p class="page-header-description">你可以在此处对员工进行管理。</p>
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 订单管理 <small>Amaze UI</small></div>
+                    <p class="page-header-description">你可以在此处对订单进行管理。</p>
                 </div>
             </div>
 
@@ -54,31 +54,31 @@
                                 <div class="am-form-group">
                                     <label class="am-u-sm-4 am-form-label">索引：</label>
                                     <div class="am-u-sm-8">
-                                        <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="姓名/电话/邮箱"/>
+                                        <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="备注"/>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="gender-select" class="am-u-sm-4 am-form-label">性别：</label>
+                                    <label for="customer-select" class="am-u-sm-4 am-form-label">客户：</label>
                                     <div class="am-u-sm-8">
-                                        <select id="gender-select" data-am-selected="{searchBox: 1}" name="gender.id" style="display: none;">
+                                        <select id="customer-select" data-am-selected="{searchBox: 1}" name="customerId" style="display: none;">
                                             <option value="-1">全部</option>
-                                            <option th:each="gender:${genders}" th:value="${gender.id}" th:text="${gender.name}"></option>
+                                            <option th:each="customer:${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="department-select" class="am-u-sm-4 am-form-label">部门：</label>
+                                    <label for="creator-select" class="am-u-sm-4 am-form-label">员工：</label>
                                     <div class="am-u-sm-8">
-                                        <select id="department-select" data-am-selected="{searchBox: 1}" name="department" style="display: none;">
+                                        <select id="creator-select" data-am-selected="{searchBox: 1}" name="creatorId" style="display: none;">
                                             <option value="-1">全部</option>
-                                            <option th:each="dept:${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                                            <option th:each="creator:${creators}" th:value="${creator.id}" th:text="${creator.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
                                     <label class="am-u-sm-4 am-form-label">状态：</label>
                                     <div class="am-u-sm-8">
-                                        <select name="employeeState" id="employeeState-select" data-am-selected="{searchBox: 1}" style="display: none;">
+                                        <select name="state" id="state-select" data-am-selected="{searchBox: 1}" style="display: none;">
                                             <option value="-1">全部</option>
                                             <option th:each="state:${states}" th:value="${state.id}" th:text="${state.name}"></option>
                                         </select>
@@ -90,7 +90,7 @@
                                         <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="clear">清空</button>
                                     </div>
                                     <!--  ajax脚本  -->
-                                    <script th:src="@{/assets/js/ajax/employee.ajax.js}" src="../../static/assets/js/ajax/employee.ajax.js"></script>
+                                    <script th:src="@{/assets/js/ajax/order.ajax.js}" src="../../static/assets/js/ajax/order.ajax.js"></script>
                                 </div>
 
                             </div>
@@ -102,7 +102,7 @@
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">员工列表</div>
+                            <div class="widget-title am-fl">订单列表</div>
                             <div class="widget-title am-fr" id="resultTotal">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
@@ -110,45 +110,40 @@
                                 <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>员工号</th>
-                                    <th>姓名</th>
-                                    <th>出生日期</th>
-                                    <th>性别</th>
-                                    <th>联系方式</th>
-                                    <th>电子邮箱</th>
-                                    <th>住址</th>
-                                    <th>管理员</th>
-                                    <th>所属部门</th>
-                                    <th>入职时间</th>
-                                    <th>当前状态</th>
+                                    <th>订单号</th>
+                                    <th>客户名称</th>
+                                    <th>费用</th>
+                                    <th>截止时间</th>
+                                    <th>创建时间</th>
+                                    <th>创建者</th>
+                                    <th>订单状态</th>
+                                    <th>处理时间</th>
+                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table_body">
-                                <tr th:each="employee,employeeStat:${pageResult.list}">
-                                    <td th:text="${employeeStat.count}"></td>
-                                    <td th:text="${employee.id}"></td>
-                                    <td th:text="${employee.name}"></td>
-                                    <td th:text="${employee.birthday}"></td>
+                                <tr th:each="order,orderStat:${pageResult.list}">
+                                    <td th:text="${orderStat.count}"></td>
+                                    <td th:text="${order.id}"></td>
+                                    <td th:text="${order.customer.name}"></td>
 
-                                    <td th:text="${employee.gender.name}"></td>
+                                    <td th:text="${order.price}"></td>
 
-                                    <td th:text="${employee.phone}"></td>
-                                    <td th:text="${employee.email}"></td>
-                                    <td th:text="${employee.address}"></td>
+                                    <td th:text="${order.ddl}"></td>
+                                    <td th:text="${order.createTime}"></td>
+                                    <td th:text="${order.creator.name}"></td>
 
-                                    <td th:if="${employee.admin} == true">是</td>
-                                    <td th:if="${employee.admin} == false">否</td>
+                                    <td th:text="${order.state.name}"></td>
 
-                                    <td th:text="${employee.department.name}"></td>
-                                    <td th:text="${employee.hireDate}"></td>
-                                    <td th:text="${employee.employeeState.name}"></td>
+                                    <td th:text="${order.processTime}"></td>
+                                    <td th:text="${order.comments}"></td>
                                     <td>
                                         <div class="tpl-table-black-operation">
-                                            <a th:href="@{|/employee/${employee.id}|}">
+                                            <a th:href="@{|/order/${order.id}|}">
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
-                                            <a th:href="@{|/employee/delete/${employee.id}|}" class="tpl-table-black-operation-del">
+                                            <a th:href="@{|/order/delete/${order.id}|}" class="tpl-table-black-operation-del">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </div>

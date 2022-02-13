@@ -26,10 +26,7 @@ $("#search").click(function(){
             td.innerText = resultKey.birthday;
             tr.append(td);
             td = document.createElement("td");
-            if (resultKey.gender == true)
-                td.innerText = "男";
-            else
-                td.innerText = "女";
+            td.innerText = resultKey.gender.name;
             tr.append(td);
             td = document.createElement("td");
             td.innerText = resultKey.phone;
@@ -56,10 +53,12 @@ $("#search").click(function(){
             td.innerText = resultKey.employeeState.name;
             tr.append(td);
             td = document.createElement("td");
-            td.append(createOperation(1));
+            td.append(createOperation("employee", resultKey.id));
             tr.append(td);
             table_body.append(tr);
             count++;
         }
+        $("#total-div").innerText = "共有" + result.total + "条记录";
+        updatePagination(result);
     })
 });

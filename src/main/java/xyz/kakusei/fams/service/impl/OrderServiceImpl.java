@@ -3,7 +3,11 @@ package xyz.kakusei.fams.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Order;
+import xyz.kakusei.fams.entity.OrderStateChange;
+import xyz.kakusei.fams.entity.State;
+import xyz.kakusei.fams.mapper.IStateMapper;
 import xyz.kakusei.fams.mapper.IOrderMapper;
+import xyz.kakusei.fams.query.OrderQueryObject;
 import xyz.kakusei.fams.service.IOrderService;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +20,9 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IOrderMapper orderMapper;
 
+    @Autowired
+    private IStateMapper stateMapper;
+
     @Override
     public List<Order> queryAll() {
         return orderMapper.queryAll();
@@ -24,6 +31,11 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public Order queryById(Long id) {
         return orderMapper.queryById(id);
+    }
+
+    @Override
+    public List<Order> queryByCriteria(OrderQueryObject orderQueryObject) {
+        return orderMapper.queryByCriteria(orderQueryObject);
     }
 
     @Override
@@ -46,5 +58,15 @@ public class OrderServiceImpl implements IOrderService {
     public void deleteById(Long id) {
         orderMapper.deleteById(id);
         orderMapper.deleteOrderStateChangeByOrderId(id);
+    }
+
+    @Override
+    public List<State> queryAllState() {
+        return stateMapper.queryAll(IStateMapper.ORDER_STATES_TABLE);
+    }
+
+    @Override
+    public List<OrderStateChange> queryOrderStateChangeByOrderId(Long id) {
+        return orderMapper.queryOrderStateChangeByOrderId(id);
     }
 }

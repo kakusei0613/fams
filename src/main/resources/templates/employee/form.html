@@ -24,6 +24,9 @@
         <div th:replace="common/skin-selecter :: skin-selecter"></div>
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <script>
+            $("#employee_a").addClass("active");
+        </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
 
@@ -75,16 +78,12 @@
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">性别 <span class="tpl-form-line-small-title">Gender</span></label>
                                         <div class="am-u-sm-9">
-                                            <select id="gender-select" name="gender" data-am-selected="{searchBox: 1}" style="display: none;">
-                                                <option value=""></option>
-                                                <option value="true">男</option>
-                                                <option value="false">女</option>
+                                            <select id="gender-select" name="gender.id" data-am-selected="{searchBox: 1}" style="display: none;">
+                                               <option value=""></option>
+                                               <option th:each="gender:${genders}" th:value="${gender.id}" th:text="${gender.name}"></option>
                                             </select>
                                             <script th:if="${employee.gender} != null">
-                                                if ([[${employee.gender}]] == true)
-                                                    $("#gender-select").val("true");
-                                                else
-                                                    $("#gender-select").val("false");
+                                                $("#gender-select").val([[${employee.gender.id}]]);
                                             </script>
                                         </div>
                                     </div>
@@ -104,16 +103,31 @@
                                     </div>
 
                                     <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">密码 <span class="tpl-form-line-small-title">Password</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="password" th:value="${employee.password}" placeholder="输入密码">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">住址 <span class="tpl-form-line-small-title">Address</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="address" th:value="${employee.address}" placeholder="输入住址">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">管理员 <span class="tpl-form-line-small-title">Administrator</span></label>
                                         <div class="am-u-sm-9">
                                             <div class="tpl-switch">
-                                                <input type="checkbox" name="admin" id="admin-checkbox" class="ios-switch bigswitch tpl-switch-btn">
+                                                <input type="hidden" name="admin" id="admin-hidden" value="false">
+                                                <input type="checkbox" id="admin-checkbox" class="ios-switch bigswitch tpl-switch-btn" th:value="false">
                                                 <div class="tpl-switch-btn-view">
                                                     <div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <script>
+                                            <script th:if="${employee.admin} != null">
                                                 if ([[${employee.admin}]] == true) {
                                                     $("#admin-checkbox").attr("checked", true);
                                                     $("#admin-checkbox").val(true);
@@ -122,12 +136,6 @@
                                                     $("#admin-checkbox").attr("checked", false);
                                                     $("#admin-checkbox").val(false);
                                                 }
-                                                $("#admin-checkbox").click(function () {
-                                                    // alert("You clicked me! before change value:" + $("#admin-checkbox").val());
-                                                    var value = $("#admin-checkbox").val();
-                                                    $("#admin-checkbox").val(value ? false: true);
-                                                    // alert("You clicked me! after change value:" + $("#admin-checkbox").val());
-                                                })
                                             </script>
                                         </div>
                                     </div>
@@ -168,18 +176,18 @@
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">Role</span></label>
                                         <div class="am-u-sm-2">
-                                            <select multiple style="height: 150px;" id="selfRoles" name="roleList">
-                                                <option th:each="role:${employee.roleList}" th:value="${role.id}" th:text="${role.name}"></option>
+                                            <select multiple style="height: 150px;" id="selfRoles" name="roleIds">
+                                                <option th:each="role:${employee.roleList}" th:value="${role?.id}" th:text="${role?.name}"></option>
                                             </select>
                                         </div>
                                         <div class="am-u-sm-1" style="text-align: center" >
-                                            <a class="am-btn" onclick="moveAll('selfRoles','allRoles')">>></a>
-                                            <br>
-                                            <a class="am-btn" onclick="moveSelected('selfRoles','allRoles')">></a>
+                                            <a class="am-btn" onclick="moveAll('allRoles','selfRoles')"><<</a>
                                             <br>
                                             <a class="am-btn" onclick="moveSelected('allRoles','selfRoles')"><</a>
                                             <br>
-                                            <a class="am-btn" onclick="moveAll('allRoles','selfRoles')"><<</a>
+                                            <a class="am-btn" onclick="moveSelected('selfRoles','allRoles')">></a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveAll('selfRoles','allRoles')">>></a>
                                         </div>
                                         <div class="am-u-sm-2">
                                             <select multiple style="height: 150px;" id="allRoles">
@@ -199,8 +207,8 @@
                                                 var ids = [];
                                                 $.each($("#selfRoles option"), function (index,option) {
                                                     ids.push(option.value);
+                                                    console.log("ids:"+ ids);
                                                 })
-                                                // console.log(ids);
                                             })
 
                                             $(function () {
@@ -217,8 +225,8 @@
                                                 })
                                                 $("#submitBtn").click(function () {
                                                     $("#selfRoles option").prop("selected", true);
-                                                    console.log($("#selfRoles option").prop("selected", true));
-                                                    // $("#editForm").submit();
+                                                    $("#admin-hidden").val($("#admin-checkbox").prop('checked'));
+                                                    $("#editForm").submit();
                                                 })
                                             })
 

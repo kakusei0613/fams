@@ -10,7 +10,7 @@ spring:
     username: root
     password: root
   thymeleaf:
-    mode: HTML5
+    mode: HTML
     encoding: UTF-8
     prefix: classpath:/templates/
     suffix: .html

@@ -38,7 +38,7 @@
     </delete>
 
     <select id="queryRoleByEmployeeId" parameterType="java.lang.Long" resultMap="roleMap">
-        SELECT r.id, r.name, r.comments FROM employee_role AS er LEFT JOIN roles AS r ON (er.emp_id = r.id) WHERE er.emp_id = #{id};
+        SELECT er.emp_id, er.role_id, r.id, r.name, r.comments FROM employee_role AS er LEFT JOIN roles AS r ON (er.role_id = r.id) WHERE er.emp_id = #{id} ;
     </select>
 
     <insert id="insertEmployeeRoleById">

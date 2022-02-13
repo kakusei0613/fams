@@ -9,7 +9,7 @@ public class Employee {
     private Long id;
     private String name;
     private String birthday;
-    private Boolean gender;
+    private Gender gender;
     private String phone;
     private String email;
     private String password;
