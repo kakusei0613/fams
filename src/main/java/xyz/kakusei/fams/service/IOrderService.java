@@ -11,7 +11,7 @@ public interface IOrderService {
     List<Order> queryAll();
     Order queryById(Long id);
     List<Order> queryByCriteria(OrderQueryObject orderQueryObject);
-    void saveOrUpdate(Order order, Long employeeId);
+    void saveOrUpdate(Order order, Long[] staffs, Long employeeId);
     void deleteById(Long id);
     List<State> queryAllState();
     List<OrderStateChange> queryOrderStateChangeByOrderId(Long id);

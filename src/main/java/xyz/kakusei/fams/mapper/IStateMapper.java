@@ -9,7 +9,6 @@ public interface IStateMapper {
     static final String EMPLOYEE_STATES_TABLE = "employee_states";
     static final String ORDER_STATES_TABLE = "order_states";
     static final String MATERIAL_APPLICATION_STATE_TABLE = "material_application_states";
-    static final String GENDER_TABLE = "genders";
     List<State> queryAll(@Param("tableName") String tableName);
     State queryById(@Param("tableName") String tableName, @Param("id") Byte id);
     void insert(@Param("tableName") String tableName, @Param("state") State state);

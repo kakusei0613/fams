@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.kakusei.fams.mapper.IOrderStateChangeMapper">
+    <resultMap id="orderStateChangeMap" type="xyz.kakusei.fams.entity.OrderStateChange">
+        <result property="orderId" column="order_id" />
+        <result property="state" column="state_name" />
+        <result property="occurrenceTime" column="occurrence_time" />
+        <result property="operator" column="operator_name" />
+    </resultMap>
+
+    <select id="queryOrderStateChangeByOrderId" parameterType="java.lang.Long" resultMap="orderStateChangeMap">
+        SELECT osc.order_id, os.name AS state_name, osc.occurrence_time, e.name AS operator_name
+        FROM order_state_change AS osc LEFT JOIN order_states AS os ON(osc.state_id = os.id)
+                                       LEFT JOIN employees AS e ON(osc.operator_id = e.id)
+        WHERE osc.order_id = #{orderId}
+        ORDER BY osc.occurrence_time DESC
+    </select>
+
+    <delete id="deleteOrderStateChangeByOrderId" parameterType="java.lang.Long">
+        DELETE FROM order_state_change WHERE order_id = #{id}
+    </delete>
+
+    <insert id="insertOrderStateChange">
+        INSERT INTO order_state_change(order_id, state_id, occurrence_time, operator_id) VALUES(#{orderId}, #{stateId}, #{occurrenceTime}, #{operatorId})
+    </insert>
+
+</mapper>

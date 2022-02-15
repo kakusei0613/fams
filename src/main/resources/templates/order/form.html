@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>员工编辑</title>
+    <title>订单编辑</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
         <script>
-            $("#employee_a").addClass("active");
+            $("#order_a").addClass("active");
         </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
@@ -42,6 +42,7 @@
 
             <div class="row-content am-cf">
 
+                <form action="/order/new" id="editForm" class="am-form tpl-form-line-form" method="post">
 
                 <div class="row">
 
@@ -52,11 +53,10 @@
                             </div>
                             <div class="widget-body am-fr">
 
-                                <form action="/employee/new" id="editForm" class="am-form tpl-form-line-form" method="post">
                                     <div class="am-form-group" th:if="${order.id} != null">
                                         <label class="am-u-sm-3 am-form-label">订单号 <span class="tpl-form-line-small-title">ID</span></label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" th:value="${order.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                            <input type="text" th:value="${order.id}" name="id" id="id" class="tpl-form-input tpl-form-no-bg" readonly="">
                                         </div>
                                     </div>
 
@@ -83,7 +83,7 @@
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">截止时间 <span class="tpl-form-line-small-title">DeadLine</span></label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" name="hireDate" th:value="${order.ddl}" class="am-form-field tpl-form-no-bg" placeholder="截止时间" data-am-datepicker="" readonly="">
+                                            <input type="text" name="ddl" th:value="${order.ddl}" class="am-form-field tpl-form-no-bg" placeholder="截止时间" data-am-datepicker="" readonly="">
                                         </div>
                                     </div>
 
@@ -127,20 +127,125 @@
                                             <input type="text" name="comments" th:value="${order.comments}">
                                         </div>
                                     </div>
-
-
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-3">
                                             <button id="submitBtn" type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">分配员工<small> Staff</small></div>
+                            </div>
+                            <div class="widget-body am-cf am-form am-form-inline tpl-form-line-form">
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12">
+                                            <select multiple style="height: 150px;width: 200px;" id="selfStaffs" name="staffIds" size="15">
+                                                <option th:each="staff:${order.staffs}" th:value="${staff?.id}" th:text="${staff?.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-md-2 am-u-lg-2 am-text-center">
+                                            <a class="am-btn" onclick="moveAll('allStaffs','selfStaffs')"><<</a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('allStaffs','selfStaffs')"><</a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('selfStaffs','allStaffs')">></a>
+                                            <br>
+                                            <a class="am-btn" onclick="clearAll('selfStaffs')">>></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12">
+                                            <select id="department-select" data-am-selected="{searchBox: 1}" style="display: none;">
+                                                <option value="-1">全部部门</option>
+                                                <option th:each="dept:${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                                            </select>
+                                            <br>
+                                            <select multiple style="height: 110px;width: 200px;" id="allStaffs">
+                                                <option th:each="staff:${staffs}" th:value="${staff.id}" th:text="${staff?.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                <script>
+                                    $("#department-select").change(function () {
+                                        $.post("/order/departmentEmployee", {
+                                            departmentId : $("#department-select").val()
+                                        }, function (result) {
+                                            var select = $("#allStaffs");
+                                            select.empty();
+                                            var option;
+                                            for (var temp of result) {
+                                                option = document.createElement("option");
+                                                option.value = temp.id;
+                                                option.text = temp.name;
+                                                select.append(option);
+                                            }
+                                            //排重
+                                            var ids = $.map($("#selfStaffs option"), function (item) {
+                                                return item.value;
+                                            })
+                                            $.each($("#allStaffs option"), function (index, item) {
+                                                if ($.inArray(item.value, ids) >= 0) {
+                                                    $(item).remove();
+                                                }
+                                            })
+                                        })
+                                    });
+                                    function moveSelected(src, desc) {
+                                        $("#" + src + " option:selected").appendTo($("#" + desc));
+                                    }
+                                    function moveAll(src,desc) {
+                                        $("#" + src + " option").appendTo($("#" + desc));
+                                    }
+                                    function clearAll(desc) {
+                                        $("#" + desc).empty();
+                                    }
+                                    $(function () {
+                                        //获取右边框中option的value,存到数组中
+                                        var ids = [];
+                                        $.each($("#selfStaffs option"), function (index,option) {
+                                            ids.push(option.value);
+                                        })
+                                    })
+
+                                    $(function () {
+                                        //排重
+                                        var ids = $.map($("#selfStaffs option"), function (item) {
+                                            return item.value;
+                                        })
+                                        //遍历左边框中的所有option,判断其value值是否在上面的数组中
+                                        //在,则删除
+                                        $.each($("#allStaffs option"), function (index, item) {
+                                            if ($.inArray(item.value, ids) >= 0) {
+                                                $(item).remove();
+                                            }
+                                        })
+                                        $("#submitBtn").click(function () {
+                                            $("#selfStaffs option").prop("selected", true);
+                                            $("#editForm").submit();
+                                        })
+                                    })
+
+
+                                </script>
+                   </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" th:if="${order.id != null}">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
@@ -168,15 +273,19 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <ul class="am-pagination am-pagination-centered" id="pagination"></ul>
+                                <form action="#" method="post">
+                                    <input type="hidden" name="pageNum" id="pageNum" th:value="${pageResult.pageNum}">
+                                    <input type="hidden" name="pages" id="pages" th:value="${pageResult.pages}">
+                                    <input type="hidden" name="orderId" th:value="${order.id}">
+                                </form>
+                                <script th:src="@{/assets/js/ajax/orderState.ajax.js}" ></script>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
-                <!-- 分页 -->
-                <div th:replace="common/pagination :: pagination"></div>
-
+                </form>
             </div>
         </div>
     </div>

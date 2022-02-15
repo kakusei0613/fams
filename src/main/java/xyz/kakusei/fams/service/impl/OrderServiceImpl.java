@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.entity.OrderStateChange;
 import xyz.kakusei.fams.entity.State;
+import xyz.kakusei.fams.mapper.IOrderEmployeeMapper;
+import xyz.kakusei.fams.mapper.IOrderStateChangeMapper;
 import xyz.kakusei.fams.mapper.IStateMapper;
 import xyz.kakusei.fams.mapper.IOrderMapper;
 import xyz.kakusei.fams.query.OrderQueryObject;
@@ -23,6 +25,18 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IStateMapper stateMapper;
 
+    @Autowired
+    private IOrderStateChangeMapper orderStateChangeMapper;
+
+    @Autowired
+    private IOrderEmployeeMapper orderEmployeeMapper;
+
+    private static SimpleDateFormat simpleDateFormat;
+
+    static {
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
     @Override
     public List<Order> queryAll() {
         return orderMapper.queryAll();
@@ -39,25 +53,34 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void saveOrUpdate(Order order, Long employeeId) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public void saveOrUpdate(Order order, Long[] staffs, Long employeeId) {
         Date date = new Date(System.currentTimeMillis());
         if (order.getId() == null) {
+            order.setCreateTime(simpleDateFormat.format(date));
+            order.setProcessTime(simpleDateFormat.format(date));
             orderMapper.insert(order);
 //            加入记录状态变化
-            orderMapper.insertOrderStateChange(order.getId(), new Byte("1"), simpleDateFormat.format(date), employeeId);
+            orderStateChangeMapper.insertOrderStateChange(order.getId(), order.getState().getId(), simpleDateFormat.format(date), employeeId);
         }
         else {
+            order.setProcessTime(simpleDateFormat.format(date));
             orderMapper.update(order);
 //            记录状态变化
-            orderMapper.insertOrderStateChange(order.getId(), order.getState().getId(), simpleDateFormat.format(date), employeeId);
+            orderStateChangeMapper.insertOrderStateChange(order.getId(), order.getState().getId(), simpleDateFormat.format(date), employeeId);
+            orderEmployeeMapper.deleteByOrderId(order.getId());
         }
+//        更新/插入 订单负责员工信息
+        for (Long staffId : staffs) {
+            orderEmployeeMapper.insert(order.getId(), staffId);
+        }
+        date = null;
     }
 
     @Override
     public void deleteById(Long id) {
         orderMapper.deleteById(id);
-        orderMapper.deleteOrderStateChangeByOrderId(id);
+        orderStateChangeMapper.deleteOrderStateChangeByOrderId(id);
+        orderEmployeeMapper.deleteByOrderId(id);
     }
 
     @Override
@@ -67,6 +90,6 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderStateChange> queryOrderStateChangeByOrderId(Long id) {
-        return orderMapper.queryOrderStateChangeByOrderId(id);
+        return orderStateChangeMapper.queryOrderStateChangeByOrderId(id);
     }
 }

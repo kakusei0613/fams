@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import xyz.kakusei.fams.entity.Employee;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.entity.OrderStateChange;
 import xyz.kakusei.fams.query.OrderQueryObject;
 import xyz.kakusei.fams.service.ICustomerService;
+import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -22,6 +26,8 @@ public class OrderController {
     private IEmployeeService employeeService;
     @Autowired
     private ICustomerService customerService;
+    @Autowired
+    private IDepartmentService departmentService;
 
 
     @GetMapping("/tables")
@@ -42,6 +48,20 @@ public class OrderController {
         return result;
     }
 
+    @PostMapping("/state")
+    @ResponseBody
+    public PageInfo<OrderStateChange> queryStateChange(Integer pageNum, Long orderId) {
+        PageHelper.startPage(pageNum, 5);
+        PageInfo<OrderStateChange> result = new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(orderId));
+        return result;
+    }
+
+    @PostMapping("/departmentEmployee")
+    @ResponseBody
+    public List<Employee> queryDepartmentEmployee(Byte departmentId) {
+        return employeeService.queryByDepartmentId(departmentId);
+    }
+
     @GetMapping("/{id}")
     public String order(Model model,@PathVariable("id") Long id) {
         model.addAttribute("order", orderService.queryById(id));
@@ -49,6 +69,8 @@ public class OrderController {
         model.addAttribute("states", orderService.queryAllState());
         PageHelper.startPage(1,5);
         model.addAttribute("pageResult", new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(id)));
+        model.addAttribute("staffs", employeeService.queryAll());
+        model.addAttribute("departments", departmentService.queryAll());
         return "/order/form";
     }
 
@@ -62,12 +84,13 @@ public class OrderController {
     public String newOrder(Model model) {
         model.addAttribute("order", new Order());
         model.addAttribute("states", orderService.queryAllState());
+        model.addAttribute("staffs", employeeService.queryAll());
         return "/order/form";
     }
 
     @PostMapping("/new")
-    public String saveOrUpdate(Order order) {
-        orderService.saveOrUpdate(order, Long.parseLong("1"));
+    public String saveOrUpdate(Order order, Long[] staffIds) {
+        orderService.saveOrUpdate(order, staffIds , Long.parseLong("1"));
         return "redirect:/order/tables";
     }
 }

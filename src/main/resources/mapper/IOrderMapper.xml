@@ -20,13 +20,7 @@
             <id property="id" column="id" />
             <result property="name" column="name" />
         </association>
-        <collection property="staffs" ofType="xyz.kakusei.fams.entity.Employee" select="xyz.kakusei.fams.mapper.IOrderMapper.queryEmployeeByOrderId" column="id" />
-    </resultMap>
-    <resultMap id="orderStateChangeMap" type="xyz.kakusei.fams.entity.OrderStateChange">
-        <result property="orderId" column="order_id" />
-        <result property="state" column="state_name" />
-        <result property="occurrenceTime" column="occurrence_time" />
-        <result property="operator" column="operator_name" />
+        <collection property="staffs" ofType="xyz.kakusei.fams.entity.Employee" select="xyz.kakusei.fams.mapper.IOrderEmployeeMapper.queryByOrderId" column="id" />
     </resultMap>
     <select id="queryAll" resultMap="orderMap">
         SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
@@ -86,28 +80,9 @@
             </if>
         </where>
     </select>
-    <select id="queryEmployeeByOrderId" parameterType="java.lang.Long" resultMap="xyz.kakusei.fams.mapper.IEmployeeMapper.EmployeeMap">
-        SELECT e.id, e.name, e.birthday, e.gender, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
-               d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
-               es.id AS es_id, es.name AS es_name
-        FROM order_employee AS oe
-            LEFT JOIN employees AS e ON(oe.emp_id = e.id)
-            LEFT JOIN departments AS d ON(e.dept_id = d.id)
-            LEFT JOIN employee_states AS es ON (e.state_id = es.id)
-        WHERE oe.order_id = #{id}
-    </select>
-    <select id="queryOrderStateChangeByOrderId" parameterType="java.lang.Long" resultMap="orderStateChangeMap">
-        SELECT osc.order_id, os.name AS state_name, osc.occurrence_time, e.name AS operator_name
-        FROM order_state_change AS osc LEFT JOIN order_states AS os ON(osc.state_id = os.id)
-                                       LEFT JOIN employees AS e ON(osc.operator_id = e.id)
-        WHERE osc.order_id = #{orderId}
-    </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO orders(cust_id, price, ddl, create_time, creator_id, state_id, process_time, comments)
+        INSERT INTO orders(cust_id, price, ddl, create_time, creator_id, state_id, comments)
             VALUES(#{customer.id}, #{price}, #{ddl}, #{createTime}, #{creator.id}, #{state.id}, #{processTime}, #{comments})
-    </insert>
-    <insert id="insertOrderStateChange">
-        INSERT INTO order_state_change(order_id, state_id, occurrence_time, operator_id) VALUES(#{orderId}, #{stateId}, #{occurrenceTime}, #{operatorId})
     </insert>
     <update id="update" parameterType="xyz.kakusei.fams.entity.Order">
         UPDATE orders SET   cust_id = #{customer.id}, price = #{price}, ddl = #{ddl}, comments = #{comments},
@@ -116,8 +91,5 @@
     </update>
     <delete id="deleteById" parameterType="java.lang.Long">
         DELETE FROM orders WHERE id = #{id}
-    </delete>
-    <delete id="deleteOrderStateChangeByOrderId" parameterType="java.lang.Long">
-        DELETE FROM order_state_change WHERE order_id = #{id}
     </delete>
 </mapper>

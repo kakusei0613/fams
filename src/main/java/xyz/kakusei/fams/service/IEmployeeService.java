@@ -16,4 +16,5 @@ public interface IEmployeeService {
     List<Employee> queryByCriteria(EmployeeQueryObject employeeQueryObject);
     List<Gender> queryAllGender();
     List<State> queryAllState();
+    List<Employee> queryByDepartmentId(Byte departmentId);
 }

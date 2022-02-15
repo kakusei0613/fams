@@ -46,7 +46,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public void saveOrUpdate(Employee employee, Byte[] roleIds) {
 //        对密码进行MD5加密
         employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes(StandardCharsets.UTF_8)));
-        System.out.println("加密后的密码：" + employee.getPassword());
         if (employee.getId() == null) {
             employeeMapper.insert(employee);
         }
@@ -78,5 +77,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public List<State> queryAllState() {
         return stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE);
+    }
+
+    @Override
+    public List<Employee> queryByDepartmentId(Byte departmentId) {
+        EmployeeQueryObject employeeQueryObject = new EmployeeQueryObject();
+        employeeQueryObject.setDepartment(departmentId);
+        return queryByCriteria(employeeQueryObject);
     }
 }

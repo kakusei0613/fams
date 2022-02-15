@@ -74,10 +74,6 @@ public class EmployeeController {
 
     @PostMapping("/new")
     public String modify(Employee employee, Byte[] roleIds) {
-        System.out.println(employee);
-        for (Byte temp:roleIds) {
-            System.out.println(temp);
-        }
         employeeService.saveOrUpdate(employee, roleIds);
         return "redirect:/employee/tables";
     }
