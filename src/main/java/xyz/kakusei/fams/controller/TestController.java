@@ -35,6 +35,7 @@ public class TestController {
     @Autowired
     IStateMapper stateMapper;
 
+
     @GetMapping("/emp")
     public String employee() {
         return "/employee/tables";
@@ -44,5 +45,11 @@ public class TestController {
     @ResponseBody
     public Employee empp(@PathVariable("id") Long id) {
         return employeeService.queryById(id);
+    }
+
+    @GetMapping("/s/{id}")
+    @ResponseBody
+    public Stock stock(@PathVariable("id") Long id) {
+        return stockService.queryById(id);
     }
 }

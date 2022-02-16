@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Warehouse {
-    private Integer id;
+    private Byte id;
     private String name;
     private String position;
     private String comments;

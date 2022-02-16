@@ -5,6 +5,7 @@
     <resultMap id="stockMap" type="xyz.kakusei.fams.entity.Stock">
         <id property="id" column="id" />
         <result property="quantity" column="quantity" />
+        <result property="area" column="area" />
         <association property="warehouse" javaType="xyz.kakusei.fams.entity.Warehouse" columnPrefix="w_">
             <id property="id" column="id" />
             <result property="name" column="name" />
@@ -22,7 +23,7 @@
         </association>
     </resultMap>
     <select id="queryAll" resultMap="stockMap">
-        SELECT s.id, m.id AS m_id, m.name AS m_name,
+        SELECT s.id, m.id AS m_id, m.name AS m_name, s.area,
                mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
                w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
                s.quantity
@@ -31,7 +32,7 @@
             LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
     </select>
     <select id="queryById" resultMap="stockMap" parameterType="Long">
-        SELECT s.id, m.id AS m_id, m.name AS m_name,
+        SELECT s.id, m.id AS m_id, m.name AS m_name, s.area,
                mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
                w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
                s.quantity
@@ -41,7 +42,7 @@
         WHERE s.id = #{id}
     </select>
     <select id="queryByCriteria" resultMap="stockMap" parameterType="xyz.kakusei.fams.query.StockQueryObject">
-        SELECT s.id, m.id AS m_id, m.name AS m_name,
+        SELECT s.id, m.id AS m_id, m.name AS m_name, s.area,
                mt.id AS m_mt_id, mt.name AS m_mt_name, m.parameter AS m_parameter,
                w.id AS w_id, w.name AS w_name, w.position AS w_position, w.comments AS w_comments,
                s.quantity
@@ -50,25 +51,27 @@
                          LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
         <where>
             1 = 1
-            <if test="typeId != null and typeId != -1">
+            <if test="typeId != null">
                 AND mt.id = #{typeId}
             </if>
-            <if test="warehouseId != null and warehouseId != -1">
+            <if test="warehouseId != null">
                 AND w.id = #{warehouseId}
             </if>
-            <if test="materialName != null and materialName != ''">
-                AND m.name LIKE CONCAT('%',#{materialName},'%')
-            </if>
-            <if test="parameter != null and parameter != ''">
-                AND m.parameter LIKE CONCAT('%',#{parameter},'%')
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                m.name LIKE CONCAT('%', #{keyword}, '%')
+                OR m.parameter LIKE CONCAT('%', #{keyword}, '%')
+                OR s.area LIKE CONCAT('%', #{keyword}, '%')
+                )
             </if>
         </where>
     </select>
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO stocks(mate_id, warehouse_id, quantity) VALUES(#{material.id}, #{warehouse.id}, #{quantity})
+        INSERT INTO stocks(mate_id, warehouse_id, area, quantity) VALUES(#{material.id}, #{warehouse.id}, #{area}, #{quantity})
     </insert>
     <update id="update">
-        UPDATE stocks SET mate_id = #{material.id}, warehouse_id = #{warehouse.id}, quantity = #{quantity} WHERE id = #{id}
+        UPDATE stocks SET mate_id = #{material.id}, warehouse_id = #{warehouse.id}, area = #{area}, quantity = #{quantity} WHERE id = #{id}
     </update>
     <delete id="deleteById" parameterType="Long">
         DELETE FROM stocks WHERE id = #{id}

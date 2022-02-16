@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class StockQueryObject extends BasicQueryObject {
     private Byte typeId;
-    private Integer warehouseId;
-    private String materialName;
-    private String parameter;
+    private Byte warehouseId;
+    private String keyword;
 }

@@ -12,10 +12,26 @@
         </association>
     </resultMap>
     <select id="queryAll" resultMap="materialMap">
-        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON (m.type_id = mt.id)
     </select>
     <select id="queryById" parameterType="Long" resultMap="materialMap">
-        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id WHERE m.id = #{id}
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON (m.type_id = mt.id) WHERE m.id = #{id}
+    </select>
+    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.MaterialQueryObject" resultMap="materialMap">
+        SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON (m.type_id = mt.id)
+        <where>
+            1 = 1
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                m.name LIKE CONCAT('%', #{keyword}, '%')
+                OR m.parameter LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="typeId != null and typeId > 0">
+                AND mt.id = #{typeId}
+            </if>
+        </where>
     </select>
     <select id="queryByTypeId" parameterType="Integer" resultMap="materialMap">
         SELECT m.id, m.name, mt.id AS mt_id, mt.name AS mt_name, m.parameter FROM materials AS m LEFT JOIN material_type AS mt ON m.type_id = mt.id WHERE mt_id = #{id}
