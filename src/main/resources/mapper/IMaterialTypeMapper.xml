@@ -3,18 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.kakusei.fams.mapper.IMaterialTypeMapper">
     <select id="queryAll" resultType="xyz.kakusei.fams.entity.MaterialType">
-        SELECT id, name FROM material_type;
+        SELECT id, name FROM material_type
     </select>
-    <select id="queryById" resultType="xyz.kakusei.fams.entity.MaterialType" parameterType="java.lang.Byte">
-        SELECT id, name FROM material_type WHERE id = #{id};
+    <select id="queryById" resultType="xyz.kakusei.fams.entity.MaterialType" parameterType="java.lang.Integer">
+        SELECT id, name FROM material_type WHERE id = #{id}
     </select>
     <update id="update" parameterType="xyz.kakusei.fams.entity.MaterialType">
-        UPDATE material_type SET name = #{name} WHERE id = #{id};
+        UPDATE material_type SET name = #{name} WHERE id = #{id}
     </update>
-    <delete id="deleteById" parameterType="java.lang.Byte">
-        DELETE FROM material_type WHERE id = #{id};
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM material_type WHERE id = #{id}
     </delete>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.MaterialType" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO material_type(name) VALUES(#{name});
+        INSERT INTO material_type(name) VALUES(#{name})
     </insert>
 </mapper>

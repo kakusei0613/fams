@@ -52,4 +52,9 @@ public class TestController {
     public Stock stock(@PathVariable("id") Long id) {
         return stockService.queryById(id);
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "/login";
+    }
 }

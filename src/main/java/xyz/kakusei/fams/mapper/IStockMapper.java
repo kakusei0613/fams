@@ -9,8 +9,8 @@ import java.util.List;
 public interface IStockMapper {
     List<Stock> queryAll();
     Stock queryById(@Param("id") Long id);
-    void insert(@Param("stock") Stock stock);
-    void update(@Param("stock") Stock stock);
+    void insert(Stock stock);
+    void update(Stock stock);
     void deleteById(@Param("id") Long id);
     List<Stock> queryByCriteria(StockQueryObject stockQueryObject);
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>部门管理</title>
+    <title>仓库管理</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +29,8 @@
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 部门管理 <small>Department</small></div>
-                    <p class="page-header-description">你可以在此处对部门进行管理。</p>
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 仓库管理 <small>Department</small></div>
+                    <p class="page-header-description">你可以在此处对仓库进行管理。</p>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                             <div class="am-form-group">
                                 <label class="am-u-sm-4 am-form-label">索引：</label>
                                 <div class="am-u-sm-8">
-                                    <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="部门名称"/>
+                                    <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="仓库名称/位置/备注"/>
                                 </div>
                             </div>
                             <div class="am-form-group">
@@ -60,7 +60,7 @@
                                     <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="search">搜索</button>
                                 </div>
                                 <!--  ajax脚本  -->
-                                <script th:src="@{/assets/js/ajax/department.ajax.js}" src="../../static/assets/js/ajax/department.ajax.js"></script>
+                                <script th:src="@{/assets/js/ajax/warehouse.ajax.js}" src="../../static/assets/js/ajax/warehouse.ajax.js"></script>
                             </div>
 
                         </div>
@@ -72,7 +72,7 @@
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">部门列表</div>
+                            <div class="widget-title am-fl">仓库列表</div>
                             <div class="widget-title am-fr">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
@@ -80,26 +80,26 @@
                                 <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>部门编号</th>
-                                    <th>部门名称</th>
-                                    <th>联系方式</th>
+                                    <th>仓库编号</th>
+                                    <th>仓库名称</th>
+                                    <th>位置</th>
                                     <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table_body">
-                                <tr th:each="dept,deptStat:${pageResult.list}">
-                                    <td th:text="${deptStat.count}"></td>
-                                    <td th:text="${dept.id}"></td>
-                                    <td th:text="${dept.name}"></td>
-                                    <td th:text="${dept.contact}"></td>
-                                    <td th:text="${dept.comments}">男</td>
+                                <tr th:each="warehouse,warehouseStat:${pageResult.list}">
+                                    <td th:text="${warehouseStat.count}"></td>
+                                    <td th:text="${warehouse.id}"></td>
+                                    <td th:text="${warehouse.name}"></td>
+                                    <td th:text="${warehouse.position}"></td>
+                                    <td th:text="${warehouse.comments}"></td>
                                     <td>
                                         <div class="tpl-table-black-operation">
-                                            <a th:href="@{|/department/${dept.id}|}">
+                                            <a th:href="@{|/warehouse/${warehouse.id}|}">
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
-                                            <a th:href="@{|/department/delete/${dept.id}|}" class="tpl-table-black-operation-del">
+                                            <a th:href="@{|/warehouse/delete/${warehouse.id}|}" class="tpl-table-black-operation-del">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </div>

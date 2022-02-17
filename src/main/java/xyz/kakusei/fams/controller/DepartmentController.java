@@ -20,7 +20,8 @@ public class DepartmentController {
 
     @GetMapping("/tables")
     public String tables(Model model) {
-        model.addAttribute("departments", departmentService.queryAll());
+        PageHelper.startPage(1, 15);
+        model.addAttribute("pageResult", new PageInfo<Department>(departmentService.queryAll()));
         return "/department/tables";
     }
     @GetMapping("/{id}")
@@ -48,6 +49,6 @@ public class DepartmentController {
     @PostMapping("/new")
     public String modify(Department department) {
         departmentService.saveOrUpdate(department);
-        return "/department/tables";
+        return "redirect:/department/tables";
     }
 }

@@ -3,21 +3,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.kakusei.fams.mapper.IDepartmentMapper">
     <select id="queryAll" resultType="xyz.kakusei.fams.entity.Department">
-        SELECT id, name, contact, comments FROM departments;
+        SELECT id, name, contact, comments FROM departments
     </select>
     <select id="queryById" resultType="xyz.kakusei.fams.entity.Department" parameterType="java.lang.Byte">
-        SELECT id, name, contact, comments FROM departments WHERE id = #{id};
+        SELECT id, name, contact, comments FROM departments WHERE id = #{id}
     </select>
     <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.DepartmentQueryObject" resultType="xyz.kakusei.fams.entity.Department">
-        SELECT id, name, contact, comments FROM departments WHERE name LIKE CONCAT('%',#{keyword},'%');
+        SELECT id, name, contact, comments FROM departments
+        <where>
+            1 = 1
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                name LIKE CONCAT('%',#{keyword},'%')
+                OR comments LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
     </select>
     <update id="update" parameterType="xyz.kakusei.fams.entity.Department">
-        UPDATE departments SET name = #{name}, contact = #{contact}, comments = #{comments} WHERE id = #{id};
+        UPDATE departments SET name = #{name}, contact = #{contact}, comments = #{comments} WHERE id = #{id}
     </update>
     <delete id="deleteById" parameterType="java.lang.Byte">
-        DELETE FROM departments WHERE id = #{id};
+        DELETE FROM departments WHERE id = #{id}
     </delete>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Department" keyProperty="id" keyColumn="id">
-        INSERT INTO departments(name, contact, comments) VALUES(#{name}, #{contact}, #{comments});
+        INSERT INTO departments(name, contact, comments) VALUES(#{name}, #{contact}, #{comments})
     </insert>
 </mapper>

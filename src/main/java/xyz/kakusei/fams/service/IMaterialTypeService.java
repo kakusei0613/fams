@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IMaterialTypeService {
     List<MaterialType> queryAll();
-    MaterialType queryById(Byte id);
+    MaterialType queryById(Integer id);
     void saveOrUpdate(MaterialType materialType);
-    void deleteById(Byte id);
+    void deleteById(Integer id);
 }

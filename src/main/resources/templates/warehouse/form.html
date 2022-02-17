@@ -24,17 +24,14 @@
         <div th:replace="common/skin-selecter :: skin-selecter"></div>
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
-        <script>
-            $("#material_a").addClass("active");
-        </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
 
             <div class="container-fluid am-cf">
                 <div class="row">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑物料 <small>Amaze UI</small></div>
-                        <p class="page-header-description">您可以在此编辑物料信息。</p>
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑仓库 <small>Amaze UI</small></div>
+                        <p class="page-header-description">您可以在此编辑仓库信息。</p>
                     </div>
                 </div>
 
@@ -48,42 +45,37 @@
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">物料信息</div>
+                                <div class="widget-title am-fl">仓库信息</div>
                             </div>
                             <div class="widget-body am-fr">
 
-                                <form action="/material/new" id="editForm" class="am-form tpl-form-line-form" method="post">
-                                    <div class="am-form-group" th:if="${material.id} != null">
-                                        <label class="am-u-sm-3 am-form-label">物料编号</label>
+                                <form action="/warehouse/new" id="editForm" class="am-form tpl-form-line-form" method="post">
+                                    <div class="am-form-group" th:if="${warehouse.id} != null">
+                                        <label class="am-u-sm-3 am-form-label">部门编号 </label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" th:value="${material.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                            <input type="text" th:value="${warehouse.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">物料名称</label>
+                                        <label class="am-u-sm-3 am-form-label">部门名称 </label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" th:value="${material.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入物料名称">
-                                            <small>物料名称为必填</small>
+                                            <input type="text" th:value="${warehouse.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入仓库名称">
+                                            <small>部门名称为必填</small>
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">物料类型</label>
+                                        <label class="am-u-sm-3 am-form-label">位置 </label>
                                         <div class="am-u-sm-9">
-                                            <select name="type.id" id="type-select" data-am-selected="{searchBox: 1}" style="display: none;">
-                                                <option th:each="type:${types}" th:value="${type.id}" th:text="${type.name}"></option>
-                                            </select>
-                                            <script th:if="${material.type} != null">
-                                                $("#type-select").val([[${material.type.id}]]);
-                                            </script>
+                                            <input type="text" th:value="${warehouse.position}" name="position" class="am-form-field tpl-form-no-bg" placeholder="位置">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">参数</label>
+                                        <label class="am-u-sm-3 am-form-label">备注 <span class="tpl-form-line-small-title">Comments</span></label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" name="parameter" th:value="${material.parameter}" placeholder="输入参数">
+                                            <input type="text" name="comments" th:value="${warehouse.comments}" placeholder="输入备注">
                                         </div>
                                     </div>
 

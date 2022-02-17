@@ -3,11 +3,9 @@ $("#search").click(function(){
     var queryObject = {
         pageNum:$("#pageNum").val(),
         pageSize:$("#pageSize").val(),
-        keyword:$("#keyword").val(),
-        typeId:$("#type-select").val(),
-        warehouseId:$("#warehouse-select").val()
+        keyword:$("#keyword").val()
     };
-    $.post("/stock/query", queryObject, function (result) {
+    $.post("/warehouse/query", queryObject, function (result) {
         var table_body = $("#table_body");
         var count = 1;
         for (var resultKey of result.list) {
@@ -19,26 +17,17 @@ $("#search").click(function(){
             td.innerText = resultKey.id;
             tr.append(td);
             td = document.createElement("td");
-            td.innerText = resultKey.material.name;
+            td.innerText = resultKey.name;
             tr.append(td);
             td = document.createElement("td");
-            td.innerText = resultKey.material.type.name;
+            td.innerText = resultKey.position;
             tr.append(td);
             td = document.createElement("td");
-            td.innerText = resultKey.material.parameter;
-            tr.append(td);
-            td = document.createElement("td");
-            td.innerText = resultKey.warehouse.name;
-            tr.append(td);
-            td = document.createElement("td");
-            td.innerText = resultKey.area;
-            tr.append(td);
-            td = document.createElement("td");
-            td.innerText = resultKey.quantity;
+            td.innerText = resultKey.comments;
             tr.append(td);
 
             td = document.createElement("td");
-            td.append(createOperation("stock", resultKey.id));
+            td.append(createOperation("warehouse", resultKey.id));
             tr.append(td);
             table_body.append(tr);
             count++;

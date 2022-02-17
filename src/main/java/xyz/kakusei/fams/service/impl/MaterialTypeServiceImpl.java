@@ -20,7 +20,7 @@ public class MaterialTypeServiceImpl implements IMaterialTypeService {
     }
 
     @Override
-    public MaterialType queryById(Byte id) {
+    public MaterialType queryById(Integer id) {
         return materialTypeMapper.queryById(id);
     }
 
@@ -35,7 +35,7 @@ public class MaterialTypeServiceImpl implements IMaterialTypeService {
     }
 
     @Override
-    public void deleteById(Byte id) {
+    public void deleteById(Integer id) {
         materialTypeMapper.deleteById(id);
     }
 }

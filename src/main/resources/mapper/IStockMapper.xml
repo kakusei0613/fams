@@ -51,10 +51,10 @@
                          LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
         <where>
             1 = 1
-            <if test="typeId != null">
+            <if test="typeId != null and typeId > 0">
                 AND mt.id = #{typeId}
             </if>
-            <if test="warehouseId != null">
+            <if test="warehouseId != null and warehouseId > 0">
                 AND w.id = #{warehouseId}
             </if>
             <if test="keyword != null and keyword != ''">
@@ -67,13 +67,13 @@
             </if>
         </where>
     </select>
-    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="xyz.kakusei.fams.entity.Stock">
         INSERT INTO stocks(mate_id, warehouse_id, area, quantity) VALUES(#{material.id}, #{warehouse.id}, #{area}, #{quantity})
     </insert>
-    <update id="update">
+    <update id="update" parameterType="xyz.kakusei.fams.entity.Stock">
         UPDATE stocks SET mate_id = #{material.id}, warehouse_id = #{warehouse.id}, area = #{area}, quantity = #{quantity} WHERE id = #{id}
     </update>
-    <delete id="deleteById" parameterType="Long">
+    <delete id="deleteById" parameterType="java.lang.Long">
         DELETE FROM stocks WHERE id = #{id}
     </delete>
 </mapper>
