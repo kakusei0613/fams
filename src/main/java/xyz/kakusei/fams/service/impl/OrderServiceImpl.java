@@ -2,6 +2,7 @@ package xyz.kakusei.fams.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xyz.kakusei.fams.entity.MaterialApplication;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.entity.OrderStateChange;
 import xyz.kakusei.fams.entity.State;
@@ -9,7 +10,9 @@ import xyz.kakusei.fams.mapper.IOrderEmployeeMapper;
 import xyz.kakusei.fams.mapper.IOrderStateChangeMapper;
 import xyz.kakusei.fams.mapper.IStateMapper;
 import xyz.kakusei.fams.mapper.IOrderMapper;
+import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.query.OrderQueryObject;
+import xyz.kakusei.fams.service.IMaterialApplicationService;
 import xyz.kakusei.fams.service.IOrderService;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +33,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private IOrderEmployeeMapper orderEmployeeMapper;
+
+    @Autowired
+    private IMaterialApplicationService materialApplicationService;
 
     private static SimpleDateFormat simpleDateFormat;
 
@@ -91,5 +97,12 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public List<OrderStateChange> queryOrderStateChangeByOrderId(Long id) {
         return orderStateChangeMapper.queryOrderStateChangeByOrderId(id);
+    }
+
+    @Override
+    public List<MaterialApplication> queryMaterialUsedByOrderId(Long id) {
+        MaterialApplicationQueryObject queryObject = new MaterialApplicationQueryObject();
+        queryObject.setOrderId(id);
+        return materialApplicationService.queryByCriteria(queryObject);
     }
 }

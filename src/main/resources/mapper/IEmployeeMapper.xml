@@ -73,6 +73,16 @@
             </if>
         </where>
     </select>
+    <select id="queryByUsernameAndPassword" resultMap="EmployeeMap">
+        SELECT e.id, e.name, e.birthday, g.id AS g_id, g.name AS g_name, e.phone, e.email, e.password, e.address, e.admin, e.hiredate,
+               d.id AS d_id, d.name AS d_name, d.contact AS d_contact, d.comments AS d_comments,
+               es.id AS es_id, es.name AS es_name
+        FROM employees AS e LEFT JOIN departments AS d ON(e.dept_id = d.id)
+                            LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+                            LEFT JOIN gender AS g ON(e.gender = g.id)
+        WHERE
+              ( e.id = #{username} OR e.name = #{username} OR e.phone = #{username} OR e.email = #{username} ) AND password = #{password}
+    </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO employees(name, birthday, gender, phone, email, password, address, admin, hiredate, dept_id, state_id)
             VALUES(#{name}, #{birthday}, #{gender.id}, #{phone}, #{email}, #{password}, #{address}, #{admin}, #{hireDate}, #{department.id}, #{employeeState.id})

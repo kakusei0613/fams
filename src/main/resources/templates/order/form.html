@@ -286,6 +286,60 @@
                     </div>
                 </div>
                 </form>
+                <div class="row" th:if="${order.id} != null">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">订单使用物料</div>
+                            </div>
+                            <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                                <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>申请编号</th>
+                                        <th>申请人</th>
+                                        <th>库存编号</th>
+                                        <th>物料名称</th>
+                                        <th>物料类型</th>
+                                        <th>存放仓库</th>
+                                        <th>存放位置</th>
+                                        <th>数量</th>
+                                        <th>申请时间</th>
+                                        <th>审批人</th>
+                                        <th>操作时间</th>
+                                        <th>备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="ous_table_body">
+                                    <tr th:each="ous,ousStat:${orderUsedStockPageResult.list}">
+                                        <td th:text="${ousStat.count}"></td>
+                                        <td th:text="${ous.id}"></td>
+                                        <td th:text="${ous.employee.name}"></td>
+                                        <td th:text="${ous.stock.id}"></td>
+                                        <td th:text="${ous.stock.material.name}"></td>
+                                        <td th:text="${ous.stock.material.type.name}"></td>
+                                        <td th:text="${ous.stock.warehouse.name}"></td>
+                                        <td th:text="${ous.stock.area}"></td>
+                                        <td th:text="${ous.quantity}"></td>
+                                        <td th:text="${ous.applicationTime}"></td>
+                                        <td th:text="${ous.operator.name}"></td>
+                                        <td th:text="${ous.operationTime}"></td>
+                                        <td th:text="${ous.comments}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <ul class="am-pagination am-pagination-centered" id="ous_pagination"></ul>
+                                <form action="#" method="post">
+                                    <input type="hidden" name="ous_pageNum" id="ous_pageNum" th:value="${orderUsedStockPageResult.pageNum}">
+                                    <input type="hidden" name="ous_pages" id="ous_pages" th:value="${orderUsedStockPageResult.pages}">
+                                </form>
+                                <script th:src="@{/assets/js/ajax/order.used.stock.ajax.js}"></script>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

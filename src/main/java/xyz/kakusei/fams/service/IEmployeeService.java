@@ -17,4 +17,5 @@ public interface IEmployeeService {
     List<Gender> queryAllGender();
     List<State> queryAllState();
     List<Employee> queryByDepartmentId(Byte departmentId);
+    void login(String username, String password);
 }

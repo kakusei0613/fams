@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin index Examples</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+
+</head>
+
+<body data-type="widgets">
+    <script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <div th:replace="common/topbar :: topbar"></div>
+        <!-- 风格切换 -->
+        <div th:replace="common/skin-selecter :: skin-selecter"></div>
+        <!-- 侧边导航栏 -->
+        <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <script>
+            $("#material_a").addClass("active");
+        </script>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑物料 <small>Amaze UI</small></div>
+                        <p class="page-header-description">您可以在此编辑物料信息。</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">物料信息</div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form action="/material/new" id="editForm" class="am-form tpl-form-line-form" method="post">
+                                    <div class="am-form-group" th:if="${material.id} != null">
+                                        <label class="am-u-sm-3 am-form-label">物料编号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${material.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">物料名称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${material.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入物料名称">
+                                            <small>物料名称为必填</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">物料类型</label>
+                                        <div class="am-u-sm-9">
+                                            <select name="type.id" id="type-select" data-am-selected="{searchBox: 1}" style="display: none;">
+                                                <option th:each="type:${types}" th:value="${type.id}" th:text="${type.name}"></option>
+                                            </select>
+                                            <script th:if="${material.type} != null">
+                                                $("#type-select").val([[${material.type.id}]]);
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">参数</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="parameter" th:value="${material.parameter}" placeholder="输入参数">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button id="submitBtn" type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="common/footer :: footer_script"></div>
+
+</body>
+
+</html>

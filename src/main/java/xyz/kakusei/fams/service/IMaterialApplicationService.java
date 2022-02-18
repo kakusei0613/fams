@@ -1,15 +1,14 @@
-package xyz.kakusei.fams.mapper;
+package xyz.kakusei.fams.service;
 
 import xyz.kakusei.fams.entity.MaterialApplication;
 import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 
 import java.util.List;
 
-public interface IMaterialApplicationMapper {
+public interface IMaterialApplicationService {
     List<MaterialApplication> queryAll();
     MaterialApplication queryById(Long id);
     List<MaterialApplication> queryByCriteria(MaterialApplicationQueryObject materialApplicationQueryObject);
-    void insert(MaterialApplication materialApplication);
-    void update(MaterialApplication materialApplication);
     void deleteById(Long id);
+    void saveOrUpdate(MaterialApplication materialApplication);
 }

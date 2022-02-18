@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Employee;
+import xyz.kakusei.fams.entity.MaterialApplication;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.entity.OrderStateChange;
 import xyz.kakusei.fams.query.OrderQueryObject;
@@ -62,6 +63,14 @@ public class OrderController {
         return employeeService.queryByDepartmentId(departmentId);
     }
 
+    @PostMapping("/used")
+    @ResponseBody
+    public PageInfo<MaterialApplication> queryOrderUsedStock(Integer pageNum, Long orderId) {
+        PageHelper.startPage(pageNum, 5);
+        PageInfo<MaterialApplication> result = new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(orderId));
+        return result;
+    }
+
     @GetMapping("/{id}")
     public String order(Model model,@PathVariable("id") Long id) {
         model.addAttribute("order", orderService.queryById(id));
@@ -71,6 +80,8 @@ public class OrderController {
         model.addAttribute("pageResult", new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(id)));
         model.addAttribute("staffs", employeeService.queryAll());
         model.addAttribute("departments", departmentService.queryAll());
+        PageHelper.startPage(1,5);
+        model.addAttribute("orderUsedStockPageResult", new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(id)));
         return "/order/form";
     }
 

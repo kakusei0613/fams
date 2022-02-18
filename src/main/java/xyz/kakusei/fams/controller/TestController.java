@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.*;
 import xyz.kakusei.fams.mapper.*;
+import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
 import xyz.kakusei.fams.service.IStockService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -53,8 +55,11 @@ public class TestController {
         return stockService.queryById(id);
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "/login";
+    @GetMapping("/use")
+    @ResponseBody
+    public List<MaterialApplication> qqqq() {
+        MaterialApplicationQueryObject m = new MaterialApplicationQueryObject();
+        m.setOrderId(Long.parseLong("1"));
+        return materialApplicationMapper.queryByCriteria(m);
     }
 }

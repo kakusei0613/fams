@@ -14,4 +14,5 @@ public interface IEmployeeMapper {
     void update(Employee employee);
     void deleteById(@Param("id") Long id);
     List<Employee> queryByCriteria(EmployeeQueryObject employeeQueryObject);
+    Employee queryByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }

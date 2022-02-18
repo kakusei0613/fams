@@ -1,5 +1,6 @@
 package xyz.kakusei.fams.service;
 
+import xyz.kakusei.fams.entity.MaterialApplication;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.entity.OrderStateChange;
 import xyz.kakusei.fams.entity.State;
@@ -15,4 +16,5 @@ public interface IOrderService {
     void deleteById(Long id);
     List<State> queryAllState();
     List<OrderStateChange> queryOrderStateChangeByOrderId(Long id);
+    List<MaterialApplication> queryMaterialUsedByOrderId(Long id);
 }

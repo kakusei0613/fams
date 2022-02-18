@@ -3,6 +3,8 @@ package xyz.kakusei.fams.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import xyz.kakusei.fams.entity.Employee;
 import xyz.kakusei.fams.entity.Gender;
 import xyz.kakusei.fams.entity.Role;
@@ -13,7 +15,9 @@ import xyz.kakusei.fams.mapper.IEmployeeMapper;
 import xyz.kakusei.fams.mapper.IRoleMapper;
 import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
+import xyz.kakusei.fams.util.LoginException;
 
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -84,5 +88,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
         EmployeeQueryObject employeeQueryObject = new EmployeeQueryObject();
         employeeQueryObject.setDepartment(departmentId);
         return queryByCriteria(employeeQueryObject);
+    }
+
+    @Override
+    public void login(String username, String password) {
+        password = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
+        Employee user = employeeMapper.queryByUsernameAndPassword(username, password);
+        if (user == null) {
+            throw new LoginException("Username or password was wrong.");
+        }
+        else {
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpSession session = servletRequestAttributes.getRequest().getSession();
+            session.setAttribute("USER_IN_SESSION", user);
+        }
     }
 }
