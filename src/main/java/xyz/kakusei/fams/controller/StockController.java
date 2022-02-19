@@ -12,6 +12,7 @@ import xyz.kakusei.fams.service.IMaterialService;
 import xyz.kakusei.fams.service.IMaterialTypeService;
 import xyz.kakusei.fams.service.IStockService;
 import xyz.kakusei.fams.service.IWarehouseService;
+import xyz.kakusei.fams.util.RequiredPermission;
 
 @Controller
 @RequestMapping("/stock")
@@ -29,6 +30,7 @@ public class StockController {
     @Autowired
     private IMaterialTypeService materialTypeService;
 
+    @RequiredPermission({"Query Stock","stock:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
         PageHelper.startPage(1,15);
@@ -37,7 +39,7 @@ public class StockController {
         model.addAttribute("warehouses", warehouseService.queryAll());
         return "/stock/tables";
     }
-
+    @RequiredPermission({"Query Stock","stock:query"})
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Stock> query(StockQueryObject stockQueryObject) {
@@ -45,7 +47,7 @@ public class StockController {
         PageInfo<Stock> result = new PageInfo<Stock>(stockService.queryByCriteria(stockQueryObject));
         return result;
     }
-
+    @RequiredPermission({"Stock Detail","stock:detail"})
     @GetMapping("/{id}")
     public String stock(Model model, @PathVariable("id") Long id) {
         model.addAttribute("stock", stockService.queryById(id));
@@ -53,16 +55,19 @@ public class StockController {
         model.addAttribute("warehouses", warehouseService.queryAll());
         return "/stock/form";
     }
+    @RequiredPermission({"Delete Stock","stock:delete"})
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         stockService.deleteById(id);
         return "redirect:/stock/tables";
     }
+    @RequiredPermission({"Modify Stock","stock:modify"})
     @GetMapping("/new")
     public String newStock(Model model) {
         model.addAttribute("stock", new Stock());
         return "redirect:/stock/form";
     }
+    @RequiredPermission({"Modify Stock","stock:modify"})
     @PostMapping("/new")
     public String modify(Stock stock) {
         System.out.println(stock);

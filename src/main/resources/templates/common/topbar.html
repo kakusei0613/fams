@@ -26,7 +26,7 @@
                 <ul>
                     <!-- 欢迎语 -->
                     <li class="am-text-sm tpl-header-navbar-welcome">
-                        <a th:href="@{/assets/css/}" href="javascript:;">欢迎你, <span>Amaze UI</span> </a>
+                        <a th:href="@{/assets/css/}" href="javascript:;">欢迎你, <span th:text="${session.USER_IN_SESSION.name}"></span> </a>
                     </li>
 
                     <!-- 退出 -->

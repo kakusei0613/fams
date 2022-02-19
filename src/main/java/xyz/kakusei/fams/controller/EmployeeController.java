@@ -13,6 +13,7 @@ import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IRoleService;
+import xyz.kakusei.fams.util.RequiredPermission;
 
 @Controller
 @RequestMapping("/employee")
@@ -28,6 +29,7 @@ public class EmployeeController {
     @Autowired
     private IGenderMapper genderMapper;
 
+    @RequiredPermission({"Query Employee","employee:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
         PageHelper.startPage(1,15);
@@ -37,7 +39,7 @@ public class EmployeeController {
         model.addAttribute("genders", genderMapper.queryAll());
         return "/employee/tables";
     }
-
+    @RequiredPermission({"Query Employee","employee:query"})
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Employee> query(EmployeeQueryObject employeeQueryObject) {
@@ -45,7 +47,7 @@ public class EmployeeController {
         PageInfo<Employee> result = new PageInfo<Employee>(employeeService.queryByCriteria(employeeQueryObject));
         return result;
     }
-
+    @RequiredPermission({"Employee Detail","employee:detail"})
     @GetMapping("/{id}")
     public String employee(Model model, @PathVariable("id") Long id) {
         model.addAttribute("employee", employeeService.queryById(id));
@@ -55,13 +57,14 @@ public class EmployeeController {
         model.addAttribute("roles", roleService.queryAll());
         return "/employee/form";
     }
-
+    @RequiredPermission({"Delete Employee","employee:delete"})
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         employeeService.deleteByEmployeeId(id);
         return "redirect:/employee/tables";
     }
 
+    @RequiredPermission({"Modify Employee","employee:modify"})
     @GetMapping("/new")
     public String newEmployee(Model model) {
         model.addAttribute("employee", new Employee());
@@ -72,6 +75,7 @@ public class EmployeeController {
         return "/employee/form";
     }
 
+    @RequiredPermission({"Modify Employee","employee:modify"})
     @PostMapping("/new")
     public String modify(Employee employee, Byte[] roleIds) {
         employeeService.saveOrUpdate(employee, roleIds);

@@ -8,7 +8,7 @@ import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.util.LoginException;
 
 @Controller
-public class LoginController {
+public class CommonController {
 
     @Autowired
     private IEmployeeService employeeService;
@@ -28,5 +28,9 @@ public class LoginController {
             return "redirect:/login";
         }
 
+    }
+    @GetMapping("/needPermission")
+    public String noPermission() {
+        return "/error/needPermission";
     }
 }

@@ -15,6 +15,7 @@ import xyz.kakusei.fams.service.ICustomerService;
 import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
+import xyz.kakusei.fams.util.RequiredPermission;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class OrderController {
     @Autowired
     private IDepartmentService departmentService;
 
-
+    @RequiredPermission({"Query Order","order:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
         PageHelper.startPage(1,15);
@@ -40,7 +41,7 @@ public class OrderController {
         model.addAttribute("customers", customerService.queryAll());
         return "/order/tables";
     }
-
+    @RequiredPermission({"Query Order","order:query"})
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Order> query(OrderQueryObject orderQueryObject) {
@@ -48,7 +49,7 @@ public class OrderController {
         PageInfo<Order> result = new PageInfo<Order>(orderService.queryByCriteria(orderQueryObject));
         return result;
     }
-
+    @RequiredPermission({"Order Detail","order:detail"})
     @PostMapping("/state")
     @ResponseBody
     public PageInfo<OrderStateChange> queryStateChange(Integer pageNum, Long orderId) {
@@ -56,13 +57,13 @@ public class OrderController {
         PageInfo<OrderStateChange> result = new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(orderId));
         return result;
     }
-
+    @RequiredPermission({"Order Detail","order:detail"})
     @PostMapping("/departmentEmployee")
     @ResponseBody
     public List<Employee> queryDepartmentEmployee(Byte departmentId) {
         return employeeService.queryByDepartmentId(departmentId);
     }
-
+    @RequiredPermission({"Order Detail","order:detail"})
     @PostMapping("/used")
     @ResponseBody
     public PageInfo<MaterialApplication> queryOrderUsedStock(Integer pageNum, Long orderId) {
@@ -70,7 +71,7 @@ public class OrderController {
         PageInfo<MaterialApplication> result = new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(orderId));
         return result;
     }
-
+    @RequiredPermission({"Order Detail","order:detail"})
     @GetMapping("/{id}")
     public String order(Model model,@PathVariable("id") Long id) {
         model.addAttribute("order", orderService.queryById(id));
@@ -84,13 +85,13 @@ public class OrderController {
         model.addAttribute("orderUsedStockPageResult", new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(id)));
         return "/order/form";
     }
-
+    @RequiredPermission({"Delete Order","order:delete"})
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         orderService.deleteById(id);
         return "redirect:/order/tables";
     }
-
+    @RequiredPermission({"Modify Order","order:modify"})
     @GetMapping("/new")
     public String newOrder(Model model) {
         model.addAttribute("order", new Order());
@@ -98,7 +99,7 @@ public class OrderController {
         model.addAttribute("staffs", employeeService.queryAll());
         return "/order/form";
     }
-
+    @RequiredPermission({"Modify Order","order:modify"})
     @PostMapping("/new")
     public String saveOrUpdate(Order order, Long[] staffIds) {
         orderService.saveOrUpdate(order, staffIds , Long.parseLong("1"));

@@ -10,6 +10,7 @@ import xyz.kakusei.fams.mapper.*;
 import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
+import xyz.kakusei.fams.service.IPermissionService;
 import xyz.kakusei.fams.service.IStockService;
 
 import javax.servlet.http.HttpSession;
@@ -37,6 +38,9 @@ public class TestController {
     @Autowired
     IStateMapper stateMapper;
 
+    @Autowired
+    IPermissionService permissionService;
+
 
     @GetMapping("/emp")
     public String employee() {
@@ -62,4 +66,5 @@ public class TestController {
         m.setOrderId(Long.parseLong("1"));
         return materialApplicationMapper.queryByCriteria(m);
     }
+
 }

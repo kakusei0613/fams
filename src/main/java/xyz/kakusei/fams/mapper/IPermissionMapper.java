@@ -10,4 +10,5 @@ public interface IPermissionMapper {
     List<Permission> queryAll();
     List<String> queryAllPermissionExpression();
     void insert(Permission permission);
+    List<String> queryEmployeeExpression(Long employeeId);
 }

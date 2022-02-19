@@ -10,6 +10,7 @@ import xyz.kakusei.fams.service.IPermissionService;
 import xyz.kakusei.fams.util.RequiredPermission;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class PermissionServiceImpl implements IPermissionService {
     public void reload() {
         //(解决方法)重新加载之前先查出数据库中的所有权限表达式
         List<String> expressions = permissionMapper.queryAllPermissionExpression();
+        List<String> insertedExpressions = new ArrayList<String>();
 
         //2.获取容器中所有的controller类的bean对象(因为权限注解只存在于controller类的方法上,其他类中没有不需要获取)
         //这里我们根据 控制器 类上 独有的 @Controller 注解来获取这一类对象.
@@ -67,9 +69,10 @@ public class PermissionServiceImpl implements IPermissionService {
 
 
                     //(解决方法)判断当前表达式是否存在于数据库中查出来的权限表达式中,不存在才进行保存操作
-                    if (!expressions.contains(expression)) {
+                    if (!expressions.contains(expression) && !insertedExpressions.contains(expression)) {
                         //6.将获取到的参数保存到数据库中
                         //将取出的权限名称/权限表达式存入数据库中
+                        insertedExpressions.add(expression);
                         Permission permission = new Permission();
                         permission.setName(name);
                         permission.setExpression(expression);

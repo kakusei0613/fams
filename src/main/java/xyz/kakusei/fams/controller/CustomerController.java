@@ -17,7 +17,7 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
-    @RequiredPermission({"Customer Tables","customer:tables"})
+    @RequiredPermission({"Query Customer","customer:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
         PageHelper.startPage(1,15);
@@ -25,7 +25,7 @@ public class CustomerController {
         return "/customer/tables";
     }
 
-    @RequiredPermission({"Customer Tables","customer:tables"})
+    @RequiredPermission({"Query Customer","customer:query"})
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Customer> query(Model model, CustomerQueryObject customerQueryObject) {
@@ -34,28 +34,28 @@ public class CustomerController {
         return result;
     }
 
-    @RequiredPermission({"Query customer information","customer:form"})
+    @RequiredPermission({"Customer Detail","customer:detail"})
     @GetMapping("/{id}")
     public String customer(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("customer", customerService.queryById(id));
         return "/customer/form";
     }
 
-    @RequiredPermission({"Delete customer record","customer:delete"})
+    @RequiredPermission({"Delete Customer","customer:delete"})
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
         customerService.deleteById(id);
         return "redirect:/customer/tables";
     }
 
-    @RequiredPermission({"Insert new customer record","customer:insert"})
+    @RequiredPermission({"Modify Customer","customer:modify"})
     @GetMapping("/new")
     public String newCustomer(Model model) {
         model.addAttribute("customer", new Customer());
         return "/customer/form";
     }
 
-    @RequiredPermission({"Query customer information","customer:form"})
+    @RequiredPermission({"Modify Customer", "customer:modify"})
     @PostMapping("/new")
     public String saveOrUpdate(Customer customer) {
         customerService.saveOrUpdate(customer);

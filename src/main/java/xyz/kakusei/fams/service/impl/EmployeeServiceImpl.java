@@ -9,10 +9,7 @@ import xyz.kakusei.fams.entity.Employee;
 import xyz.kakusei.fams.entity.Gender;
 import xyz.kakusei.fams.entity.Role;
 import xyz.kakusei.fams.entity.State;
-import xyz.kakusei.fams.mapper.IGenderMapper;
-import xyz.kakusei.fams.mapper.IStateMapper;
-import xyz.kakusei.fams.mapper.IEmployeeMapper;
-import xyz.kakusei.fams.mapper.IRoleMapper;
+import xyz.kakusei.fams.mapper.*;
 import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.util.LoginException;
@@ -36,6 +33,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Autowired
     private IStateMapper stateMapper;
 
+    @Autowired
+    private IPermissionMapper permissionMapper;
+
     @Override
     public List<Employee> queryAll() {
         return employeeMapper.queryAll();
@@ -48,12 +48,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void saveOrUpdate(Employee employee, Byte[] roleIds) {
-//        对密码进行MD5加密
-        employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes(StandardCharsets.UTF_8)));
         if (employee.getId() == null) {
+//              对密码进行MD5加密
+            employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes(StandardCharsets.UTF_8)));
             employeeMapper.insert(employee);
         }
         else {
+//              如果密码修改了，则进行md5加密
+            Employee original = employeeMapper.queryById(employee.getId());
+            if (!original.getPassword().equals(employee.getPassword())) {
+                employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes(StandardCharsets.UTF_8)));
+            }
             employeeMapper.update(employee);
             roleMapper.deleteEmployeeRoleById(employee.getId());
         }
@@ -101,6 +106,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpSession session = servletRequestAttributes.getRequest().getSession();
             session.setAttribute("USER_IN_SESSION", user);
+            List<String> permissions = permissionMapper.queryEmployeeExpression(user.getId());
+            session.setAttribute("EXPRESSION_IN_SESSION", permissions);
         }
     }
 }

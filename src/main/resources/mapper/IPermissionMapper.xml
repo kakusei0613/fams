@@ -14,4 +14,10 @@
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Permission" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO permissions(name, expression) VALUES(#{name}, #{expression})
     </insert>
+    <select id="queryEmployeeExpression" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT DISTINCT p.expression FROM employee_role AS er
+            LEFT JOIN role_permission AS rp ON(er.role_id = rp.role_id)
+            LEFT JOIN permissions AS p ON(rp.per_id = p.id)
+        WHERE er.emp_id = #{employeeId}
+    </select>
 </mapper>
