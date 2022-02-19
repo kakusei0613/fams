@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf tpl-form-border-form tpl-form-border-br">
-                        <form action="#" method="post">
+                        <form action="#" method="post" id="query_form">
                             <div class="widget-head am-cf">
                                 <div class="widget-title am-fl">条件查询</div>
                                 <div class="am-fr">
@@ -52,42 +52,45 @@
                             <div class="widget-body am-fr am-form-inline">
                                 <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
                                 <div class="am-form-group">
-                                    <label class="am-u-sm-4 am-form-label">索引：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="姓名/电话/邮箱"/>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="gender-select" class="am-u-sm-4 am-form-label">性别：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select id="gender-select" data-am-selected="{searchBox: 1}" name="gender.id" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">全部性别</option>
                                             <option th:each="gender:${genders}" th:value="${gender.id}" th:text="${gender.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="department-select" class="am-u-sm-4 am-form-label">部门：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select id="department-select" data-am-selected="{searchBox: 1}" name="department" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">全部部门</option>
                                             <option th:each="dept:${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label class="am-u-sm-4 am-form-label">状态：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select name="employeeState" id="employeeState-select" data-am-selected="{searchBox: 1}" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">全部状态</option>
                                             <option th:each="state:${states}" th:value="${state.id}" th:text="${state.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-sm-push-3">
-                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="search">搜索</button>
-                                        <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="clear">清空</button>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
+                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
+                                        &nbsp;&nbsp;
+                                        <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-refresh" id="clear"></button>
+                                        <script>
+                                            // $("#clear").click(function () {
+                                            //     $("#query_form")[0].reset();
+                                            //     $("#search").click();
+                                            // });
+                                        </script>
                                     </div>
                                     <!--  ajax脚本  -->
                                     <script th:src="@{/assets/js/ajax/employee.ajax.js}" src="../../static/assets/js/ajax/employee.ajax.js"></script>

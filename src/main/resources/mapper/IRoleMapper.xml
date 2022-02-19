@@ -10,42 +10,50 @@
     </resultMap>
 
     <select id="queryAll" resultMap="roleMap">
-        SELECT id, name, comments FROM roles;
+        SELECT id, name, comments FROM roles
     </select>
 
     <select id="queryByRoleId" resultMap="roleMap" parameterType="java.lang.Byte">
-        SELECT id, name, comments FROM roles WHERE id = #{id};
+        SELECT id, name, comments FROM roles WHERE id = #{id}
+    </select>
+
+    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.RoleQueryObject" resultMap="roleMap">
+        SELECT id, name, comments FROM roles
+        <where>
+            1 = 1
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                name LIKE CONCAT('%', #{keyword},'%')
+                OR comments LIKE CONCAT('%', #{keyword},'%')
+                )
+            </if>
+        </where>
     </select>
 
     <delete id="deleteByRoleId" parameterType="java.lang.Byte">
-        DELETE FROM roles WHERE id = #{id};
+        DELETE FROM roles WHERE id = #{id}
     </delete>
 
     <update id="update" parameterType="xyz.kakusei.fams.entity.Role">
-        UPDATE roles SET name = #{name}, comments = #{comments} WHERE id = #{id};
+        UPDATE roles SET name = #{name}, comments = #{comments} WHERE id = #{id}
     </update>
 
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Role" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO roles(name, comments) VALUES(#{name}, #{comments});
+        INSERT INTO roles(name, comments) VALUES(#{name}, #{comments})
     </insert>
 
-    <insert id="insertRolePermission">
-        INSERT INTO role_permission(role_id, per_id) VALUES(#{roleId}, #{permissionId});
-    </insert>
 
-    <delete id="deleteRolePermission" parameterType="java.lang.Byte">
-        DELETE FROM role_permission WHERE role_id = #{roleId};
-    </delete>
 
     <select id="queryRoleByEmployeeId" parameterType="java.lang.Long" resultMap="roleMap">
-        SELECT er.emp_id, er.role_id, r.id, r.name, r.comments FROM employee_role AS er LEFT JOIN roles AS r ON (er.role_id = r.id) WHERE er.emp_id = #{id} ;
+        SELECT er.emp_id, er.role_id, r.id, r.name, r.comments FROM employee_role AS er LEFT JOIN roles AS r ON (er.role_id = r.id) WHERE er.emp_id = #{id}
     </select>
 
     <insert id="insertEmployeeRoleById">
-        INSERT INTO employee_role(emp_id, role_id) VALUES(#{employeeId}, #{roleId});
+        INSERT INTO employee_role(emp_id, role_id) VALUES(#{employeeId}, #{roleId})
     </insert>
 
     <delete id="deleteEmployeeRoleById">
-        DELETE FROM employee_role WHERE emp_id = #{employeeId};
+        DELETE FROM employee_role WHERE emp_id = #{employeeId}
     </delete>
 </mapper>

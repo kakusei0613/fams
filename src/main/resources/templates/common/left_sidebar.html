@@ -6,7 +6,8 @@
         <div class="tpl-sidebar-user-panel">
             <div class="tpl-user-panel-slide-toggleable">
                 <div class="tpl-user-panel-profile-picture">
-                    <img th:src="@{/assets/js/}" src="../../static/assets/img/user04.png" alt="">
+                    <img th:if="${session.USER_IN_SESSION.admin} == false" th:src="@{/assets/img/ordinary.png}" alt="User">
+                    <img th:if="${session.USER_IN_SESSION.admin} == true" th:src="@{/assets/img/administrator.png}" alt="Administrator">
                 </div>
                 <span class="user-panel-logged-in-text" th:text="${session.USER_IN_SESSION.name}">
               <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
@@ -50,26 +51,18 @@
                     <i class="am-icon-user sidebar-nav-link-logo"></i> 客户管理
                 </a>
             </li>
-
             <li class="sidebar-nav-heading">Other<span class="sidebar-nav-heading-info"> 其他功能</span></li>
-            <li class="sidebar-nav-link">
-                <a href="javascript:;" class="sidebar-nav-sub-title">
-                    <i class="am-icon-table sidebar-nav-link-logo"></i> 部门/职位/角色
-                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
-                </a>
-                <ul class="sidebar-nav sidebar-nav-sub">
-                    <li class="sidebar-nav-link">
-                        <a th:href="@{/assets/css/}" href="table-list.html">
-                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文字列表
-                        </a>
-                    </li>
 
-                    <li class="sidebar-nav-link">
-                        <a th:href="@{/assets/css/}" href="table-list-img.htm">
-                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 图文列表
-                        </a>
-                    </li>
-                </ul>
+            <li class="sidebar-nav-link">
+                <a href="/department/tables" id="department_a">
+                    <i class="am-icon-user sidebar-nav-link-logo"></i> 部门管理
+                </a>
+            </li>
+
+            <li class="sidebar-nav-link">
+                <a href="/role/tables" id="role_a">
+                    <i class="am-icon-user sidebar-nav-link-logo"></i> 角色管理
+                </a>
             </li>
 
         </ul>

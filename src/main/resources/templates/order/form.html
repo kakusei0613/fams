@@ -142,11 +142,12 @@
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">分配员工<small> Staff</small></div>
+                                <div class="widget-title am-fl">分配员工</div>
                             </div>
                             <div class="widget-body am-cf am-form am-form-inline tpl-form-line-form">
+                                <div class="am-u-md-3 am-u-lg-3"></div>
                                     <div class="am-form-group">
-                                        <div class="am-u-sm-12">
+                                        <div class="am-u-sm-12 am-u-md-4 am-u-lg-4">
                                             <select multiple style="height: 150px;width: 200px;" id="selfStaffs" name="staffIds" size="15">
                                                 <option th:each="staff:${order.staffs}" th:value="${staff?.id}" th:text="${staff?.name}"></option>
                                             </select>
@@ -154,7 +155,7 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <div class="am-u-sm-12 am-u-md-2 am-u-lg-2 am-text-center">
+                                        <div class="am-u-sm-12 am-u-md-1 am-u-lg-1 am-text-center">
                                             <a class="am-btn" onclick="moveAll('allStaffs','selfStaffs')"><<</a>
                                             <br>
                                             <a class="am-btn" onclick="moveSelected('allStaffs','selfStaffs')"><</a>
@@ -166,7 +167,7 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <div class="am-u-sm-12">
+                                        <div class="am-u-sm-12 am-u-md-4 am-u-lg-4">
                                             <select id="department-select" data-am-selected="{searchBox: 1}" style="display: none;">
                                                 <option value="-1">全部部门</option>
                                                 <option th:each="dept:${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>

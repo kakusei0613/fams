@@ -23,6 +23,9 @@
     <div th:replace="common/skin-selecter :: skin-selecter"></div>
     <!-- 侧边导航栏 -->
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
+    <script>
+        $("#department_a").addClass("active");
+    </script>
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
 
@@ -50,14 +53,15 @@
                         <div class="widget-body am-fr am-form-inline">
                             <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
                             <div class="am-form-group">
-                                <label class="am-u-sm-4 am-form-label">索引：</label>
-                                <div class="am-u-sm-8">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                     <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="部门名称"/>
                                 </div>
                             </div>
                             <div class="am-form-group">
-                                <div class="am-u-sm-12 am-u-sm-push-3">
-                                    <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="search">搜索</button>
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
+                                    <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
+                                    &nbsp;&nbsp;
+                                    <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-refresh" id="clear"></button>
                                 </div>
                                 <!--  ajax脚本  -->
                                 <script th:src="@{/assets/js/ajax/department.ajax.js}" src="../../static/assets/js/ajax/department.ajax.js"></script>

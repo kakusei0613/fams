@@ -52,45 +52,39 @@
                             <div class="widget-body am-fr am-form-inline">
                                 <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
                                 <div class="am-form-group">
-                                    <label class="am-u-sm-4 am-form-label">索引：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="备注"/>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="customer-select" class="am-u-sm-4 am-form-label">客户：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select id="customer-select" data-am-selected="{searchBox: 1}" name="customerId" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">所有客户</option>
                                             <option th:each="customer:${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label for="creator-select" class="am-u-sm-4 am-form-label">员工：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select id="creator-select" data-am-selected="{searchBox: 1}" name="creatorId" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">所有创建者</option>
                                             <option th:each="creator:${creators}" th:value="${creator.id}" th:text="${creator.name}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="am-form-group">
-                                    <label class="am-u-sm-4 am-form-label">状态：</label>
-                                    <div class="am-u-sm-8">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <select name="state" id="state-select" data-am-selected="{searchBox: 1}" style="display: none;">
-                                            <option value="-1">全部</option>
+                                            <option value="-1">所有状态</option>
                                             <option th:each="state:${states}" th:value="${state.id}" th:text="${state.name}"></option>
                                         </select>
                                     </div>
                                 </div>
-                                <br>
-                                <br>
                                 <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-sm-push-3">
-                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="search">搜索</button>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
+                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
                                         &nbsp;&nbsp;
-                                        <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="clear">清空</button>
+                                        <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-refresh" id="clear"></button>
                                     </div>
                                     <!--  ajax脚本  -->
                                     <script th:src="@{/assets/js/ajax/order.ajax.js}" src="../../static/assets/js/ajax/order.ajax.js"></script>

@@ -8,12 +8,18 @@
     <select id="queryAllPermissionExpression" resultType="java.lang.String">
         SELECT expression FROM permissions
     </select>
-    <select id="queryByRoleId" resultType="xyz.kakusei.fams.entity.Permission" parameterType="Integer">
+    <select id="queryByRoleId" resultType="xyz.kakusei.fams.entity.Permission" parameterType="java.lang.Byte">
         SELECT p.id, p.name, p.expression FROM permissions AS p LEFT JOIN role_permission AS rp ON rp.per_id = p.id WHERE rp.role_id = #{id}
     </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Permission" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO permissions(name, expression) VALUES(#{name}, #{expression})
     </insert>
+    <select id="insertRolePermission">
+        INSERT INTO role_permission(role_id, per_id) VALUES(#{roleId}, #{permissionId})
+    </select>
+    <delete id="deleteRolePermission" parameterType="java.lang.Byte">
+        DELETE FROM role_permission WHERE role_id = #{roleId}
+    </delete>
     <select id="queryEmployeeExpression" parameterType="java.lang.Long" resultType="java.lang.String">
         SELECT DISTINCT p.expression FROM employee_role AS er
             LEFT JOIN role_permission AS rp ON(er.role_id = rp.role_id)

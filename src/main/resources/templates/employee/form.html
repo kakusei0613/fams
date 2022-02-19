@@ -54,14 +54,14 @@
 
                                 <form action="/employee/new" id="editForm" class="am-form tpl-form-line-form" method="post">
                                     <div class="am-form-group" th:if="${employee.id} != null">
-                                        <label class="am-u-sm-3 am-form-label">员工号 <span class="tpl-form-line-small-title">ID</span></label>
+                                        <label class="am-u-sm-3 am-form-label">员工号 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${employee.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">姓名 <span class="tpl-form-line-small-title">Name</span></label>
+                                        <label class="am-u-sm-3 am-form-label">姓名 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${employee.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入姓名">
                                             <small>姓名为必填</small>
@@ -69,14 +69,14 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">出生日期 <span class="tpl-form-line-small-title">Birthday</span></label>
+                                        <label class="am-u-sm-3 am-form-label">出生日期 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${employee.birthday}" name="birthday" class="am-form-field tpl-form-no-bg" placeholder="出生日期" data-am-datepicker="" readonly="">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">性别 <span class="tpl-form-line-small-title">Gender</span></label>
+                                        <label class="am-u-sm-3 am-form-label">性别 </label>
                                         <div class="am-u-sm-9">
                                             <select id="gender-select" name="gender.id" data-am-selected="{searchBox: 1}" style="display: none;">
                                                <option value=""></option>
@@ -89,35 +89,35 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">联系方式 <span class="tpl-form-line-small-title">Phone</span></label>
+                                        <label class="am-u-sm-3 am-form-label">联系方式 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" name="phone" th:value="${employee.phone}" placeholder="输入联系方式">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">电子邮箱 <span class="tpl-form-line-small-title">E-Mail</span></label>
+                                        <label class="am-u-sm-3 am-form-label">电子邮箱 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" name="email" th:value="${employee.email}" placeholder="输入电子邮箱">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">密码 <span class="tpl-form-line-small-title">Password</span></label>
+                                        <label class="am-u-sm-3 am-form-label">密码 </label>
                                         <div class="am-u-sm-9">
                                             <input type="password" name="password" th:value="${employee.password}" placeholder="输入密码">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">住址 <span class="tpl-form-line-small-title">Address</span></label>
+                                        <label class="am-u-sm-3 am-form-label">住址 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" name="address" th:value="${employee.address}" placeholder="输入住址">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">管理员 <span class="tpl-form-line-small-title">Administrator</span></label>
+                                        <label class="am-u-sm-3 am-form-label">管理员 </label>
                                         <div class="am-u-sm-9">
                                             <div class="tpl-switch">
                                                 <input type="hidden" name="admin" id="admin-hidden" value="false">
@@ -141,7 +141,7 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">部门 <span class="tpl-form-line-small-title">Department</span></label>
+                                        <label class="am-u-sm-3 am-form-label">部门 </label>
                                         <div class="am-u-sm-9">
                                             <select id="department-select" name="department.id" data-am-selected="{searchBox: 1}" style="display: none;">
                                                 <option value=""></option>
@@ -154,14 +154,14 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">入职时间 <span class="tpl-form-line-small-title">HireDate</span></label>
+                                        <label class="am-u-sm-3 am-form-label">入职时间 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" name="hireDate" th:value="${employee.hireDate}" class="am-form-field tpl-form-no-bg" placeholder="入职时间" data-am-datepicker="" readonly="">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">状态 <span class="tpl-form-line-small-title">State</span></label>
+                                        <label class="am-u-sm-3 am-form-label">状态 </label>
                                         <div class="am-u-sm-9">
                                             <select id="state-select" name="employeeState.id" data-am-selected="{searchBox: 1}" style="display: none;">
                                                 <option value=""></option>
@@ -174,13 +174,15 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">Role</span></label>
-                                        <div class="am-u-sm-2">
+                                        <label class="am-u-sm-3 am-form-label">角色 </label>
+                                        <div class="am-u-sm-9"></div>
+                                        <div class="am-u-sm-3"></div>
+                                        <div class="am-u-sm-12 am-u-md-4">
                                             <select multiple style="height: 150px;" id="selfRoles" name="roleIds">
                                                 <option th:each="role:${employee.roleList}" th:value="${role?.id}" th:text="${role?.name}"></option>
                                             </select>
                                         </div>
-                                        <div class="am-u-sm-1" style="text-align: center" >
+                                        <div class="am-u-sm-12 am-u-md-1" style="text-align: center" >
                                             <a class="am-btn" onclick="moveAll('allRoles','selfRoles')"><<</a>
                                             <br>
                                             <a class="am-btn" onclick="moveSelected('allRoles','selfRoles')"><</a>
@@ -189,12 +191,11 @@
                                             <br>
                                             <a class="am-btn" onclick="moveAll('selfRoles','allRoles')">>></a>
                                         </div>
-                                        <div class="am-u-sm-2">
+                                        <div class="am-u-sm-12 am-u-md-4">
                                             <select multiple style="height: 150px;" id="allRoles">
                                                 <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.name}"></option>
                                             </select>
                                         </div>
-                                        <div class="am-u-sm-4"></div>
                                         <script>
                                             function moveSelected(src, desc) {
                                                 $("#" + src + " option:selected").appendTo($("#" + desc));

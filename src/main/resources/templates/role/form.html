@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>角色编辑</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <div th:replace="common/header :: header"></div>
+
+</head>
+
+<body data-type="widgets">
+    <script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <div th:replace="common/topbar :: topbar"></div>
+        <!-- 风格切换 -->
+        <div th:replace="common/skin-selecter :: skin-selecter"></div>
+        <!-- 侧边导航栏 -->
+        <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <script>
+            $("#role_a").addClass("active");
+        </script>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑角色 </div>
+                        <p class="page-header-description">您可以在此编辑角色信息。</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">角色信息</div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form action="/role/new" id="editForm" class="am-form tpl-form-line-form" method="post">
+                                    <div class="am-form-group" th:if="${role.id} != null">
+                                        <label class="am-u-sm-3 am-form-label">员工号 <span class="tpl-form-line-small-title">ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${role.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">名称 </label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" th:value="${role.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入角色名称">
+                                            <small>名称为必填</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">备注 </label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" name="comments" th:value="${role.comments}" placeholder="输入备注">
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">Role</span></label>
+                                        <div class="am-u-sm-2">
+                                            <select multiple style="height: 150px;" id="selfPermissions" name="permissionIds">
+                                                <option th:each="permission:${role.permissionList}" th:value="${permission.id}" th:text="${permission.name}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="am-u-sm-1" style="text-align: center" >
+                                            <a class="am-btn" onclick="moveAll('allPermissions','selfPermissions')"><<</a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('allPermissions','selfPermissions')"><</a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveSelected('selfPermissions','allPermissions')">></a>
+                                            <br>
+                                            <a class="am-btn" onclick="moveAll('selfPermissions','allPermissions')">>></a>
+                                        </div>
+                                        <div class="am-u-sm-2">
+                                            <select multiple style="height: 150px;" id="allPermissions">
+                                                <option th:each="permission:${permissions}" th:value="${permission.id}" th:text="${permission.name}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="am-u-sm-4"></div>
+                                        <script>
+                                            function moveSelected(src, desc) {
+                                                $("#" + src + " option:selected").appendTo($("#" + desc));
+                                            }
+                                            function moveAll(src,desc) {
+                                                $("#" + src + " option").appendTo($("#" + desc));
+                                            }
+                                            $(function () {
+                                                //获取右边框中option的value,存到数组中
+                                                var ids = [];
+                                                $.each($("#selfPermissions option"), function (index,option) {
+                                                    ids.push(option.value);
+                                                })
+                                            })
+
+                                            $(function () {
+                                                //排重
+                                                var ids = $.map($("#selfPermissions option"), function (item) {
+                                                    return item.value;
+                                                })
+                                                //遍历左边框中的所有option,判断其value值是否在上面的数组中
+                                                //在,则删除
+                                                $.each($("#allPermissions option"), function (index, item) {
+                                                    if ($.inArray(item.value, ids) >= 0) {
+                                                        $(item).remove();
+                                                    }
+                                                })
+                                                $("#submitBtn").click(function () {
+                                                    $("#selfPermissions option").prop("selected", true);
+                                                    $("#admin-hidden").val($("#admin-checkbox").prop('checked'));
+                                                    $("#editForm").submit();
+                                                })
+                                            })
+
+
+                                        </script>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button id="submitBtn" type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="common/footer :: footer_script"></div>
+
+</body>
+
+</html>

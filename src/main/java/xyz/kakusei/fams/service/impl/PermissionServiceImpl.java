@@ -25,7 +25,7 @@ public class PermissionServiceImpl implements IPermissionService {
     private ApplicationContext ctx;
 
     @Override
-    public List<Permission> queryByRoleId(Integer id) {
+    public List<Permission> queryByRoleId(Byte id) {
         return permissionMapper.queryByRoleId(id);
     }
 
