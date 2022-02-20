@@ -25,7 +25,9 @@
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
         <script>
-            $("#role_a").addClass("active");
+            $("#other_nav_a").addClass("active");
+            $("#role_a").addClass("sub-active");
+            $("#other_ul").css("display","block");
         </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
@@ -54,7 +56,7 @@
 
                                 <form action="/role/new" id="editForm" class="am-form tpl-form-line-form" method="post">
                                     <div class="am-form-group" th:if="${role.id} != null">
-                                        <label class="am-u-sm-3 am-form-label">员工号 <span class="tpl-form-line-small-title">ID</span></label>
+                                        <label class="am-u-sm-3 am-form-label">角色编号 <span class="tpl-form-line-small-title">ID</span></label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${role.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
                                         </div>
@@ -76,13 +78,15 @@
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">Role</span></label>
-                                        <div class="am-u-sm-2">
+                                        <label class="am-u-sm-3 am-form-label">权限 </label>
+                                        <div class="am-u-sm-9"></div>
+                                        <div class="am-u-sm-3"></div>
+                                        <div class="am-u-sm-12 am-u-md-4">
                                             <select multiple style="height: 150px;" id="selfPermissions" name="permissionIds">
                                                 <option th:each="permission:${role.permissionList}" th:value="${permission.id}" th:text="${permission.name}"></option>
                                             </select>
                                         </div>
-                                        <div class="am-u-sm-1" style="text-align: center" >
+                                        <div class="am-u-sm-12 am-u-md-1" style="text-align: center" >
                                             <a class="am-btn" onclick="moveAll('allPermissions','selfPermissions')"><<</a>
                                             <br>
                                             <a class="am-btn" onclick="moveSelected('allPermissions','selfPermissions')"><</a>
@@ -91,12 +95,11 @@
                                             <br>
                                             <a class="am-btn" onclick="moveAll('selfPermissions','allPermissions')">>></a>
                                         </div>
-                                        <div class="am-u-sm-2">
+                                        <div class="am-u-sm-12 am-u-md-4">
                                             <select multiple style="height: 150px;" id="allPermissions">
                                                 <option th:each="permission:${permissions}" th:value="${permission.id}" th:text="${permission.name}"></option>
                                             </select>
                                         </div>
-                                        <div class="am-u-sm-4"></div>
                                         <script>
                                             function moveSelected(src, desc) {
                                                 $("#" + src + " option:selected").appendTo($("#" + desc));

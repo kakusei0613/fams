@@ -24,7 +24,9 @@
     <!-- 侧边导航栏 -->
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
     <script>
-        $("#department_a").addClass("active");
+        $("#other_nav_a").addClass("active");
+        $("#department_a").addClass("sub-active");
+        $("#other_ul").css("display","block");
     </script>
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
@@ -60,8 +62,7 @@
                             <div class="am-form-group">
                                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
                                     <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
-                                    &nbsp;&nbsp;
-                                    <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-refresh" id="clear"></button>
+                                    <button type="button" class="am-btn am-btn-primary am-btn-success am-icon-plus" onclick="location.href='/department/new'"></button>
                                 </div>
                                 <!--  ajax脚本  -->
                                 <script th:src="@{/assets/js/ajax/department.ajax.js}" src="../../static/assets/js/ajax/department.ajax.js"></script>

@@ -29,6 +29,7 @@ public class TestController {
     @Autowired
     IOrderService orderService;
 
+
     @Autowired
     IMaterialMapper materialMapper;
 
@@ -65,6 +66,12 @@ public class TestController {
         MaterialApplicationQueryObject m = new MaterialApplicationQueryObject();
         m.setOrderId(Long.parseLong("1"));
         return materialApplicationMapper.queryByCriteria(m);
+    }
+
+    @GetMapping("/reload")
+    public String reload() {
+        permissionService.reload();
+        return "redirect:/index";
     }
 
 }

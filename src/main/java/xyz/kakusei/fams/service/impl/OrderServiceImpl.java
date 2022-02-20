@@ -2,19 +2,20 @@ package xyz.kakusei.fams.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.kakusei.fams.entity.MaterialApplication;
-import xyz.kakusei.fams.entity.Order;
-import xyz.kakusei.fams.entity.OrderStateChange;
-import xyz.kakusei.fams.entity.State;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import xyz.kakusei.fams.entity.*;
 import xyz.kakusei.fams.mapper.IOrderEmployeeMapper;
 import xyz.kakusei.fams.mapper.IOrderStateChangeMapper;
 import xyz.kakusei.fams.mapper.IStateMapper;
 import xyz.kakusei.fams.mapper.IOrderMapper;
+import xyz.kakusei.fams.query.EmployeeOrderQueryObject;
 import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.query.OrderQueryObject;
 import xyz.kakusei.fams.service.IMaterialApplicationService;
 import xyz.kakusei.fams.service.IOrderService;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,9 +39,11 @@ public class OrderServiceImpl implements IOrderService {
     private IMaterialApplicationService materialApplicationService;
 
     private static SimpleDateFormat simpleDateFormat;
+    private static SimpleDateFormat yearMonth;
 
     static {
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        yearMonth = new SimpleDateFormat("yyyy-MM");
     }
 
     @Override
@@ -104,5 +107,35 @@ public class OrderServiceImpl implements IOrderService {
         MaterialApplicationQueryObject queryObject = new MaterialApplicationQueryObject();
         queryObject.setOrderId(id);
         return materialApplicationService.queryByCriteria(queryObject);
+    }
+
+    @Override
+    public List<Order> queryIncompleteOrder() {
+        Date date = new Date(System.currentTimeMillis());
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpSession session = servletRequestAttributes.getRequest().getSession();
+        Employee user = (Employee) session.getAttribute("USER_IN_SESSION");
+        if (user == null)
+            throw new RuntimeException("Could not found user in session");
+        EmployeeOrderQueryObject employeeOrderQueryObject = new EmployeeOrderQueryObject();
+        employeeOrderQueryObject.setEmployeeId(user.getId());
+//        employeeOrderQueryObject.setDate(yearMonth.format(date));
+        employeeOrderQueryObject.setNotEqualId(Byte.parseByte("4"));
+        return orderEmployeeMapper.queryOrder(employeeOrderQueryObject);
+    }
+
+    @Override
+    public List<Order> queryOrdersCompleted() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpSession session = servletRequestAttributes.getRequest().getSession();
+        Employee user = (Employee) session.getAttribute("USER_IN_SESSION");
+        if (user == null)
+            throw new RuntimeException("Could not found user in session");
+        Date date = new Date(System.currentTimeMillis());
+        EmployeeOrderQueryObject employeeOrderQueryObject = new EmployeeOrderQueryObject();
+        employeeOrderQueryObject.setEmployeeId(user.getId());
+        employeeOrderQueryObject.setDate(yearMonth.format(date));
+        employeeOrderQueryObject.setStateId(Byte.parseByte("4"));
+        return orderEmployeeMapper.queryOrder(employeeOrderQueryObject);
     }
 }

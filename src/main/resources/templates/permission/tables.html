@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>部门管理</title>
+    <title>权限一览</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,9 +24,9 @@
     <!-- 侧边导航栏 -->
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
     <script>
-        $("#material_nav_a").addClass("active");
-        $("#material_type_a").addClass("sub-active");
-        $("#material_ul").css("display", "block");
+        $("#other_nav_a").addClass("active");
+        $("#permission_a").addClass("sub-active");
+        $("#other_ul").css("display","block");
     </script>
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
@@ -34,51 +34,39 @@
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 物料类型管理 <small>Department</small></div>
-                    <p class="page-header-description">你可以在此处对物料类型进行管理。</p>
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 权限一览 <small>Department</small></div>
+                    <p class="page-header-description">你可以在此查看系统内所有的权限信息。</p>
+                </div>
+                <div class="am-u-lg-3 tpl-index-settings-button">
+                    <button type="button" class="page-header-button" onclick="location.href='/permission/reload'"><span class="am-icon-refresh"></span> 刷新</button>
                 </div>
             </div>
 
         </div>
         <div class="row-content am-cf">
             <div class="row">
-                <form action="/material/type/query" method="post" id="pagination_form" style="display: none;">
-                    <input type="hidden" name="pageNum" value="1">
-                    <input type="hidden" name="pageSize" value="15">
-                    <button type="submit" id="search"></button>
-                </form>
-                <script ></script>
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">部门列表</div>
-                            <div class="widget-title am-fr">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
+                            <div class="widget-title am-fl">权限列表</div>
+                            <div class="widget-title am-fr">共有[[${permissions.size}]]条记录&nbsp;&nbsp;</div>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
                             <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
                                 <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>类型编号</th>
+                                    <th>编号</th>
                                     <th>类型名称</th>
-                                    <th>操作</th>
+                                    <th>表达式</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table_body">
-                                <tr th:each="type,typeStat:${pageResult.list}">
-                                    <td th:text="${typeStat.count}"></td>
-                                    <td th:text="${type.id}"></td>
-                                    <td th:text="${type.name}"></td>
-                                    <td>
-                                        <div class="tpl-table-black-operation">
-                                            <a th:href="@{|/material/type/${type.id}|}">
-                                                <i class="am-icon-pencil"></i> 编辑
-                                            </a>
-                                            <a th:href="@{|/material/type/delete/${type.id}|}" class="tpl-table-black-operation-del">
-                                                <i class="am-icon-trash"></i> 删除
-                                            </a>
-                                        </div>
-                                    </td>
+                                <tr th:each="permission,permissionStat:${permissions}">
+                                    <td th:text="${permissionStat.count}"></td>
+                                    <td th:text="${permission.id}"></td>
+                                    <td th:text="${permission.name}"></td>
+                                    <td th:text="${permission.expression}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -87,8 +75,6 @@
                     </div>
                 </div>
             </div>
-            <!-- 分页 -->
-            <div th:replace="common/pagination :: pagination"></div>
     </div>
 </div>
 </div>

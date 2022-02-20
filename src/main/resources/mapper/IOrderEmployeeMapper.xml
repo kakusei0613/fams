@@ -19,4 +19,59 @@
     <delete id="deleteByOrderId" parameterType="java.lang.Long">
         DELETE FROM order_employee WHERE order_id = #{id}
     </delete>
+    <select id="queryOrder" parameterType="xyz.kakusei.fams.query.EmployeeOrderQueryObject" resultMap="xyz.kakusei.fams.mapper.IOrderMapper.orderMap">
+        SELECT o.id, c.id AS c_id, c.name AS c_name, c.contact AS c_contact, c.comments AS c_comments,
+               o.price, o.ddl, o.create_time, e.name AS e_name, os.id AS os_id, os.name AS os_name,
+               o.process_time, o.comments, e.id AS e_id,e.birthday AS e_birthday, g.id AS e_g_id, g.name AS e_g_name,
+               e.phone AS e_phone, e.email AS e_email, e.password AS e_password, e.address AS e_address,
+               e.admin AS e_admin, e.hiredate AS e_hiredate, es.id AS e_es_id, es.name AS e_es_name,
+               d.id AS e_d_id, d.name AS e_d_name, d.contact AS e_d_contact, d.comments AS e_d_comments
+        FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
+                         LEFT JOIN employees AS e ON(o.creator_id = e.id)
+                         LEFT JOIN order_states AS os ON(o.state_id = os.id)
+                         LEFT JOIN departments AS d ON(e.dept_id = d.id)
+                         LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+                         LEFT JOIN gender AS g ON(e.gender = g.id)
+                         RIGHT JOIN order_employee AS oe ON(o.id = oe.order_id)
+        <where>
+            1 = 1
+            <if test="stateId != null and stateId > 0">
+                AND os.id = #{stateId}
+            </if>
+            <if test="employeeId != null and employeeId > 0">
+                AND oe.emp_id = #{employeeId}
+            </if>
+            <if test="date != null and date != ''">
+                AND o.process_time LIKE CONCAT('', #{date} , '')
+            </if>
+            <if test="notEqualId != null and notEqualId > 0">
+                AND os.id != #{notEqualId}
+            </if>
+        </where>
+    </select>
+    <select id="queryOrderCount" parameterType="xyz.kakusei.fams.query.EmployeeOrderQueryObject" resultType="java.lang.Integer">
+        SELECT COUNT(o.id)
+        FROM orders AS o LEFT JOIN customers AS c ON(o.cust_id = c.id)
+        LEFT JOIN employees AS e ON(o.creator_id = e.id)
+        LEFT JOIN order_states AS os ON(o.state_id = os.id)
+        LEFT JOIN departments AS d ON(e.dept_id = d.id)
+        LEFT JOIN employee_states AS es ON (e.state_id = es.id)
+        LEFT JOIN gender AS g ON(e.gender = g.id)
+        RIGHT JOIN order_employee AS oe ON(o.id = oe.emp_id)
+        <where>
+            1 = 1
+            <if test="stateId != null and stateId > 0">
+                AND os.id = #{stateId}
+            </if>
+            <if test="employeeId != null and employeeId > 0">
+                AND e.id = #{employeeId}
+            </if>
+            <if test="date != null and date != ''">
+                AND o.process_time LIKE CONCAT('', #{date} , '')
+            </if>
+            <if test="notEqualId != null and notEqualId > 0">
+                AND os.id != #{notEqualId}
+            </if>
+        </where>
+    </select>
 </mapper>

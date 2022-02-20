@@ -83,14 +83,7 @@
                                 <div class="am-form-group">
                                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
                                         <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
-                                        &nbsp;&nbsp;
-                                        <button type="reset" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-refresh" id="clear"></button>
-                                        <script>
-                                            // $("#clear").click(function () {
-                                            //     $("#query_form")[0].reset();
-                                            //     $("#search").click();
-                                            // });
-                                        </script>
+                                        <button type="button" class="am-btn am-btn-primary am-btn-success am-icon-plus" onclick="location.href='/employee/new'"></button>
                                     </div>
                                     <!--  ajax脚本  -->
                                     <script th:src="@{/assets/js/ajax/employee.ajax.js}" src="../../static/assets/js/ajax/employee.ajax.js"></script>

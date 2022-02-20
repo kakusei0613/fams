@@ -25,7 +25,9 @@
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
         <script>
-            $("#department_a").addClass("active");
+            $("#other_nav_a").addClass("active");
+            $("#department_a").addClass("sub-active");
+            $("#other_ul").css("display","block");
         </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">

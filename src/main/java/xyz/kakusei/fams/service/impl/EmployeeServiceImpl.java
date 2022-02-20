@@ -110,4 +110,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
             session.setAttribute("EXPRESSION_IN_SESSION", permissions);
         }
     }
+
+    @Override
+    public void logout() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpSession session = servletRequestAttributes.getRequest().getSession();
+        session.removeAttribute("USER_IN_SESSION");
+        session.removeAttribute("EXPRESSION_IN_SESSION");
+    }
 }

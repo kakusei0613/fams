@@ -18,4 +18,5 @@ public interface IEmployeeService {
     List<State> queryAllState();
     List<Employee> queryByDepartmentId(Byte departmentId);
     void login(String username, String password);
+    void logout();
 }

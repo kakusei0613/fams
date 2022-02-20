@@ -17,4 +17,6 @@ public interface IOrderService {
     List<State> queryAllState();
     List<OrderStateChange> queryOrderStateChangeByOrderId(Long id);
     List<MaterialApplication> queryMaterialUsedByOrderId(Long id);
+    List<Order> queryIncompleteOrder();
+    List<Order> queryOrdersCompleted();
 }

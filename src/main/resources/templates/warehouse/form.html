@@ -24,6 +24,11 @@
         <div th:replace="common/skin-selecter :: skin-selecter"></div>
         <!-- 侧边导航栏 -->
         <div th:replace="common/left_sidebar :: left-sidebar"></div>
+        <script>
+            $("#other_nav_a").addClass("active");
+            $("#warehouse_a").addClass("sub-active");
+            $("#other_ul").css("display","block");
+        </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
 
