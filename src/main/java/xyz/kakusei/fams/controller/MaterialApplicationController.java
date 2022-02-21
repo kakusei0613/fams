@@ -7,8 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.MaterialApplication;
+import xyz.kakusei.fams.entity.Stock;
 import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
-import xyz.kakusei.fams.service.IMaterialApplicationService;
+import xyz.kakusei.fams.service.*;
 import xyz.kakusei.fams.util.RequiredPermission;
 
 @Controller
@@ -17,6 +18,19 @@ public class MaterialApplicationController {
 
     @Autowired
     private IMaterialApplicationService materialApplicationService;
+
+    @Autowired
+    private IOrderService orderService;
+
+    @Autowired
+    private IMaterialTypeService materialTypeService;
+
+    @Autowired
+    private IWarehouseService warehouseService;
+
+    @Autowired
+    private IStockService stockService;
+
     @RequiredPermission({"Query material application","materialApplication:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
@@ -54,5 +68,14 @@ public class MaterialApplicationController {
     public String delete(@PathVariable("id") Long id) {
         materialApplicationService.deleteById(id);
         return "redirect:/material/application/tables";
+    }
+    @GetMapping("/apply/{orderId}")
+    public String apply(Model model, @PathVariable("orderId") Long orderId) {
+        model.addAttribute("order", orderService.queryById(orderId));
+        model.addAttribute("types", materialTypeService.queryAll());
+        model.addAttribute("warehouses", warehouseService.queryAll());
+        PageHelper.startPage(1,15);
+        model.addAttribute("pageResult", new PageInfo<Stock>(stockService.queryAll()));
+        return "/material/application/form";
     }
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.*;
 import xyz.kakusei.fams.mapper.*;
@@ -72,6 +73,12 @@ public class TestController {
     public String reload() {
         permissionService.reload();
         return "redirect:/index";
+    }
+
+    @GetMapping("/testapplication")
+    public String apply(Model model) {
+        model.addAttribute("order", orderService.queryById(Long.parseLong("1")));
+        return "/material/application/form";
     }
 
 }

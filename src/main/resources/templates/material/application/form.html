@@ -42,63 +42,250 @@
 
             <div class="row-content am-cf">
 
-
+                <form action="#" id="editForm" class="am-form tpl-form-line-form">
                 <div class="row">
 
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                         <div class="widget am-cf">
                             <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">物料信息</div>
+                                <div class="widget-title am-fl">订单信息</div>
                             </div>
                             <div class="widget-body am-fr">
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">订单号 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.id}"></div>
+                                </div>
 
-                                <form action="/material/new" id="editForm" class="am-form tpl-form-line-form" method="post">
-                                    <div class="am-form-group" th:if="${material.id} != null">
-                                        <label class="am-u-sm-3 am-form-label">物料编号</label>
-                                        <div class="am-u-sm-9">
-                                            <input type="text" th:value="${material.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
-                                        </div>
-                                    </div>
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">客户 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.customer.name}"></div>
+                                </div>
 
-                                    <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">物料名称</label>
-                                        <div class="am-u-sm-9">
-                                            <input type="text" th:value="${material.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入物料名称">
-                                            <small>物料名称为必填</small>
-                                        </div>
-                                    </div>
 
-                                    <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">物料类型</label>
-                                        <div class="am-u-sm-9">
-                                            <select name="type.id" id="type-select" data-am-selected="{searchBox: 1}" style="display: none;">
-                                                <option th:each="type:${types}" th:value="${type.id}" th:text="${type.name}"></option>
-                                            </select>
-                                            <script th:if="${material.type} != null">
-                                                $("#type-select").val([[${material.type.id}]]);
-                                            </script>
-                                        </div>
-                                    </div>
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">截止时间 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.ddl}"></div>
+                                </div>
 
-                                    <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">参数</label>
-                                        <div class="am-u-sm-9">
-                                            <input type="text" name="parameter" th:value="${material.parameter}" placeholder="输入参数">
-                                        </div>
-                                    </div>
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">创建时间 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.createTime}"></div>
+                                </div>
 
-                                    <div class="am-form-group">
-                                        <div class="am-u-sm-9 am-u-sm-push-3">
-                                            <button id="submitBtn" type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">创建者 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.creator.name}"></div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">状态 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.state.name}"></div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">处理时间 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.processTime}"></div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">备注 </label>
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.comments}"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">申请一览</div>
+                        </div>
+                        <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                            <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
+                                <thead>
+                                <tr>
+                                    <th>库存编号</th>
+                                    <th>物料名称</th>
+                                    <th>物料类型</th>
+                                    <th>存放仓库</th>
+                                    <th>位置</th>
+                                    <th>剩余数量</th>
+                                    <th>申请数量</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="apply_table_body">
+<!--                                <tr th:each="employee,employeeStat:${pageResult.list}">-->
+<!--                                    <td th:text="${employeeStat.count}"></td>-->
+<!--                                    <td th:text="${employee.id}"></td>-->
+<!--                                    <td th:text="${employee.name}"></td>-->
+<!--                                    <td th:text="${employee.birthday}"></td>-->
 
+<!--                                    <td th:text="${employee.gender.name}"></td>-->
 
+<!--                                    <td th:text="${employee.phone}"></td>-->
+<!--                                    <td th:text="${employee.email}"></td>-->
+<!--                                    <td th:text="${employee.address}"></td>-->
+<!--                                    <td>-->
+<!--                                        <div class="tpl-table-black-operation">-->
+<!--                                            <a th:href="@{|/employee/delete/${employee.id}|}" class="tpl-table-black-operation-del">-->
+<!--                                                <i class="am-icon-trash"></i> 删除-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf tpl-form-border-form tpl-form-border-br">
+                            <form action="#" method="post">
+                                <div class="widget-head am-cf">
+                                    <div class="widget-title am-fl">条件查询</div>
+                                    <div class="am-fr">
+                                        <input type="text" id="pageSize" size=1 name="pageSize" value="15" th:value="${pageResult.pageSize}"/>
+                                    </div>
+                                    <div class="am-form-label am-fr">每页记录数：</div>
+                                </div>
+                                <div class="widget-body am-fr am-form-inline">
+                                    <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                            <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="物料名称/参数/区域"/>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                            <select id="type-select" data-am-selected="{searchBox: 1}" name="typeId" style="display: none;">
+                                                <option value="-1">所有类型</option>
+                                                <option th:each="type:${types}" th:value="${type.id}" th:text="${type.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                            <select id="warehouse-select" data-am-selected="{searchBox: 1}" name="warehouseId" style="display: none;">
+                                                <option value="-1">所有仓库</option>
+                                                <option th:each="warehouse:${warehouses}" th:value="${warehouse.id}" th:text="${warehouse.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
+                                        </div>
+                                        <!--  ajax脚本  -->
+                                        <script th:src="@{/assets/js/ajax/stock.ajax.js}" src="../../static/assets/js/ajax/stock.ajax.js"></script>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">库存列表</div>
+                                <div class="widget-title am-fr" id="resultTotal">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
+                            </div>
+                            <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                                <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>库存编号</th>
+                                        <th>物料名称</th>
+                                        <th>物料类型</th>
+                                        <th>参数</th>
+                                        <th>仓库</th>
+                                        <th>存放区域</th>
+                                        <th>数量</th>
+                                        <th>选中</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="table_body">
+                                    <tr th:each="stock,stockStat:${pageResult.list}">
+                                        <td th:text="${stockStat.count}"></td>
+                                        <td th:text="${stock.id}"></td>
+                                        <td th:text="${stock.material.name}"></td>
+                                        <td th:text="${stock.material.type.name}"></td>
+                                        <td th:text="${stock.material.parameter}"></td>
+                                        <td th:text="${stock.warehouse.name}"></td>
+                                        <td th:text="${stock.area}"></td>
+                                        <td th:text="${stock.quantity}"></td>
+                                        <td>
+                                            <div class="tpl-table-black-operation">
+                                                <a th:href="@{|javascript:apply(${stockStat.count})|}">
+                                                    <i class="am-icon-check"></i> 使用
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- 分页 -->
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-body widget-body-sm am-fr">
+                                <ul class="am-pagination am-pagination-centered" id="pagination"></ul>
+                                <script type="text/javascript">
+                                    // 默认配置
+                                    var defaultOpts = {
+                                        totalPages: [[${pageResult.pages}]] || 1,
+                                        startPage: [[${pageResult.pageNum}]] || 1,
+                                        visiblePages: 5,
+                                        first: "首页",
+                                        prev: "&laquo;",
+                                        next: "&raquo;",
+                                        last: "尾页",
+                                        activeClass: "am-active",
+                                        disabledClass: "am-disabled",
+                                        initiateStartPageClick: false,
+                                        onPageClick: function (event,page) {
+                                            $("#pageNum").val(page);
+                                            $("#search").click();
+                                        }
+                                    }
+                                    function apply(obj) {
+                                        // console.log($("#table_body>tr>td>div>a").index(obj));
+                                        console.log(obj);
+                                    }
+                                    $("#pagination").twbsPagination(defaultOpts);
+                                    //创建AJAX后列表的编辑、删除按钮
+                                    function createOperation(desc, id) {
+                                        var tempNode = document.createElement("div");
+                                        tempNode.innerHTML = "<td><div class='tpl-table-black-operation'><a href='/" + desc + "/" + id + "'><i class='am-icon-pencil'></i> 编辑</a>&nbsp;<a href='/" + desc + "/delete/" + id + "' class='tpl-table-black-operation-del'><i class='am-icon-trash'></i> 删除</a></div></td>";
+                                        return tempNode.firstChild;
+                                    }
+                                    //AJAX查询后更新页码表
+                                    function updatePagination(result) {
+                                        $("#pagination").twbsPagination('destroy');
+                                        $("#pagination").twbsPagination($.extend({}, defaultOpts,
+                                            {
+                                                totalPages: result.pages || 1,
+                                                startPage: result.pageNum || 1,
+                                            })
+                                        );
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
