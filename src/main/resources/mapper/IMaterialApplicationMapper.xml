@@ -57,7 +57,7 @@
             LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
             LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
     </select>
-    <select id="queryById" parameterType="java.lang.Long" resultType="xyz.kakusei.fams.entity.MaterialApplication">
+    <select id="queryById" parameterType="java.lang.Long" resultMap="materialApplicationMap">
         SELECT ma.id, ma.quantity, ma.application_time, ma.operation_time, ma.comments, mas.id AS mas_id, mas.name AS mas_name,
                o.id AS o_id, c.id AS o_c_id, c.name AS o_c_name, c.contact AS o_c_contact, c.comments AS o_c_comments,
                o.price AS o_price, o.ddl AS o_ddl, o.create_time AS o_create_time,
@@ -96,7 +96,7 @@
                  LEFT JOIN materials AS m ON(s.mate_id = m.id)
                  LEFT JOIN material_type AS mt ON(m.type_id = mt.id)
                  LEFT JOIN warehouses AS w ON(s.warehouse_id = w.id)
-        WHERE id = #{id}
+        WHERE ma.id = #{id}
     </select>
     <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.MaterialApplicationQueryObject" resultMap="materialApplicationMap">
         SELECT ma.id, ma.quantity, ma.application_time, ma.operation_time, ma.comments, mas.id AS mas_id, mas.name AS mas_name,
@@ -145,23 +145,30 @@
             <if test="orderId != null and orderId > 0">
                 AND o.id = #{orderId}
             </if>
-            <if test="operatorId != null and operatorId > 0">
-                AND op.id = #{operatorId}
+            <if test="stateId != null and stateId > 0">
+                AND ma.state_id = #{stateId}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND
+                (
+                op.name LIKE CONCAT('%', #{keyword}, '%')
+                OR ma.application_time LIKE CONCAT('%', #{keyword}, '%')
+                )
             </if>
         </where>
     </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.MaterialApplication">
-        INSERT INTO material_application_states(order_id, emp_id, stock_id, quantity, state_id, application_time, operator_id, operation_time, comments)
+        INSERT INTO material_application(order_id, emp_id, stock_id, quantity, state_id, application_time, operator_id, operation_time, comments)
             VALUES(#{order.id}, #{employee.id}, #{stock.id}, #{quantity}, #{state.id}, #{applicationTime}, #{operator.id}, #{operationTime}, #{comments})
     </insert>
     <update id="update" parameterType="xyz.kakusei.fams.entity.MaterialApplication">
-        UPDATE material_application_states
+        UPDATE material_application
             SET order_id = #{order.id}, emp_id = #{employee.id}, stock_id = #{stock.id},
                 quantity = #{quantity}, state_id = #{state.id}, application_time = #{applicationTime},
                 operator_id = #{operator.id}, operation_time = #{operationTime}, comments = #{comments}
         WHERE id = #{id}
     </update>
     <delete id="deleteById" parameterType="java.lang.Long">
-        DELETE FROM material_application_states WHERE id = #{id}
+        DELETE FROM material_application WHERE id = #{id}
     </delete>
 </mapper>

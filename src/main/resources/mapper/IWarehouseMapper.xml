@@ -10,7 +10,7 @@
         SELECT id, name, position, comments FROM warehouses WHERE id = #{id}
     </select>
 
-    <select id="queryByCriteria" resultType="xyz.kakusei.fams.entity.Warehouse" parameterType="xyz.kakusei.fams.query.WarehouseQueryObject">
+    <select id="queryByCriteria" resultType="xyz.kakusei.fams.entity.Warehouse" parameterType="xyz.kakusei.fams.query.GeneralQueryObject">
         SELECT id, name, position, comments FROM warehouses
         <where>
             1 = 1

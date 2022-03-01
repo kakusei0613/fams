@@ -1,6 +1,5 @@
 package xyz.kakusei.fams.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Department;
-import xyz.kakusei.fams.query.DepartmentQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.util.RequiredPermission;
 
@@ -35,7 +34,7 @@ public class DepartmentController {
     @RequiredPermission({"Query Department", "department:query"})
     @PostMapping("/query")
     @ResponseBody
-    public PageInfo<Department> query(DepartmentQueryObject departmentQueryObject) {
+    public PageInfo<Department> query(GeneralQueryObject departmentQueryObject) {
         PageHelper.startPage(departmentQueryObject.getPageNum(), departmentQueryObject.getPageSize());
         PageInfo<Department> result = new PageInfo<Department>(departmentService.queryByCriteria(departmentQueryObject));
         return result;

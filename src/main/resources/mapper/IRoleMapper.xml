@@ -17,7 +17,7 @@
         SELECT id, name, comments FROM roles WHERE id = #{id}
     </select>
 
-    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.RoleQueryObject" resultMap="roleMap">
+    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.GeneralQueryObject" resultMap="roleMap">
         SELECT id, name, comments FROM roles
         <where>
             1 = 1

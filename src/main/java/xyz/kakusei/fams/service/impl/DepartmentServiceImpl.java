@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Department;
 import xyz.kakusei.fams.mapper.IDepartmentMapper;
-import xyz.kakusei.fams.query.DepartmentQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IDepartmentService;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
     }
 
     @Override
-    public List<Department> queryByCriteria(DepartmentQueryObject departmentQueryObject) {
+    public List<Department> queryByCriteria(GeneralQueryObject departmentQueryObject) {
         return departmentMapper.queryByCriteria(departmentQueryObject);
     }
 

@@ -1,7 +1,7 @@
 package xyz.kakusei.fams.service;
 
 import xyz.kakusei.fams.entity.Warehouse;
-import xyz.kakusei.fams.query.WarehouseQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ public interface IWarehouseService {
     Warehouse queryById(Byte id);
     void saveOrUpdate(Warehouse warehouse);
     void deleteById(Byte id);
-    List<Warehouse> queryByCriteria(WarehouseQueryObject warehouseQueryObject);
+    List<Warehouse> queryByCriteria(GeneralQueryObject warehouseQueryObject);
 }

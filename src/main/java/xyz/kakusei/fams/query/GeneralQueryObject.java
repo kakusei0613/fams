@@ -3,6 +3,6 @@ package xyz.kakusei.fams.query;
 import lombok.Data;
 
 @Data
-public class RoleQueryObject extends BasicQueryObject{
+public class GeneralQueryObject extends BasicQueryObject{
     private String keyword;
 }

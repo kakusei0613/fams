@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Warehouse;
-import xyz.kakusei.fams.query.WarehouseQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IWarehouseService;
 import xyz.kakusei.fams.util.RequiredPermission;
 
@@ -28,7 +28,7 @@ public class WarehouseController {
     @RequiredPermission({"Query Warehouse","warehouse:query"})
     @PostMapping("/query")
     @ResponseBody
-    public PageInfo<Warehouse> query(WarehouseQueryObject warehouseQueryObject) {
+    public PageInfo<Warehouse> query(GeneralQueryObject warehouseQueryObject) {
         PageHelper.startPage(warehouseQueryObject.getPageNum(), warehouseQueryObject.getPageSize());
         PageInfo<Warehouse> result = new PageInfo<Warehouse>(warehouseService.queryByCriteria(warehouseQueryObject));
         return result;

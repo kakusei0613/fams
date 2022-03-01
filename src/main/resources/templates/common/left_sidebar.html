@@ -12,7 +12,7 @@
                 <span class="user-panel-logged-in-text" th:text="${session.USER_IN_SESSION.name}">
                 <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
                 </span>
-                <a th:href="@{|/employee/${session.USER_IN_SESSION.id}|}" href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>
+                <a href="/employee/edit" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>
             </div>
         </div>
 
@@ -33,6 +33,11 @@
             <li class="sidebar-nav-link">
                 <a href="/order/tables" id="order_a">
                     <i class="am-icon-table sidebar-nav-link-logo"></i> 订单管理
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="/material/application/list" id="material_application_list_a">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 申请审批
                 </a>
             </li>
             <li class="sidebar-nav-link">
@@ -62,6 +67,11 @@
                             <span class="am-icon-angle-right sidebar-nav-link-logo"></span>  类型管理
                         </a>
                     </li>
+                    <li class="sidebar-nav-link">
+                    <a href="/material/type/tables" id="material_application_table_a">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span>  申请记录
+                    </a>
+                </li>
                 </ul>
             </li>
             <li class="sidebar-nav-link">

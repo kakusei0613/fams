@@ -2,7 +2,7 @@ package xyz.kakusei.fams.mapper;
 
 
 import xyz.kakusei.fams.entity.Customer;
-import xyz.kakusei.fams.query.CustomerQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface ICustomerMapper {
     void update(Customer customer);
     void insert(Customer customer);
     void deleteById(Integer id);
-    List<Customer> queryByCriteria(CustomerQueryObject customerQueryObject);
+    List<Customer> queryByCriteria(GeneralQueryObject customerQueryObject);
 }

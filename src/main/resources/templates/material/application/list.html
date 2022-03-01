@@ -24,8 +24,59 @@
     <!-- 侧边导航栏 -->
     <div th:replace="common/left_sidebar :: left-sidebar"></div>
     <script>
-        $("#material_a").addClass("active");
+        $("#material_application_list_a").addClass("active");
     </script>
+    <!-- 弹出窗口 -->
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="comments-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">输入备注（可以留空）</div>
+            <div class="am-modal-bd" id="prompt-content">
+                <input type="text" class="am-modal-prompt-input" id="prompt-input">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        function onOperationClick(mode, id) {
+            if (mode == true) {
+                $("#comments-prompt").modal({
+                    relatedTarget: this,
+                    onConfirm: function (e) {
+                        var object = {
+                            id : id,
+                            comments : e.data
+                        }
+                        $.post("/material/application/pass", object, function (result) {
+                            $("#table_body tr").remove("#tr-" + id);
+                            $("#prompt-input").val('');
+                        })
+                    },
+                    onCancel: function (e) { }
+                });
+            }
+            else if(mode == false) {
+                $("#comments-prompt").modal({
+                    relatedTarget: this,
+                    onConfirm: function (e) {
+                        var object = {
+                            id : id,
+                            comments : e.data
+                        }
+                        $.post("/material/application/refuse", object, function (result) {
+                            $("#table_body tr").remove("#tr-" + id);
+                            $("#prompt-input").val('');
+                        })
+                    },
+                    onCancel: function (e) { }
+                });
+            }
+
+        };
+    </script>
+
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
 
@@ -40,68 +91,22 @@
         <div class="row-content am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-                    <div class="widget am-cf tpl-form-border-form tpl-form-border-br">
-                        <form action="#" method="post" id="query_form">
-                            <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">条件查询</div>
-                                <div class="am-fr">
-                                    <input type="text" id="pageSize" size=1 name="pageSize" value="15" th:value="${pageResult.pageSize}"/>
-                                </div>
-                                <div class="am-form-label am-fr">每页记录数：</div>
-                            </div>
-                            <div class="widget-body am-fr am-form-inline">
-                                <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
-                                <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
-                                        <input type="text" id="orderId" style="height: 37.19px;width: 200px;" name="keyword" placeholder="订单编号"/>
-                                    </div>
-                                </div>
-                                <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
-                                        <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="操作员/申请时间"/>
-                                    </div>
-                                </div>
-                                <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
-                                        <select id="employee-select" data-am-selected="{searchBox: 1}" name="employeeId" style="display: none;">
-                                            <option value="-1">全部员工</option>
-                                            <option th:each="emp:${employees}" th:value="${emp.id}" th:text="${emp.id} + '-' + ${emp.name}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
-                                        <select id="state-select" data-am-selected="{searchBox: 1}" name="stateId" style="display: none;">
-                                            <option value="-1">全部状态</option>
-                                            <option th:each="state:${states}" th:value="${state.id}" th:text="${state.name}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="am-form-group">
-                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-u-sm-push-3">
-                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
-                                    </div>
-                                    <!--  ajax脚本  -->
-                                    <script th:src="@{/assets/js/ajax/material.appy.tables.ajax.js}"></script>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
                             <div class="widget-title am-fl">物料申请列表</div>
-                            <div class="widget-title am-fr">共有[[${pageResult.total}]]条记录&nbsp;&nbsp;</div>
+                            <div class="widget-title am-fr">
+                                <a href="javascript:refresh();" class="am-icon-refresh"></a>
+                            </div>
+                            <script>
+                                function refresh() {
+
+                                }
+                            </script>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
                             <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
                                 <thead>
                                 <tr>
-                                    <th>序号</th>
                                     <th>申请编号</th>
                                     <th>订单编号</th>
                                     <th>订单客户</th>
@@ -117,11 +122,11 @@
                                     <th>操作员</th>
                                     <th>操作时间</th>
                                     <th>备注</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table_body">
-                                <tr th:each="ma,maStat:${pageResult.list}">
-                                    <td th:text="${maStat.count}"></td>
+                                <tr th:each="ma,maStat:${pageResult.list}" th:id="'tr-' + ${ma.id}">
                                     <td th:text="${ma.id}"></td>
                                     <td th:text="${ma.order.id}"></td>
                                     <td th:text="${ma.order.customer.name}"></td>
@@ -137,6 +142,16 @@
                                     <td th:text="${ma.operator.name}"></td>
                                     <td th:text="${ma.operationTime}"></td>
                                     <td th:text="${ma.comments}"></td>
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <a th:onclick="'javascript:onOperationClick(true,' + ${ma.id} + ')'">
+                                                <i class="am-icon-check">  通过</i>
+                                            </a>
+                                            <a th:onclick="'javascript:onOperationClick(false,' + ${ma.id} + ')'" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-remove"></i> 拒绝
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -145,8 +160,6 @@
                     </div>
                 </div>
             </div>
-            <!-- 分页 -->
-            <div th:replace="common/pagination :: pagination"></div>
     </div>
 </div>
 </div>

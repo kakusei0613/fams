@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Customer;
-import xyz.kakusei.fams.query.CustomerQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.ICustomerService;
 import xyz.kakusei.fams.util.RequiredPermission;
 
@@ -28,7 +28,7 @@ public class CustomerController {
     @RequiredPermission({"Query Customer","customer:query"})
     @PostMapping("/query")
     @ResponseBody
-    public PageInfo<Customer> query(Model model, CustomerQueryObject customerQueryObject) {
+    public PageInfo<Customer> query(GeneralQueryObject customerQueryObject) {
         PageHelper.startPage(customerQueryObject.getPageNum(),customerQueryObject.getPageSize());
         PageInfo<Customer> result = new PageInfo<Customer>(customerService.queryByCriteria(customerQueryObject));
         return result;

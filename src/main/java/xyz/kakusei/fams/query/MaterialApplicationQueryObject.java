@@ -6,6 +6,6 @@ import lombok.Data;
 public class MaterialApplicationQueryObject extends BasicQueryObject {
     private Long employeeId;
     private Long orderId;
-    private Long operatorId;
+    private Byte stateId;
     private String keyword;
 }

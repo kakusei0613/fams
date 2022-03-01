@@ -8,7 +8,7 @@
     <select id="queryById" resultType="xyz.kakusei.fams.entity.Department" parameterType="java.lang.Byte">
         SELECT id, name, contact, comments FROM departments WHERE id = #{id}
     </select>
-    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.DepartmentQueryObject" resultType="xyz.kakusei.fams.entity.Department">
+    <select id="queryByCriteria" parameterType="xyz.kakusei.fams.query.GeneralQueryObject" resultType="xyz.kakusei.fams.entity.Department">
         SELECT id, name, contact, comments FROM departments
         <where>
             1 = 1

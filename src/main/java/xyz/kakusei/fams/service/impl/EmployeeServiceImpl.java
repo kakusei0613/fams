@@ -16,6 +16,7 @@ import xyz.kakusei.fams.util.LoginException;
 
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,6 +49,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void saveOrUpdate(Employee employee, Byte[] roleIds) {
+        if (employee.getAdmin() == null) {
+            employee.setAdmin(false);
+        }
         if (employee.getId() == null) {
 //              对密码进行MD5加密
             employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes(StandardCharsets.UTF_8)));
@@ -117,5 +121,33 @@ public class EmployeeServiceImpl implements IEmployeeService {
         HttpSession session = servletRequestAttributes.getRequest().getSession();
         session.removeAttribute("USER_IN_SESSION");
         session.removeAttribute("EXPRESSION_IN_SESSION");
+    }
+
+    @Override
+    public Employee getCurrentUserData() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpSession session = servletRequestAttributes.getRequest().getSession();
+        Employee user = (Employee) session.getAttribute("USER_IN_SESSION");
+        if (user == null) {
+            throw new LoginException("The user has not logged in to the system.");
+        }
+        return user;
+    }
+
+    public void saveProfile(Employee employee) {
+        Employee user = getCurrentUserData();
+        if (employee.getId() != user.getId()) {
+            throw new RuntimeException("User id unequal.");
+        }
+        user.setBirthday(employee.getBirthday());
+        user.setPhone(employee.getPhone());
+        user.setEmail(employee.getEmail());
+        user.setPassword(employee.getPassword());
+        user.setAddress(employee.getAddress());
+        List<Byte> roleIds = new ArrayList<Byte>();
+        for (Role role : user.getRoleList()) {
+            roleIds.add(role.getId());
+        }
+        saveOrUpdate(user, (Byte[]) roleIds.toArray());
     }
 }

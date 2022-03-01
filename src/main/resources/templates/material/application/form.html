@@ -27,6 +27,48 @@
         <script>
             $("#material_a").addClass("active");
         </script>
+        <!-- 弹出窗口 -->
+        <div class="am-modal am-modal-prompt" tabindex="-1" id="quantity-prompt">
+            <div class="am-modal-dialog">
+                <div class="am-modal-hd">输入数量</div>
+                <div class="am-modal-bd" id="prompt-content">
+                    <input type="text" class="am-modal-prompt-input" id="prompt-input">
+                </div>
+                <div class="am-modal-footer">
+                    <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                    <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                var TaskType = '';
+                $("#table_body tr").click(function () {
+                    TaskType = $(this).find("td").eq(0).html();
+                    $("#quantity-prompt").modal({
+                        relatedTarget: this,
+                        onConfirm: function (e) {
+                            $("#tr-" + TaskType).append($("<td>" + e.data + "</td>"));
+                            $("#tr-" + TaskType).appendTo($("#apply_table_body"));
+                            $("#table_body tr").remove("#tr-" + TaskType);
+                            $("#prompt-input").val('');
+                            //清空click函数，重新写入
+                            $("#tr-" + TaskType).off("click");
+                            $("#tr-" + TaskType).click(function () {
+                                TaskType = $(this).find("td").eq(0).html();
+                                $("#apply_table_body tr").remove("#tr-" + TaskType);
+                                $("#search").click();
+                            });
+                        },
+                        onCancel: function (e) {
+
+                        }
+                    });
+                })
+            });
+
+        </script>
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
 
@@ -91,6 +133,26 @@
                                     <label class="am-u-sm-3 am-u-md-3 am-u-lg-3 am-form-label">备注 </label>
                                     <div class="am-u-sm-9 am-u-md-9 am-u-lg-9" th:text="${order.comments}"></div>
                                 </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-md-9 am-u-lg-9 am-u-sm-push-3">
+                                        <button type="button" id="submit-application" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                    </div>
+                                    <script>
+                                        $("#submit-application").click(function () {
+                                            var result = {
+                                                'orderId' : [[${order.id}]],
+                                                'stockIds' : new Array(),
+                                                'quantity' : new Array()
+                                            }
+                                            $.each($("#apply_table_body tr"), function (index, object) {
+                                                var tr = $(this);
+                                                result.stockIds.push(tr.find("td").eq(0).html());
+                                                result.quantity.push(tr.find("td").eq(7).html());
+                                            });
+                                            $.post("/material/application/apply", result, function (e) {});
+                                        });
+                                    </script>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,39 +165,20 @@
                             <div class="widget-title am-fl">申请一览</div>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
-                            <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
+                            <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black">
                                 <thead>
                                 <tr>
                                     <th>库存编号</th>
                                     <th>物料名称</th>
                                     <th>物料类型</th>
-                                    <th>存放仓库</th>
-                                    <th>位置</th>
+                                    <th>参数</th>
+                                    <th>仓库</th>
+                                    <th>存放区域</th>
                                     <th>剩余数量</th>
                                     <th>申请数量</th>
-                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="apply_table_body">
-<!--                                <tr th:each="employee,employeeStat:${pageResult.list}">-->
-<!--                                    <td th:text="${employeeStat.count}"></td>-->
-<!--                                    <td th:text="${employee.id}"></td>-->
-<!--                                    <td th:text="${employee.name}"></td>-->
-<!--                                    <td th:text="${employee.birthday}"></td>-->
-
-<!--                                    <td th:text="${employee.gender.name}"></td>-->
-
-<!--                                    <td th:text="${employee.phone}"></td>-->
-<!--                                    <td th:text="${employee.email}"></td>-->
-<!--                                    <td th:text="${employee.address}"></td>-->
-<!--                                    <td>-->
-<!--                                        <div class="tpl-table-black-operation">-->
-<!--                                            <a th:href="@{|/employee/delete/${employee.id}|}" class="tpl-table-black-operation-del">-->
-<!--                                                <i class="am-icon-trash"></i> 删除-->
-<!--                                            </a>-->
-<!--                                        </div>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -181,7 +224,7 @@
                                             <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
                                         </div>
                                         <!--  ajax脚本  -->
-                                        <script th:src="@{/assets/js/ajax/stock.ajax.js}" src="../../static/assets/js/ajax/stock.ajax.js"></script>
+                                        <script th:src="@{/assets/js/ajax/material.apply.ajax.js}" src="../../static/assets/js/ajax/material.apply.ajax.js"></script>
                                     </div>
 
                                 </div>
@@ -200,7 +243,6 @@
                                 <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
                                     <thead>
                                     <tr>
-                                        <th>序号</th>
                                         <th>库存编号</th>
                                         <th>物料名称</th>
                                         <th>物料类型</th>
@@ -208,12 +250,10 @@
                                         <th>仓库</th>
                                         <th>存放区域</th>
                                         <th>数量</th>
-                                        <th>选中</th>
                                     </tr>
                                     </thead>
                                     <tbody id="table_body">
-                                    <tr th:each="stock,stockStat:${pageResult.list}">
-                                        <td th:text="${stockStat.count}"></td>
+                                    <tr th:each="stock:${pageResult.list}" th:id="'tr-' + ${stock.id}">
                                         <td th:text="${stock.id}"></td>
                                         <td th:text="${stock.material.name}"></td>
                                         <td th:text="${stock.material.type.name}"></td>
@@ -221,16 +261,10 @@
                                         <td th:text="${stock.warehouse.name}"></td>
                                         <td th:text="${stock.area}"></td>
                                         <td th:text="${stock.quantity}"></td>
-                                        <td>
-                                            <div class="tpl-table-black-operation">
-                                                <a th:href="@{|javascript:apply(${stockStat.count})|}">
-                                                    <i class="am-icon-check"></i> 使用
-                                                </a>
-                                            </div>
-                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
+
                             </div>
 
                         </div>
@@ -260,17 +294,7 @@
                                             $("#search").click();
                                         }
                                     }
-                                    function apply(obj) {
-                                        // console.log($("#table_body>tr>td>div>a").index(obj));
-                                        console.log(obj);
-                                    }
                                     $("#pagination").twbsPagination(defaultOpts);
-                                    //创建AJAX后列表的编辑、删除按钮
-                                    function createOperation(desc, id) {
-                                        var tempNode = document.createElement("div");
-                                        tempNode.innerHTML = "<td><div class='tpl-table-black-operation'><a href='/" + desc + "/" + id + "'><i class='am-icon-pencil'></i> 编辑</a>&nbsp;<a href='/" + desc + "/delete/" + id + "' class='tpl-table-black-operation-del'><i class='am-icon-trash'></i> 删除</a></div></td>";
-                                        return tempNode.firstChild;
-                                    }
                                     //AJAX查询后更新页码表
                                     function updatePagination(result) {
                                         $("#pagination").twbsPagination('destroy');

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Gender {
-    private Integer id;
+    private Byte id;
     private String name;
 }

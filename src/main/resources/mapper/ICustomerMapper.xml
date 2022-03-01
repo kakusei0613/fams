@@ -8,7 +8,7 @@
     <select id="queryById" resultType="xyz.kakusei.fams.entity.Customer" parameterType="java.lang.Integer">
         SELECT id, name, contact, comments FROM customers WHERE id = #{id}
     </select>
-    <select id="queryByCriteria" resultType="xyz.kakusei.fams.entity.Customer" parameterType="xyz.kakusei.fams.query.CustomerQueryObject">
+    <select id="queryByCriteria" resultType="xyz.kakusei.fams.entity.Customer" parameterType="xyz.kakusei.fams.query.GeneralQueryObject">
         SELECT id, name, contact, comments FROM customers
         <where>
             1 = 1

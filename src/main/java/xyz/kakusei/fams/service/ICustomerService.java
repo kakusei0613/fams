@@ -1,8 +1,7 @@
 package xyz.kakusei.fams.service;
 
 import xyz.kakusei.fams.entity.Customer;
-import xyz.kakusei.fams.entity.Department;
-import xyz.kakusei.fams.query.CustomerQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 
 import java.util.List;
 
@@ -11,5 +10,5 @@ public interface ICustomerService {
     Customer queryById(Integer id);
     void saveOrUpdate(Customer department);
     void deleteById(Integer id);
-    List<Customer> queryByCriteria(CustomerQueryObject customerQueryObject);
+    List<Customer> queryByCriteria(GeneralQueryObject customerQueryObject);
 }

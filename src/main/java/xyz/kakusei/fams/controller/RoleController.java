@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.kakusei.fams.entity.Role;
-import xyz.kakusei.fams.query.RoleQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IPermissionService;
 import xyz.kakusei.fams.service.IRoleService;
 import xyz.kakusei.fams.util.RequiredPermission;
@@ -32,7 +32,7 @@ public class RoleController {
     @RequiredPermission({"Query Role","role:query"})
     @PostMapping("/query")
     @ResponseBody
-    public PageInfo<Role> query(RoleQueryObject roleQueryObject) {
+    public PageInfo<Role> query(GeneralQueryObject roleQueryObject) {
         PageHelper.startPage(roleQueryObject.getPageNum(), roleQueryObject.getPageSize());
         PageInfo<Role> result = new PageInfo<Role>(roleService.queryByCriteria(roleQueryObject));
         return result;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Customer;
 import xyz.kakusei.fams.mapper.ICustomerMapper;
-import xyz.kakusei.fams.query.CustomerQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.ICustomerService;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public List<Customer> queryByCriteria(CustomerQueryObject customerQueryObject) {
+    public List<Customer> queryByCriteria(GeneralQueryObject customerQueryObject) {
         return customerMapper.queryByCriteria(customerQueryObject);
     }
 }

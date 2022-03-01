@@ -102,7 +102,8 @@ public class OrderController {
     @RequiredPermission({"Modify Order","order:modify"})
     @PostMapping("/new")
     public String saveOrUpdate(Order order, Long[] staffIds) {
-        orderService.saveOrUpdate(order, staffIds , Long.parseLong("1"));
+        Employee user = employeeService.getCurrentUserData();
+        orderService.saveOrUpdate(order, staffIds , user.getId());
         return "redirect:/order/tables";
     }
 }

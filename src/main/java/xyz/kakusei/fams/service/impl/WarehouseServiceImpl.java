@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.kakusei.fams.entity.Warehouse;
 import xyz.kakusei.fams.mapper.IWarehouseMapper;
-import xyz.kakusei.fams.query.WarehouseQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IWarehouseService;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class WarehouseServiceImpl implements IWarehouseService {
     }
 
     @Override
-    public List<Warehouse> queryByCriteria(WarehouseQueryObject warehouseQueryObject) {
+    public List<Warehouse> queryByCriteria(GeneralQueryObject warehouseQueryObject) {
         return warehouseMapper.queryByCriteria(warehouseQueryObject);
     }
 }

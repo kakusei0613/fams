@@ -2,11 +2,10 @@ package xyz.kakusei.fams.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.kakusei.fams.entity.Permission;
 import xyz.kakusei.fams.entity.Role;
 import xyz.kakusei.fams.mapper.IPermissionMapper;
 import xyz.kakusei.fams.mapper.IRoleMapper;
-import xyz.kakusei.fams.query.RoleQueryObject;
+import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IRoleService;
 
 import java.util.List;
@@ -55,7 +54,7 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public List<Role> queryByCriteria(RoleQueryObject roleQueryObject) {
+    public List<Role> queryByCriteria(GeneralQueryObject roleQueryObject) {
         return roleMapper.queryByCriteria(roleQueryObject);
     }
 }

@@ -19,4 +19,6 @@ public interface IEmployeeService {
     List<Employee> queryByDepartmentId(Byte departmentId);
     void login(String username, String password);
     void logout();
+    Employee getCurrentUserData();
+    void saveProfile(Employee employee);
 }

@@ -38,8 +38,8 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IMaterialApplicationService materialApplicationService;
 
-    private static SimpleDateFormat simpleDateFormat;
-    private static SimpleDateFormat yearMonth;
+    private static final SimpleDateFormat simpleDateFormat;
+    private static final SimpleDateFormat yearMonth;
 
     static {
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

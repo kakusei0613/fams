@@ -29,7 +29,7 @@ public class CheckPermissionInterceptor implements HandlerInterceptor {
         }
 //        编辑自己的信息，放行
         Class employeeControllerClass = EmployeeController.class;
-        Method myInfo = employeeControllerClass.getMethod("employee");
+        Method myInfo = employeeControllerClass.getMethod("saveOrUpdate", Employee.class, Byte[].class);
         if (method == myInfo) {
             Long id = Long.parseLong(request.getParameter("id"));
             if (user.getId() == id) {
