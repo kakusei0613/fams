@@ -56,17 +56,17 @@
 
                                 <form action="/warehouse/new" id="editForm" class="am-form tpl-form-line-form" method="post">
                                     <div class="am-form-group" th:if="${warehouse.id} != null">
-                                        <label class="am-u-sm-3 am-form-label">部门编号 </label>
+                                        <label class="am-u-sm-3 am-form-label">仓库编号 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${warehouse.id}" name="id" class="tpl-form-input tpl-form-no-bg" readonly="">
                                         </div>
                                     </div>
 
                                     <div class="am-form-group">
-                                        <label class="am-u-sm-3 am-form-label">部门名称 </label>
+                                        <label class="am-u-sm-3 am-form-label">仓库名称 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${warehouse.name}" class="tpl-form-input tpl-form-no-bg" name="name" placeholder="请输入仓库名称">
-                                            <small>部门名称为必填</small>
+                                            <small>仓库名称为必填</small>
                                         </div>
                                     </div>
 

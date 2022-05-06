@@ -149,7 +149,9 @@
                                                 result.stockIds.push(tr.find("td").eq(0).html());
                                                 result.quantity.push(tr.find("td").eq(7).html());
                                             });
-                                            $.post("/material/application/apply", result, function (e) {});
+                                            $.post("/material/application/apply", result, function (e) {
+                                                $(location).attr("href","/index")
+                                            });
                                         });
                                     </script>
                                 </div>

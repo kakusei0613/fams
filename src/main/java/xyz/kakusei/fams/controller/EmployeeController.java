@@ -78,7 +78,7 @@ public class EmployeeController {
     @RequiredPermission({"Modify Employee","employee:modify"})
     @PostMapping("/new")
     public String saveOrUpdate(Employee employee, Byte[] roleIds) {
-//        employeeService.saveOrUpdate(employee, roleIds);
+        employeeService.saveOrUpdate(employee, roleIds);
         System.out.println(employee);
         return "redirect:/employee/tables";
     }

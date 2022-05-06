@@ -52,6 +52,7 @@
                         $.post("/material/application/pass", object, function (result) {
                             $("#table_body tr").remove("#tr-" + id);
                             $("#prompt-input").val('');
+                            refresh();
                         })
                     },
                     onCancel: function (e) { }
@@ -68,12 +69,12 @@
                         $.post("/material/application/refuse", object, function (result) {
                             $("#table_body tr").remove("#tr-" + id);
                             $("#prompt-input").val('');
+                            refresh();
                         })
                     },
                     onCancel: function (e) { }
                 });
             }
-
         };
     </script>
 
@@ -83,7 +84,7 @@
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 物料申请管理 <small>Department</small></div>
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 物料申请管理 </div>
                     <p class="page-header-description">你可以在此处对物料申请记录进行管理。</p>
                 </div>
             </div>
@@ -99,7 +100,61 @@
                             </div>
                             <script>
                                 function refresh() {
+                                    $.post("/material/application/list", null, function (result) {
+                                        var table_body = $("#table_body");
+                                        table_body.empty();
+                                        for (var resultKey of result) {
+                                            var tr = document.createElement("tr");
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.id;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.order.id;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.order.customer.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.employee.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.stock.id;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.stock.material.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.stock.material.type.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.stock.warehouse.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.stock.area;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.quantity;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.state.name;
+                                            tr.append(td);
+                                            td = document.createElement("td");
+                                            td.innerText = resultKey.applicationTime;
+                                            tr.append(td);
 
+                                            td = document.createElement("td");
+                                            td.innerHTML = "<div class=\"tpl-table-black-operation\">" +
+                                                "                                            <a onclick=javascript:onOperationClick(true,"+ resultKey.id + ")>" +
+                                                "                                                <i class=\"am-icon-check\">  通过</i>" +
+                                                "                                            </a>" +
+                                                "                                            <a onclick=javascript:onOperationClick(false,"+ resultKey.id + ") class=tpl-table-black-operation-del>" +
+                                                "                                                <i class=\"am-icon-remove\"></i> 拒绝" +
+                                                "                                            </a>" +
+                                                "                                        </div>"
+                                            tr.append(td);
+                                            table_body.append(tr);
+                                        }
+                                    })
                                 }
                             </script>
                         </div>
@@ -119,14 +174,11 @@
                                     <th>拟申请数量</th>
                                     <th>状态</th>
                                     <th>申请时间</th>
-                                    <th>操作员</th>
-                                    <th>操作时间</th>
-                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table_body">
-                                <tr th:each="ma,maStat:${pageResult.list}" th:id="'tr-' + ${ma.id}">
+                                <tr th:each="ma,maStat:${records}" th:id="'tr-' + ${ma.id}">
                                     <td th:text="${ma.id}"></td>
                                     <td th:text="${ma.order.id}"></td>
                                     <td th:text="${ma.order.customer.name}"></td>
@@ -139,9 +191,6 @@
                                     <td th:text="${ma.quantity}"></td>
                                     <td th:text="${ma.state.name}"></td>
                                     <td th:text="${ma.applicationTime}"></td>
-                                    <td th:text="${ma.operator.name}"></td>
-                                    <td th:text="${ma.operationTime}"></td>
-                                    <td th:text="${ma.comments}"></td>
                                     <td>
                                         <div class="tpl-table-black-operation">
                                             <a th:onclick="'javascript:onOperationClick(true,' + ${ma.id} + ')'">

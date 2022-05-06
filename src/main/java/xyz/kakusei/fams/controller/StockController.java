@@ -65,7 +65,9 @@ public class StockController {
     @GetMapping("/new")
     public String newStock(Model model) {
         model.addAttribute("stock", new Stock());
-        return "redirect:/stock/form";
+        model.addAttribute("materials", materialService.queryAll());
+        model.addAttribute("warehouses", warehouseService.queryAll());
+        return "/stock/form";
     }
     @RequiredPermission({"Modify Stock","stock:modify"})
     @PostMapping("/new")

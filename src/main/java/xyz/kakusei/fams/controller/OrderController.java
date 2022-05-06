@@ -82,7 +82,7 @@ public class OrderController {
         model.addAttribute("staffs", employeeService.queryAll());
         model.addAttribute("departments", departmentService.queryAll());
         PageHelper.startPage(1,5);
-        model.addAttribute("orderUsedStockPageResult", new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(id)));
+        model.addAttribute("orderStockUsedPageResult", new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(id)));
         return "/order/form";
     }
     @RequiredPermission({"Delete Order","order:delete"})
@@ -95,6 +95,7 @@ public class OrderController {
     @GetMapping("/new")
     public String newOrder(Model model) {
         model.addAttribute("order", new Order());
+        model.addAttribute("customers", customerService.queryAll());
         model.addAttribute("states", orderService.queryAllState());
         model.addAttribute("staffs", employeeService.queryAll());
         return "/order/form";

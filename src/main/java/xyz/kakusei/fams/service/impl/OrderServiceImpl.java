@@ -67,6 +67,14 @@ public class OrderServiceImpl implements IOrderService {
         if (order.getId() == null) {
             order.setCreateTime(simpleDateFormat.format(date));
             order.setProcessTime(simpleDateFormat.format(date));
+//            设置创建者
+            Employee creator = new Employee();
+            creator.setId(employeeId);
+            order.setCreator(creator);
+//            设置创建状态
+            State state = new State();
+            state.setId(Byte.parseByte("1"));
+            order.setState(state);
             orderMapper.insert(order);
 //            加入记录状态变化
             orderStateChangeMapper.insertOrderStateChange(order.getId(), order.getState().getId(), simpleDateFormat.format(date), employeeId);

@@ -13,6 +13,8 @@ import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.service.*;
 import xyz.kakusei.fams.util.RequiredPermission;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/material/application")
 public class MaterialApplicationController {
@@ -104,12 +106,18 @@ public class MaterialApplicationController {
     public Boolean refuse(Long id, String comments) {
         return materialApplicationService.setRefuseState(id, comments);
     }
-    @GetMapping("list")
+    @GetMapping("/list")
     public String list(Model model) {
         MaterialApplicationQueryObject queryObject = new MaterialApplicationQueryObject();
         queryObject.setStateId(Byte.parseByte("2"));
-        PageHelper.startPage(1, 15);
-        model.addAttribute("pageResult", new PageInfo<MaterialApplication>(materialApplicationService.queryByCriteria(queryObject)));
+        model.addAttribute("records", materialApplicationService.queryByCriteria(queryObject));
         return "/material/application/list";
+    }
+    @PostMapping("/list")
+    @ResponseBody
+    public List<MaterialApplication> queryList() {
+        MaterialApplicationQueryObject queryObject = new MaterialApplicationQueryObject();
+        queryObject.setStateId(Byte.parseByte("2"));
+        return materialApplicationService.queryByCriteria(queryObject);
     }
 }

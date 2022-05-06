@@ -81,7 +81,7 @@
         </where>
     </select>
     <insert id="insert" parameterType="xyz.kakusei.fams.entity.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO orders(cust_id, price, ddl, create_time, creator_id, state_id, comments)
+        INSERT INTO orders(cust_id, price, ddl, create_time, creator_id, state_id, process_time, comments)
             VALUES(#{customer.id}, #{price}, #{ddl}, #{createTime}, #{creator.id}, #{state.id}, #{processTime}, #{comments})
     </insert>
     <update id="update" parameterType="xyz.kakusei.fams.entity.Order">

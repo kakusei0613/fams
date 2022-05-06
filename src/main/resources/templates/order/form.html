@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="am-form-group">
+                                    <div class="am-form-group" th:if="${order.state} != null">
                                         <label class="am-u-sm-3 am-form-label">状态 </label>
                                         <div class="am-u-sm-9">
                                             <select id="state-select" name="state.id" data-am-selected="{searchBox: 1}" style="display: none;">
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="am-form-group">
+                                    <div class="am-form-group"  th:if="${order.processTime} != null">
                                         <label class="am-u-sm-3 am-form-label">处理时间 </label>
                                         <div class="am-u-sm-9">
                                             <input type="text" th:value="${order.processTime}" readonly="">
@@ -128,6 +128,68 @@
                                         </div>
                                     </div>
 
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-form-label">员工 </label>
+                                    <div class="am-u-sm-9"></div>
+                                    <div class="am-u-sm-3"></div>
+                                    <div class="am-u-sm-12 am-u-md-4">
+                                        <select multiple style="height: 150px;" id="orderStaff" name="staffIds">
+                                            <option th:each="staff:${order.staffs}" th:value="${staff?.id}" th:text="${staff?.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-1" style="text-align: center" >
+                                        <a class="am-btn" onclick="moveAll('allStaff','orderStaff')"><<</a>
+                                        <br>
+                                        <a class="am-btn" onclick="moveSelected('allStaff','orderStaff')"><</a>
+                                        <br>
+                                        <a class="am-btn" onclick="moveSelected('orderStaff','allStaff')">></a>
+                                        <br>
+                                        <a class="am-btn" onclick="moveAll('orderStaff','allStaff')">>></a>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-4">
+                                        <select multiple style="height: 150px;" id="allStaff">
+                                            <option th:each="sta:${staffs}" th:value="${sta.id}" th:text="${sta.name}"></option>
+                                        </select>
+                                    </div>
+                                    <script>
+                                        function moveSelected(src, desc) {
+                                            $("#" + src + " option:selected").appendTo($("#" + desc));
+                                        }
+                                        function moveAll(src,desc) {
+                                            $("#" + src + " option").appendTo($("#" + desc));
+                                        }
+                                        $(function () {
+                                            //获取右边框中option的value,存到数组中
+                                            var ids = [];
+                                            $.each($("#orderStaff option"), function (index,option) {
+                                                ids.push(option.value);
+                                                console.log("ids:"+ ids);
+                                            })
+                                        })
+
+                                        $(function () {
+                                            //排重
+                                            var ids = $.map($("#orderStaff option"), function (item) {
+                                                return item.value;
+                                            })
+                                            //遍历左边框中的所有option,判断其value值是否在上面的数组中
+                                            //在,则删除
+                                            $.each($("#allStaff option"), function (index, item) {
+                                                if ($.inArray(item.value, ids) >= 0) {
+                                                    $(item).remove();
+                                                }
+                                            })
+                                            $("#submitBtn").click(function () {
+                                                $("#orderStaff option").prop("selected", true);
+                                                // $("#staffs-hidden").val($("#admin-checkbox").prop('checked'));
+                                                $("#editForm").submit();
+                                            })
+                                        })
+
+
+                                    </script>
+                                </div>
+
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-3">
                                             <button id="submitBtn" type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
@@ -137,7 +199,51 @@
                         </div>
                     </div>
                 </div>
+                    <div class="row" th:if="${order.id != null}">
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                            <div class="widget am-cf">
+                                <div class="widget-head am-cf">
+                                    <div class="widget-title am-fl">使用物料</div>
+                                </div>
+                                <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                                    <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>申请编号</th>
+                                            <th>库存编号</th>
+                                            <th>物料</th>
+                                            <th>存放仓库</th>
+                                            <th>申请数量</th>
+                                            <th>申请人</th>
+                                            <th>状态</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="order_stock_used_table_body">
+                                        <tr th:each="osu,osuStat:${orderStockUsedPageResult.list}">
+                                            <td th:text="${osuStat.count}"></td>
+                                            <td th:text="${osu.id}"></td>
+                                            <td th:text="${osu.stock.id}"></td>
+                                            <td th:text="${osu.stock.material.name}"></td>
+                                            <td th:text="${osu.stock.warehouse.name}"></td>
+                                            <td th:text="${osu.quantity}"></td>
+                                            <td th:text="${osu.employee.name}"></td>
+                                            <td th:text="${osu.state.name}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <ul class="am-pagination am-pagination-centered" id="order_stock_used_pagination"></ul>
+                                    <form action="#" method="post">
+                                        <input type="hidden" name="pageNum" id="osu_pageNum" th:value="${orderStockUsedPageResult.pageNum}">
+                                        <input type="hidden" name="pages" id="osu_pages" th:value="${orderStockUsedPageResult.pages}">
+                                        <input type="hidden" name="orderId" th:value="${order.id}">
+                                    </form>
+                                    <script th:src="@{/assets/js/ajax/order.used.stock.ajax.js}" ></script>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
                 <div class="row" th:if="${order.id != null}">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                         <div class="widget am-cf">

@@ -6,7 +6,7 @@ server:
     uri-encoding: UTF-8
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/fams?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/fams?useUnicode=true&characterEncoding=utf-8
     username: root
     password: root
   thymeleaf:
@@ -32,5 +32,3 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
-
-
