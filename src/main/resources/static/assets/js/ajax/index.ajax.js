@@ -12,7 +12,7 @@ var defaultOpts = {
     initiateStartPageClick: false,
     onPageClick: function (event,page) {
         $("#incompleteOrders_pageNum").val(page);
-        $.post("/incompleteOrders", {pageNum:page}, function (result) {
+        $.post("/order/incompleteOrders", {pageNum:page}, function (result) {
             var table_body = $("#incompleteOrders_table_body");
             table_body.empty();
             var count = 1;

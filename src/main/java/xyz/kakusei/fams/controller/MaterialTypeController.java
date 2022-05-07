@@ -10,6 +10,7 @@ import xyz.kakusei.fams.entity.MaterialType;
 import xyz.kakusei.fams.query.BasicQueryObject;
 import xyz.kakusei.fams.service.IMaterialTypeService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/material/type")
@@ -18,10 +19,13 @@ public class MaterialTypeController {
     @Autowired
     private IMaterialTypeService materialTypeService;
 
+    @Autowired
+    private SystemSetting setting;
+
     @RequiredPermission({"Query Material Type","material:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<MaterialType>(materialTypeService.queryAll()));
         return "/material/type/tables";
     }

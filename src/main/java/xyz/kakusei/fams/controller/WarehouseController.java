@@ -10,6 +10,7 @@ import xyz.kakusei.fams.entity.Warehouse;
 import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IWarehouseService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -18,10 +19,13 @@ public class WarehouseController {
     @Autowired
     private IWarehouseService warehouseService;
 
+    @Autowired
+    private SystemSetting setting;
+
     @RequiredPermission({"Query Warehouse","warehouse:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1,setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Warehouse>(warehouseService.queryAll()));
         return "/warehouse/tables";
     }

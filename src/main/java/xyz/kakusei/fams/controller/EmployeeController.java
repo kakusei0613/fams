@@ -3,6 +3,8 @@ package xyz.kakusei.fams.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,13 @@ import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IRoleService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
+    @Autowired
+    private SystemSetting setting;
     @Autowired
     private IEmployeeService employeeService;
     @Autowired
@@ -29,10 +34,11 @@ public class EmployeeController {
     @Autowired
     private IGenderMapper genderMapper;
 
+
     @RequiredPermission({"Query Employee","employee:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Employee>(employeeService.queryAll()));
         model.addAttribute("departments", departmentService.queryAll());
         model.addAttribute("states", stateMapper.queryAll(IStateMapper.EMPLOYEE_STATES_TABLE));

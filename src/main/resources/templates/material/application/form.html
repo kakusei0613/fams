@@ -49,6 +49,9 @@
                     $("#quantity-prompt").modal({
                         relatedTarget: this,
                         onConfirm: function (e) {
+                            if (e.data === '') {
+                                return;
+                            }
                             $("#tr-" + TaskType).append($("<td>" + e.data + "</td>"));
                             $("#tr-" + TaskType).appendTo($("#apply_table_body"));
                             $("#table_body tr").remove("#tr-" + TaskType);

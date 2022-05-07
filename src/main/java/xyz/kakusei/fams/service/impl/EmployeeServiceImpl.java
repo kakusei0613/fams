@@ -1,5 +1,7 @@
 package xyz.kakusei.fams.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IEmployeeMapper employeeMapper;
@@ -101,6 +105,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void login(String username, String password) {
+        logger.info("User:" + username + " password:" + password + " try to login.");
         password = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
         Employee user = employeeMapper.queryByUsernameAndPassword(username, password);
         if (user == null) {

@@ -7,15 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import xyz.kakusei.fams.entity.Employee;
 import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
-import xyz.kakusei.fams.service.IPermissionService;
 import xyz.kakusei.fams.util.LoginException;
-
-import javax.servlet.http.HttpSession;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 public class CommonController {
@@ -25,6 +21,9 @@ public class CommonController {
 
     @Autowired
     private IOrderService orderService;
+
+    @Autowired
+    private SystemSetting setting;
 
 
     @GetMapping("/login")
@@ -52,20 +51,14 @@ public class CommonController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        PageHelper.startPage(1, 15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("completedOrders", new PageInfo<Order>(orderService.queryOrdersCompleted()));
-        PageHelper.startPage(1, 15);
-        model.addAttribute("incompleteOrders", new PageInfo<Order>(orderService.queryIncompleteOrder()));
-        return "/index";
+        PageHelper.startPage(1, setting.getPageSize());
+//        model.addAttribute("incompleteOrders", new PageInfo<Order>(orderService.queryIncompleteOrder()));
+        model.addAttribute("pageResult", new PageInfo<Order>(orderService.queryIncompleteOrder()));
+        return "index";
     }
 
-    @PostMapping("/incompleteOrders")
-    @ResponseBody
-    public PageInfo<Order> queryIncompleteOrders(Integer pageNum) {
-        PageHelper.startPage(pageNum, 15);
-        PageInfo<Order> result = new PageInfo<Order>(orderService.queryIncompleteOrder());
-        return result;
-    }
 
     @GetMapping("/needPermission")
     public String noPermission() {

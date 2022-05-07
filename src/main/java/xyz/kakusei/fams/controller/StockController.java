@@ -13,6 +13,7 @@ import xyz.kakusei.fams.service.IMaterialTypeService;
 import xyz.kakusei.fams.service.IStockService;
 import xyz.kakusei.fams.service.IWarehouseService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/stock")
@@ -30,10 +31,13 @@ public class StockController {
     @Autowired
     private IMaterialTypeService materialTypeService;
 
+    @Autowired
+    private SystemSetting setting;
+
     @RequiredPermission({"Query Stock","stock:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Stock>(stockService.queryAll()));
         model.addAttribute("types", materialTypeService.queryAll());
         model.addAttribute("warehouses", warehouseService.queryAll());

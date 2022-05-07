@@ -12,6 +12,7 @@ import xyz.kakusei.fams.entity.Stock;
 import xyz.kakusei.fams.query.MaterialApplicationQueryObject;
 import xyz.kakusei.fams.service.*;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 import java.util.List;
 
@@ -37,11 +38,14 @@ public class MaterialApplicationController {
     @Autowired
     private IEmployeeService employeeService;
 
+    @Autowired
+    private SystemSetting setting;
+
 
     @RequiredPermission({"Query material application","materialApplication:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1, 15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<MaterialApplication>(materialApplicationService.queryAll()));
         model.addAttribute("employees", employeeService.queryAll());
         model.addAttribute("states", materialApplicationService.queryAllState());
@@ -84,7 +88,7 @@ public class MaterialApplicationController {
         model.addAttribute("order", orderService.queryById(orderId));
         model.addAttribute("types", materialTypeService.queryAll());
         model.addAttribute("warehouses", warehouseService.queryAll());
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Stock>(stockService.queryAll()));
         return "/material/application/form";
     }

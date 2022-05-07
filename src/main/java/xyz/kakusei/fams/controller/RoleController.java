@@ -11,6 +11,7 @@ import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IPermissionService;
 import xyz.kakusei.fams.service.IRoleService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/role")
@@ -22,10 +23,13 @@ public class RoleController {
     @Autowired
     private IPermissionService permissionService;
 
+    @Autowired
+    private SystemSetting setting;
+
     @RequiredPermission({"Query Role","role:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Role>(roleService.queryAll()));
         return "/role/tables";
     }

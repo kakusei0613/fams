@@ -1,3 +1,4 @@
+#  web设置
 server:
   port: 8080
   servlet:
@@ -5,6 +6,7 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
+#  数据库
   datasource:
     url: jdbc:mysql://localhost:3306/fams?useUnicode=true&characterEncoding=utf-8
     username: root
@@ -19,14 +21,14 @@ spring:
     cache: false
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
-
+#   日志
 logging:
   level:
     xyz:
       kakusei:
         fams:
-          mapper: debug
-          service: debug
+          service: info
+#   分页插件
 pagehelper:
   helper-dialect: mysql
   reasonable: true

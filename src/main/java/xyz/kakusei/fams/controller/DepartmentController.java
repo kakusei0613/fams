@@ -10,6 +10,7 @@ import xyz.kakusei.fams.entity.Department;
 import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 
 @Controller
@@ -17,11 +18,13 @@ import xyz.kakusei.fams.util.RequiredPermission;
 public class DepartmentController {
     @Autowired
     private IDepartmentService departmentService;
+    @Autowired
+    private SystemSetting setting;
 
     @RequiredPermission({"Query Department", "department:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1, 15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Department>(departmentService.queryAll()));
         return "/department/tables";
     }

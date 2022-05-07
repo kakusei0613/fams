@@ -10,6 +10,7 @@ import xyz.kakusei.fams.entity.Customer;
 import xyz.kakusei.fams.query.GeneralQueryObject;
 import xyz.kakusei.fams.service.ICustomerService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
 @RequestMapping("/customer")
@@ -17,10 +18,13 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
+    @Autowired
+    private SystemSetting setting;
+
     @RequiredPermission({"Query Customer","customer:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Customer>(customerService.queryAll()));
         return "/customer/tables";
     }

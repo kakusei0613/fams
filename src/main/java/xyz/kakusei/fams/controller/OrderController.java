@@ -16,6 +16,7 @@ import xyz.kakusei.fams.service.IDepartmentService;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
 import xyz.kakusei.fams.util.RequiredPermission;
+import xyz.kakusei.fams.util.SystemSetting;
 
 import java.util.List;
 
@@ -30,11 +31,13 @@ public class OrderController {
     private ICustomerService customerService;
     @Autowired
     private IDepartmentService departmentService;
+    @Autowired
+    private SystemSetting setting;
 
     @RequiredPermission({"Query Order","order:query"})
     @GetMapping("/tables")
     public String tables(Model model) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<Order>(orderService.queryAll()));
         model.addAttribute("states", orderService.queryAllState());
         model.addAttribute("creators", employeeService.queryAll());
@@ -45,7 +48,7 @@ public class OrderController {
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Order> query(OrderQueryObject orderQueryObject) {
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(1, setting.getPageSize());
         PageInfo<Order> result = new PageInfo<Order>(orderService.queryByCriteria(orderQueryObject));
         return result;
     }
@@ -53,7 +56,7 @@ public class OrderController {
     @PostMapping("/state")
     @ResponseBody
     public PageInfo<OrderStateChange> queryStateChange(Integer pageNum, Long orderId) {
-        PageHelper.startPage(pageNum, 5);
+        PageHelper.startPage(pageNum, setting.getPageSize());
         PageInfo<OrderStateChange> result = new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(orderId));
         return result;
     }
@@ -67,7 +70,7 @@ public class OrderController {
     @PostMapping("/used")
     @ResponseBody
     public PageInfo<MaterialApplication> queryOrderUsedStock(Integer pageNum, Long orderId) {
-        PageHelper.startPage(pageNum, 5);
+        PageHelper.startPage(pageNum, setting.getPageSize());
         PageInfo<MaterialApplication> result = new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(orderId));
         return result;
     }
@@ -77,11 +80,11 @@ public class OrderController {
         model.addAttribute("order", orderService.queryById(id));
         model.addAttribute("customers", customerService.queryAll());
         model.addAttribute("states", orderService.queryAllState());
-        PageHelper.startPage(1,5);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("pageResult", new PageInfo<OrderStateChange>(orderService.queryOrderStateChangeByOrderId(id)));
         model.addAttribute("staffs", employeeService.queryAll());
         model.addAttribute("departments", departmentService.queryAll());
-        PageHelper.startPage(1,5);
+        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("orderStockUsedPageResult", new PageInfo<MaterialApplication>(orderService.queryMaterialUsedByOrderId(id)));
         return "/order/form";
     }
@@ -106,5 +109,13 @@ public class OrderController {
         Employee user = employeeService.getCurrentUserData();
         orderService.saveOrUpdate(order, staffIds , user.getId());
         return "redirect:/order/tables";
+    }
+
+    @PostMapping("/incompleteOrders")
+    @ResponseBody
+    public PageInfo<Order> queryIncompleteOrders(Integer pageNum) {
+        PageHelper.startPage(pageNum, setting.getPageSize());
+        PageInfo<Order> result = new PageInfo<Order>(orderService.queryIncompleteOrder());
+        return result;
     }
 }

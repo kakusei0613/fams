@@ -18,101 +18,117 @@
 </head>
 
 <body data-type="index">
-    <script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
-    <div class="am-g tpl-g">
-        <!-- 头部 -->
-        <div th:replace="common/topbar :: topbar"></div>
-        <!-- 风格切换 -->
-        <div th:replace="common/skin-selecter :: skin-selecter"></div>
-        <!-- 侧边导航栏 -->
-        <div th:replace="common/left_sidebar :: left-sidebar"></div>
-        <script>
-            $("#index_a").addClass("active");
-        </script>
+<script th:src = "@{/assets/js/theme.js}" src="assets/js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <div th:replace="common/topbar :: topbar"></div>
+    <!-- 风格切换 -->
+    <div th:replace="common/skin-selecter :: skin-selecter"></div>
+    <!-- 侧边导航栏 -->
+    <div th:replace="common/left_sidebar :: left-sidebar"></div>
+    <script>
+        $("#index_a").addClass("active");
+    </script>
 
 
-        <!-- 内容区域 -->
-        <div class="tpl-content-wrapper">
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
 
-            <div class="container-fluid am-cf">
-                <div class="row">
-                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 首页 </div>
-                        <p class="page-header-description">欢迎使用本系统，以下是一些概况信息。</p>
-                    </div>
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 首页 </div>
+                    <p class="page-header-description">欢迎使用本系统，以下是一些概况信息。</p>
                 </div>
-
             </div>
 
-            <div class="row-content am-cf">
-                <div class="row  am-cf">
-                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
-                        <div class="widget am-cf">
-                            <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">月度财务收支计划</div>
-                                <div class="widget-function am-fr">
-                                    <a href="javascript:;" class="am-icon-cog"></a>
+        </div>
+
+        <div class="row-content am-cf">
+            <div class="row  am-cf">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">月度财务收支计划</div>
+                            <div class="widget-function am-fr">
+                                <a  class="am-icon-cog"></a>
+                            </div>
+                        </div>
+                        <div class="widget-body am-fr">
+                            <div class="am-fl">
+                                <div class="widget-fluctuation-period-text">
+                                    ￥61746.45
+                                    <button class="widget-fluctuation-tpl-btn">
+                                        <i class="am-icon-calendar"></i>
+                                        更多月份
+                                    </button>
                                 </div>
                             </div>
-                            <div class="widget-body am-fr">
-                                <div class="am-fl">
-                                    <div class="widget-fluctuation-period-text">
-                                        ￥61746.45
-                                        <button class="widget-fluctuation-tpl-btn">
-                        <i class="am-icon-calendar"></i>
-                        更多月份
-                      </button>
-                                    </div>
-                                </div>
-                                <div class="am-fr am-cf">
-                                    <div class="widget-fluctuation-description-amount text-success" am-cf>
-                                        +￥30420.56
+                            <div class="am-fr am-cf">
+                                <div class="widget-fluctuation-description-amount text-success" am-cf>
+                                    +￥30420.56
 
-                                    </div>
-                                    <div class="widget-fluctuation-description-text am-text-right">
-                                        8月份收入
-                                    </div>
+                                </div>
+                                <div class="widget-fluctuation-description-text am-text-right">
+                                    8月份收入
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
-                        <div class="widget widget-primary am-cf">
-                            <div class="widget-statistic-header">
-                                本月进行中订单数
-                            </div>
-                            <div class="widget-statistic-body">
-                                <div class="widget-statistic-value" th:text="${incompleteOrders.total}">
-                                </div>
-                                <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
-                            </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+                    <div class="widget widget-primary am-cf">
+                        <div class="widget-statistic-header">
+                            本月进行中订单数
                         </div>
-                    </div>
-                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
-                        <div class="widget widget-purple am-cf">
-                            <div class="widget-statistic-header">
-                                本月完成订单数
+                        <div class="widget-statistic-body">
+                            <div class="widget-statistic-value" th:text="${pageResult.total}">
                             </div>
-                            <div class="widget-statistic-body">
-                                <div class="widget-statistic-value" th:text="${completedOrders.total}">
-                                </div>
-                                <span class="widget-statistic-icon am-icon-support"></span>
-                            </div>
+                            <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="row am-cf">
-
-                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
-
-                        <div class="widget am-cf">
-                            <div class="widget-head am-cf">
-                                <div class="widget-title am-fl">未完成订单列表</div>
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+                    <div class="widget widget-purple am-cf">
+                        <div class="widget-statistic-header">
+                            本月完成订单数
+                        </div>
+                        <div class="widget-statistic-body">
+                            <div class="widget-statistic-value" th:text="${completedOrders.total}">
                             </div>
-                            <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
+                            <span class="widget-statistic-icon am-icon-support"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row am-cf" style="display:none">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">月度财务收支计划</div>
+                            <div class="widget-function am-fr">
+                                <a  class="am-icon-cog"></a>
+                            </div>
+                        </div>
+                        <div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row am-cf">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 widget-margin-bottom-lg">
+
+                    <div class="widget am-cf widget-body-lg">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">未完成订单列表</div>
+                        </div>
+                        <div class="widget-body  am-fr">
+                            <div class="am-scrollable-horizontal ">
                                 <table width="100%" class="am-table am-text-nowrap am-table-striped tpl-table-black" id="example-r">
                                     <thead>
                                     <tr>
@@ -122,25 +138,18 @@
                                         <th>截止时间</th>
                                         <th>创建时间</th>
                                         <th>创建者</th>
-                                        <th>订单状态</th>
-                                        <th>处理时间</th>
                                         <th>备注</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="incompleteOrders_table_body">
-                                    <tr th:each="order,orderStat:${incompleteOrders.list}">
+                                    <tbody id="table_body">
+                                    <tr th:each="order,orderStat:${pageResult.list}">
                                         <td th:text="${orderStat.count}"></td>
                                         <td th:text="${order.id}"></td>
                                         <td th:text="${order.customer.name}"></td>
-
                                         <td th:text="${order.ddl}"></td>
                                         <td th:text="${order.createTime}"></td>
                                         <td th:text="${order.creator.name}"></td>
-
-                                        <td th:text="${order.state.name}"></td>
-
-                                        <td th:text="${order.processTime}"></td>
                                         <td th:text="${order.comments}"></td>
                                         <td>
                                             <div class="tpl-table-black-operation">
@@ -150,24 +159,95 @@
                                             </div>
                                         </td>
                                     </tr>
-<!--                                    <ul class="am-pagination tpl-pagination" id="incompleteOrders_Pagination"></ul>-->
-<!--                                    <input type="hidden" id="incompleteOrders_pages" th:value="${incompleteOrders.pages}"/>-->
-<!--                                    <input type="hidden" id="incompleteOrders_pageNum" th:value="${incompleteOrders.pageNum}"/>-->
-<!--                                    <script th:src="@{/assets/js/ajax/index.ajax.js}" src="../static/assets/js/ajax/index.ajax.js"></script>-->
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                    </div>
 
+                </div>
+            </div>
+
+            <div class="row am-cf">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body widget-body-sm am-fr">
+                            <ul class="am-pagination tpl-pagination am-pagination-centered" id="pagination"></ul>
+                            <script type="text/javascript">
+                                // 默认配置
+                                var defaultOpts = {
+                                    totalPages: [[${pageResult.pages}]] || 1,
+                                    startPage: [[${pageResult.pageNum}]] || 1,
+                                    visiblePages: 5,
+                                    first: "首页",
+                                    prev: "&laquo;",
+                                    next: "&raquo;",
+                                    last: "尾页",
+                                    activeClass: "am-active",
+                                    disabledClass: "am-disabled",
+                                    initiateStartPageClick: false,
+                                    onPageClick: function (event,page) {
+                                        $.post("/order/incompleteOrders", {pageNum:page}, function (result) {
+                                            var table_body = $("#table_body");
+                                            table_body.empty();
+                                            var count = 1;
+                                            for (var resultKey of result.list) {
+                                                var tr = document.createElement("tr");
+                                                var td = document.createElement("td");
+                                                td.innerText = count;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.id;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.customer.name;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.ddl;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.createTime;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.creator.name;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerText = resultKey.comments;
+                                                tr.append(td);
+                                                td = document.createElement("td");
+                                                td.innerHTML = "<div class='tpl-table-black-operation'>" +
+                                                    "                                                <a th:href=/material/application/apply/" + resultKey.id +">" +
+                                                    "                                                    <i class='am-icon-upload'></i> 申请物料" +
+                                                    "                                                </a>" +
+                                                    "                                            </div>"
+                                                tr.append(td);
+                                                table_body.append(tr);
+                                                count++;
+                                            }
+                                            updateIndexPagination(result);
+                                        })
+                                    }
+                                }
+                                $("#pagination").twbsPagination(defaultOpts);
+                                function updateIndexPagination(result) {
+                                    $("#pagination").twbsPagination('destroy');
+                                    $("#pagination").twbsPagination($.extend({}, defaultOpts,
+                                        {
+                                            totalPages: result.pages || 1,
+                                            startPage: result.pageNum || 1,
+                                        })
+                                    );
+                                }
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
-    <div th:replace="common/footer :: footer_script"></div>
-
+</div>
+</div>
+<div th:replace="common/footer :: footer_script"></div>
 </body>
 
 </html>
