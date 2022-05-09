@@ -1,8 +1,9 @@
 package xyz.kakusei.fams.service.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.kakusei.fams.entity.*;
 import xyz.kakusei.fams.mapper.IMaterialApplicationMapper;
 import xyz.kakusei.fams.mapper.IStateMapper;
@@ -33,26 +34,31 @@ public class MaterialApplicationServiceImpl implements IMaterialApplicationServi
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<MaterialApplication> queryAll() {
         return materialApplicationMapper.queryAll();
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public MaterialApplication queryById(Long id) {
         return materialApplicationMapper.queryById(id);
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public List<MaterialApplication> queryByCriteria(MaterialApplicationQueryObject materialApplicationQueryObject) {
         return materialApplicationMapper.queryByCriteria(materialApplicationQueryObject);
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deleteById(Long id) {
         materialApplicationMapper.deleteById(id);
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void saveOrUpdate(MaterialApplication materialApplication) {
         if (materialApplication.getId() == null) {
             materialApplicationMapper.insert(materialApplication);
@@ -63,6 +69,7 @@ public class MaterialApplicationServiceImpl implements IMaterialApplicationServi
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void newRecord(Long orderId, Long[] stockIds, Integer[] quantity) {
         if (stockIds.length != quantity.length) {
             throw new RuntimeException("Inconsistent parameter length.");
@@ -93,6 +100,7 @@ public class MaterialApplicationServiceImpl implements IMaterialApplicationServi
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Boolean setPassState(Long id, String comments) {
         try {
             MaterialApplication record = materialApplicationMapper.queryById(id);
@@ -111,6 +119,7 @@ public class MaterialApplicationServiceImpl implements IMaterialApplicationServi
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Boolean setRefuseState(Long id, String comments) {
         try {
             MaterialApplication record = materialApplicationMapper.queryById(id);
