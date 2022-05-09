@@ -11,6 +11,7 @@ import xyz.kakusei.fams.entity.Order;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.service.IOrderService;
 import xyz.kakusei.fams.util.LoginException;
+import xyz.kakusei.fams.util.RequiredPermission;
 import xyz.kakusei.fams.util.SystemSetting;
 
 @Controller
@@ -63,5 +64,11 @@ public class CommonController {
     @GetMapping("/needPermission")
     public String noPermission() {
         return "/error/needPermission";
+    }
+
+    @GetMapping("/report")
+    @RequiredPermission({"Report","report:used"})
+    public String report() {
+        return "report";
     }
 }

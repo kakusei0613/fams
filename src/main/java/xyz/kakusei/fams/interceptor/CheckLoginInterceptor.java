@@ -1,6 +1,5 @@
 package xyz.kakusei.fams.interceptor;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

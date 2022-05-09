@@ -11,6 +11,7 @@ spring:
     url: jdbc:mysql://localhost:3306/fams?useUnicode=true&characterEncoding=utf-8
     username: root
     password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     mode: HTML
     encoding: UTF-8
@@ -19,6 +20,8 @@ spring:
     servlet:
       content-type: text/html
     cache: false
+  main:
+    allow-bean-definition-overriding: true
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
 #   日志

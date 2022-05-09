@@ -49,6 +49,14 @@ public class PermissionServiceImpl implements IPermissionService {
         //System.out.println(beansWithAnnotation);
         //获取mapper集合中的所有value,即所有的bean对象
         Collection<Object> controllers = beansWithAnnotation.values();
+
+//        Permission ureport = new Permission();
+//        ureport.setName("Report");
+//        ureport.setExpression("report:used");
+//        if (!expressions.contains(ureport)) {
+//            permissionMapper.insert(ureport);
+//        }
+
         //3.遍历controllers , 获取每一个controller类中的所有方法
         for (Object controller : controllers) {
             //这里的controller是bean对象,我们通过反射创建对象,然后获取当前controller类中的方法
