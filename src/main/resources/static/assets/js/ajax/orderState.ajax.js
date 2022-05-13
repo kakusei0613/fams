@@ -1,6 +1,6 @@
 var defaultOpts = {
-    totalPages: $("#pages").val() || 1,
-    startPage: 1,
+    totalPages: [[${pageResult.pages}]] || 1,
+    startPage: [[${pageResult.pageNum}]] || 1,
     visiblePages: 2,
     first: "首页",
     prev: "&laquo;",

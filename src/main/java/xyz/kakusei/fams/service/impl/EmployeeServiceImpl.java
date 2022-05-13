@@ -16,6 +16,7 @@ import xyz.kakusei.fams.query.EmployeeQueryObject;
 import xyz.kakusei.fams.service.IEmployeeService;
 import xyz.kakusei.fams.util.LoginException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -105,10 +106,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void login(String username, String password) {
-        logger.info("User:" + username + " password:" + password + " try to login.");
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        logger.info("IP address:" + sra.getRequest().getRemoteAddr() + " Trying to login by used " + "User:" + username + " password:" + password);
         password = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
         Employee user = employeeMapper.queryByUsernameAndPassword(username, password);
         if (user == null) {
+            logger.error("IP address:" + sra.getRequest().getRemoteAddr() + "Trying to login by used " + "User:" + username + " password:" + password + " Error");
             throw new LoginException("Username or password was wrong.");
         }
         else {
@@ -149,10 +152,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
         user.setEmail(employee.getEmail());
         user.setPassword(employee.getPassword());
         user.setAddress(employee.getAddress());
-        List<Byte> roleIds = new ArrayList<Byte>();
+        ArrayList<Byte> roleIds = new ArrayList<Byte>();
         for (Role role : user.getRoleList()) {
             roleIds.add(role.getId());
         }
-        saveOrUpdate(user, (Byte[]) roleIds.toArray());
+        saveOrUpdate(user, roleIds.toArray(new Byte[roleIds.size()]));
     }
 }

@@ -9,16 +9,19 @@ $("#search").click(function(){
     };
     $.post("/stock/query", queryObject, function (result) {
         var table_body = $("#table_body");
-        var stockIds = [];
-        $.each($("#apply_table_body tr"), function (index, tr) {
-            var id = $(this).find("td").eq(0).html();
-            stockIds.push(id);
-        });
+        // var stockIds = [];
+        // $.each($("#apply_table_body tr"), function (index, tr) {
+        //     var id = $(this).find("td").eq(0).html();
+        //     stockIds.push(id);
+        // });
+        // console.log(stockIds);
+        // console.log("In ajax list size:" + result.list.length);
         for (var resultKey of result.list) {
-            var temp = '' + resultKey.id;
-            if ($.inArray(temp, stockIds) > -1) {
-                continue;
-            }
+            var temp = "" + resultKey.id;
+            // if ($.inArray(temp, stockIds) > -1) {
+            //     continue;
+            // }
+            // console.log(temp + "不存在");
             var tr = document.createElement("tr");
             td = document.createElement("td");
             td.innerText = resultKey.id;
@@ -42,31 +45,10 @@ $("#search").click(function(){
             td.innerText = resultKey.quantity;
             tr.append(td);
             tr.id = "tr-" + resultKey.id;
+            console.log("添加进table");
             table_body.append(tr);
         }
-        var TaskType = '';
-        $("#table_body tr").click(function () {
-            TaskType = $(this).find("td").eq(0).html();
-            $("#quantity-prompt").modal({
-                relatedTarget: this,
-                onConfirm: function (e) {
-                    $("#tr-" + TaskType).append($("<td>" + e.data + "</td>"));
-                    $("#tr-" + TaskType).appendTo($("#apply_table_body"));
-                    $("#table_body tr").remove("#tr-" + TaskType);
-                    $("#prompt-input").val('');
-                    //清空click函数，重新写入
-                    $("#tr-" + TaskType).off("click");
-                    $("#tr-" + TaskType).click(function () {
-                        TaskType = $(this).find("td").eq(0).html();
-                        $("#apply_table_body tr").remove("#tr-" + TaskType);
-                        $("#search").click();
-                    });
-                },
-                onCancel: function (e) {
-
-                }
-            });
-        })
+        setTableTrClick();
         $("#total-div").innerText = "共有" + result.total + "条记录";
         updatePagination(result);
     })

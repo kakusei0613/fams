@@ -6,6 +6,7 @@ import xyz.kakusei.fams.entity.Gender;
 import xyz.kakusei.fams.entity.State;
 import xyz.kakusei.fams.query.EmployeeQueryObject;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IEmployeeService {

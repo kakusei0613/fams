@@ -47,43 +47,49 @@
         <div class="row-content am-cf">
             <div class="row  am-cf">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
-                    <div class="widget am-cf">
-                        <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">月度财务收支计划</div>
-                            <div class="widget-function am-fr">
-                                <a  class="am-icon-cog"></a>
-                            </div>
+                    <div class="widget widget-primary am-cf">
+                        <div class="widget-statistic-header">
+                            你好呀~当前时间
                         </div>
-                        <div class="widget-body am-fr">
-                            <div class="am-fl">
-                                <div class="widget-fluctuation-period-text">
-                                    ￥61746.45
-                                    <button class="widget-fluctuation-tpl-btn">
-                                        <i class="am-icon-calendar"></i>
-                                        更多月份
-                                    </button>
-                                </div>
+                        <div class="widget-statistic-body">
+                            <div class="widget-statistic-value" id="timer">
                             </div>
-                            <div class="am-fr am-cf">
-                                <div class="widget-fluctuation-description-amount text-success" am-cf>
-                                    +￥30420.56
-
-                                </div>
-                                <div class="widget-fluctuation-description-text am-text-right">
-                                    8月份收入
-                                </div>
-                            </div>
+                            <span class="widget-statistic-icon am-icon-clock-o"></span>
                         </div>
                     </div>
-
                 </div>
+                <script>
+                    let timer = document.getElementById('timer');
+                    let addZero = val => val < 10 ? '0' + val : val
+                    let trans = val => {
+                        let obj = {
+                            0: '日',
+                            1: '一',
+                            2: '二',
+                            3: '三',
+                            4: '四',
+                            5: '五',
+                            6: '六'
+                        }
+                        return obj[val]
+                    }
+                    setTime ()
+                    function setTime() {
+                        let time = new Date();
+
+                        let value = time.getFullYear() + '-' + addZero(time.getMonth() + 1) + '-' + addZero(time.getDate()) + '<br>周' + trans(time.getDay()) + ' '+addZero(time.getHours()) +
+                            ':' + addZero(time.getMinutes());
+                        timer.innerHTML = value;
+                    }
+                    setInterval(setTime, 1000);
+                </script>
                 <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
                     <div class="widget widget-primary am-cf">
                         <div class="widget-statistic-header">
                             本月进行中订单数
                         </div>
                         <div class="widget-statistic-body">
-                            <div class="widget-statistic-value" th:text="${pageResult.total}">
+                            <div class="widget-statistic-value" th:text="${pageResult?.total}">
                             </div>
                             <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
                         </div>
@@ -95,7 +101,7 @@
                             本月完成订单数
                         </div>
                         <div class="widget-statistic-body">
-                            <div class="widget-statistic-value" th:text="${completedOrders.total}">
+                            <div class="widget-statistic-value" th:text="${completedOrders?.total}">
                             </div>
                             <span class="widget-statistic-icon am-icon-support"></span>
                         </div>
@@ -216,7 +222,7 @@
                                                 tr.append(td);
                                                 td = document.createElement("td");
                                                 td.innerHTML = "<div class='tpl-table-black-operation'>" +
-                                                    "                                                <a th:href=/material/application/apply/" + resultKey.id +">" +
+                                                    "                                                <a href=/material/application/apply/" + resultKey.id +">" +
                                                     "                                                    <i class='am-icon-upload'></i> 申请物料" +
                                                     "                                                </a>" +
                                                     "                                            </div>"
@@ -234,7 +240,7 @@
                                     $("#pagination").twbsPagination($.extend({}, defaultOpts,
                                         {
                                             totalPages: result.pages || 1,
-                                            startPage: result.pageNum || 1,
+                                            startPage: result.pageNum || 1
                                         })
                                     );
                                 }

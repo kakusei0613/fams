@@ -41,16 +41,16 @@
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf tpl-form-border-form tpl-form-border-br">
-                        <form action="#" method="post">
+                        <form action="/order/query" method="post">
                             <div class="widget-head am-cf">
                                 <div class="widget-title am-fl">条件查询</div>
                                 <div class="am-fr">
-                                    <input type="text" id="pageSize" size=1 name="pageSize" value="15" th:value="${pageResult.pageSize}"/>
+                                    <input type="text" id="pageSize" size=1 name="pageSize" th:value="${pageResult.pageSize}"/>
                                 </div>
                                 <div class="am-form-label am-fr">每页记录数：</div>
                             </div>
                             <div class="widget-body am-fr am-form-inline">
-                                <input type="hidden" name="pageNum" id="pageNum" value="1" th:value="${pageResult.pageNum}"/>
+                                <input type="hidden" name="pageNum" id="pageNum" th:value="${pageResult.pageNum}"/>
                                 <div class="am-form-group">
                                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                         <input type="text" id="keyword" style="height: 37.19px;width: 200px;" name="keyword" placeholder="备注"/>

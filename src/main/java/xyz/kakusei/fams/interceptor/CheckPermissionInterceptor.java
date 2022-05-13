@@ -1,5 +1,7 @@
 package xyz.kakusei.fams.interceptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import xyz.kakusei.fams.controller.EmployeeController;
@@ -13,17 +15,23 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class CheckPermissionInterceptor implements HandlerInterceptor {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession httpSession = request.getSession();
         Employee user = (Employee) httpSession.getAttribute("USER_IN_SESSION");
+//          当前访问的方法
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        logger.info("User:" + user.getName() +  " IP:" + request.getRemoteAddr() + " execute:" + method.getName());
+
 //        是管理员，放行
         if (user.getAdmin() == true) {
             return true;
         }
 //        方法上没有注释，放行
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
         if (!method.isAnnotationPresent(RequiredPermission.class)) {
             return true;
         }

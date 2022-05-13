@@ -130,8 +130,6 @@
 
                                 <div class="am-form-group">
                                     <label class="am-u-sm-3 am-form-label">员工 </label>
-                                    <div class="am-u-sm-9"></div>
-                                    <div class="am-u-sm-3"></div>
                                     <div class="am-u-sm-12 am-u-md-4">
                                         <select multiple style="height: 150px;" id="orderStaff" name="staffIds">
                                             <option th:each="staff:${order.staffs}" th:value="${staff?.id}" th:text="${staff?.name}"></option>
@@ -238,7 +236,71 @@
                                         <input type="hidden" name="pages" id="osu_pages" th:value="${orderStockUsedPageResult.pages}">
                                         <input type="hidden" name="orderId" th:value="${order.id}">
                                     </form>
-                                    <script th:src="@{/assets/js/ajax/order.used.stock.ajax.js}" ></script>
+<!--                                    <script th:src="@{/assets/js/ajax/order.used.stock.ajax.js}" ></script>-->
+                                    <script>
+                                        var applicationDefaultOpts = {
+                                            totalPages: [[${orderStockUsedPageResult.pages}]] || 1,
+                                            startPage: [[${orderStockUsedPageResult.pageNum}]] || 1,
+                                            visiblePages: 2,
+                                            first: "首页",
+                                            prev: "&laquo;",
+                                            next: "&raquo;",
+                                            last: "尾页",
+                                            activeClass: "am-active",
+                                            disabledClass: "am-disabled",
+                                            initiateStartPageClick: false,
+                                            onPageClick: function (event, page) {
+                                                $("#osu_pageNum").val(page);
+                                                //AJAX查询记录
+                                                $.post("/order/used",
+                                                    {
+                                                        pageNum : $("#osu_pageNum").val(),
+                                                        orderId : $("#id").val()
+                                                    } , function (result) {
+                                                        var ous_table_body = $("#order_stock_used_table_body");
+                                                        ous_table_body.empty();
+                                                        var count = 1;
+                                                        for (var resultKey of result.list) {
+                                                            var tr = document.createElement("tr");
+                                                            var td = document.createElement("td");
+                                                            td.innerText = count;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.id;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.stock.id;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.stock.material.name;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.stock.warehouse.name;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.quantity;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.employee.name;
+                                                            tr.append(td);
+                                                            td = document.createElement("td");
+                                                            td.innerText = resultKey.state.name;
+                                                            tr.append(td);
+                                                            ous_table_body.append(tr);
+                                                            count++;
+                                                        }
+                                                        //更新分页
+                                                        $("#order_stock_used_pagination").twbsPagination('destroy');
+                                                        $("#order_stock_used_pagination").twbsPagination($.extend({}, applicationDefaultOpts,
+                                                            {
+                                                                startPage: page || 1
+                                                            })
+                                                        );
+                                                    })
+                                            }
+                                        };
+                                        $("#order_stock_used_pagination").twbsPagination(applicationDefaultOpts);
+                                    </script>
                                 </div>
 
                             </div>

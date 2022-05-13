@@ -105,7 +105,11 @@ public class MaterialApplicationServiceImpl implements IMaterialApplicationServi
         try {
             MaterialApplication record = materialApplicationMapper.queryById(id);
             Stock stock = record.getStock();
-            stock.setQuantity(stock.getQuantity() - record.getQuantity());
+            Integer value = stock.getQuantity() - record.getQuantity();
+            if (value < 0) {
+                return false;
+            }
+            stock.setQuantity(value);
             stockMapper.update(stock);
             record.getState().setId(Byte.parseByte("1"));
             record.setComments(comments);

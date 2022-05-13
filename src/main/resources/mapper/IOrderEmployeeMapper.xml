@@ -42,7 +42,7 @@
                 AND oe.emp_id = #{employeeId}
             </if>
             <if test="date != null and date != ''">
-                AND o.process_time LIKE CONCAT('', #{date} , '')
+                AND o.process_time LIKE CONCAT('%', #{date} , '%')
             </if>
             <if test="notEqualId != null and notEqualId > 0">
                 AND os.id != #{notEqualId}
@@ -67,7 +67,7 @@
                 AND e.id = #{employeeId}
             </if>
             <if test="date != null and date != ''">
-                AND o.process_time LIKE CONCAT('', #{date} , '')
+                AND o.process_time LIKE CONCAT('%', #{date} , '%')
             </if>
             <if test="notEqualId != null and notEqualId > 0">
                 AND os.id != #{notEqualId}

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>物料类型管理</title>
+    <title>物料申请管理</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,6 +41,7 @@
     </div>
     <script>
         function onOperationClick(mode, id) {
+            $(this).remove();
             if (mode == true) {
                 $("#comments-prompt").modal({
                     relatedTarget: this,
@@ -50,9 +51,9 @@
                             comments : e.data
                         }
                         $.post("/material/application/pass", object, function (result) {
-                            $("#table_body tr").remove("#tr-" + id);
-                            $("#prompt-input").val('');
-                            refresh();
+                            // $("#prompt-input").val('');
+                            // refresh();
+                            location.reload();
                         })
                     },
                     onCancel: function (e) { }
@@ -67,9 +68,10 @@
                             comments : e.data
                         }
                         $.post("/material/application/refuse", object, function (result) {
-                            $("#table_body tr").remove("#tr-" + id);
-                            $("#prompt-input").val('');
-                            refresh();
+                            // $("#table_body tr").remove("#tr-" + id);
+                            // $("#prompt-input").val('');
+                            // refresh();
+                            location.reload();
                         })
                     },
                     onCancel: function (e) { }
@@ -96,66 +98,72 @@
                         <div class="widget-head am-cf">
                             <div class="widget-title am-fl">物料申请列表</div>
                             <div class="widget-title am-fr">
-                                <a href="javascript:refresh();" class="am-icon-refresh"></a>
+                                <a href="location:reload()" class="am-icon-refresh"></a>
                             </div>
                             <script>
-                                function refresh() {
-                                    $.post("/material/application/list", null, function (result) {
-                                        var table_body = $("#table_body");
-                                        table_body.empty();
-                                        for (var resultKey of result) {
-                                            var tr = document.createElement("tr");
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.id;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.order.id;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.order.customer.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.employee.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.stock.id;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.stock.material.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.stock.material.type.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.stock.warehouse.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.stock.area;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.quantity;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.state.name;
-                                            tr.append(td);
-                                            td = document.createElement("td");
-                                            td.innerText = resultKey.applicationTime;
-                                            tr.append(td);
-
-                                            td = document.createElement("td");
-                                            td.innerHTML = "<div class=\"tpl-table-black-operation\">" +
-                                                "                                            <a onclick=javascript:onOperationClick(true,"+ resultKey.id + ")>" +
-                                                "                                                <i class=\"am-icon-check\">  通过</i>" +
-                                                "                                            </a>" +
-                                                "                                            <a onclick=javascript:onOperationClick(false,"+ resultKey.id + ") class=tpl-table-black-operation-del>" +
-                                                "                                                <i class=\"am-icon-remove\"></i> 拒绝" +
-                                                "                                            </a>" +
-                                                "                                        </div>"
-                                            tr.append(td);
-                                            table_body.append(tr);
-                                        }
-                                    })
-                                }
+                                // function refresh() {
+                                //     $.post("/material/application/list", null, function (result) {
+                                //         var table_body = $("#table_body");
+                                //         table_body.empty();
+                                //         for (var resultKey of result) {
+                                //             var tr = document.createElement("tr");
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.id;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.order.id;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.order.customer.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.employee.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.stock.id;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.stock.material.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.stock.material.type.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.stock.warehouse.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.stock.area;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.quantity;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.state.name;
+                                //             tr.append(td);
+                                //             td = document.createElement("td");
+                                //             td.innerText = resultKey.applicationTime;
+                                //             tr.append(td);
+                                //
+                                //             td = document.createElement("td");
+                                //             var div = document.createElement("div");
+                                //             div.className += "tpl-table-black-operation";
+                                //             var a = document.createElement("a");
+                                //             a.innerHTML = "<i class=\"am-icon-check\">  通过</i>";
+                                //             a.className += "record-check-btn";
+                                //             // a.addEventListener('click', onOperationClick(true,resultKey.id));
+                                //             div.append(a);
+                                //             a = document.createElement("a");
+                                //             a.className += "tpl-table-black-operation-del";
+                                //             a.innerHTML = "<i class=\"am-icon-remove\">  拒绝</i>";
+                                //             a.className += "record-remove-btn";
+                                //             // a.addEventListener('click', onOperationClick(false,resultKey.id));
+                                //             div.append(a);
+                                //             td.append(div);
+                                //             tr.append(td);
+                                //             table_body.append(tr);
+                                //         }
+                                //     })
+                                // }
                             </script>
                         </div>
                         <div class="widget-body widget-body-lg am-fr am-scrollable-horizontal">
@@ -197,7 +205,7 @@
                                                 <i class="am-icon-check">  通过</i>
                                             </a>
                                             <a th:onclick="'javascript:onOperationClick(false,' + ${ma.id} + ')'" class="tpl-table-black-operation-del">
-                                                <i class="am-icon-remove"></i> 拒绝
+                                                <i class="am-icon-remove"> 拒绝</i>
                                             </a>
                                         </div>
                                     </td>

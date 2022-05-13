@@ -1,6 +1,6 @@
 var applicationDefaultOpts = {
-    totalPages: $("#osu_pages").val() || 1,
-    startPage: 1,
+    totalPages: [[${orderStockUsedPageResult.pages}]] || 1,
+    startPage: [[${orderStockUsedPageResult.pageNum}]] || 1,
     visiblePages: 2,
     first: "首页",
     prev: "&laquo;",
@@ -50,8 +50,8 @@ var applicationDefaultOpts = {
                     count++;
                 }
                 //更新分页
-                $("#osu_pagination").twbsPagination('destroy');
-                $("#osu_pagination").twbsPagination($.extend({}, applicationDefaultOpts,
+                $("#order_stock_used_pagination").twbsPagination('destroy');
+                $("#order_stock_used_pagination").twbsPagination($.extend({}, applicationDefaultOpts,
                     {
                         startPage: page || 1
                     })

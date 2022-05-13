@@ -2,6 +2,8 @@ package xyz.kakusei.fams.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import xyz.kakusei.fams.util.LoginException;
 import xyz.kakusei.fams.util.RequiredPermission;
 import xyz.kakusei.fams.util.SystemSetting;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class CommonController {
 
@@ -25,6 +29,8 @@ public class CommonController {
 
     @Autowired
     private SystemSetting setting;
+
+
 
 
     @GetMapping("/login")
@@ -52,7 +58,8 @@ public class CommonController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        PageHelper.startPage(1, setting.getPageSize());
+        Logger logger = LoggerFactory.getLogger(this.getClass());
+//        PageHelper.startPage(1, setting.getPageSize());
         model.addAttribute("completedOrders", new PageInfo<Order>(orderService.queryOrdersCompleted()));
         PageHelper.startPage(1, setting.getPageSize());
 //        model.addAttribute("incompleteOrders", new PageInfo<Order>(orderService.queryIncompleteOrder()));

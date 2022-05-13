@@ -92,7 +92,7 @@ public class EmployeeController {
     @GetMapping("/edit")
     public String edit(Model model) {
         model.addAttribute("employee",employeeService.getCurrentUserData());
-        return "/employee/form";
+        return "/employee/profile";
     }
 
     @PostMapping("/edit")

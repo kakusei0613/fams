@@ -42,33 +42,24 @@
         </div>
 
         <script>
+            function setTableTrClick() {
+                $.each($("#table_body tr"), function (index, obj) {
+                    $(this).click(function (e) {
+                        var value = prompt("输入数量：","");
+                        // var id = $(this).find("td").eq(0).html();
+                        var node = $(this).clone(true).append($("<td>" + value + "</td>"));
+                        node.off('click');
+                        $("#apply_table_body").append(node);
+                    })
+                });
+                $("#apply_table_body").on('click', "tr", function () {
+                    // $("#apply_table_body tr").remove($(this));
+                    $(this).remove();
+                });
+                // $("#apply_table_body").off('click');
+            }
             $(function () {
-                var TaskType = '';
-                $("#table_body tr").click(function () {
-                    TaskType = $(this).find("td").eq(0).html();
-                    $("#quantity-prompt").modal({
-                        relatedTarget: this,
-                        onConfirm: function (e) {
-                            if (e.data === '') {
-                                return;
-                            }
-                            $("#tr-" + TaskType).append($("<td>" + e.data + "</td>"));
-                            $("#tr-" + TaskType).appendTo($("#apply_table_body"));
-                            $("#table_body tr").remove("#tr-" + TaskType);
-                            $("#prompt-input").val('');
-                            //清空click函数，重新写入
-                            $("#tr-" + TaskType).off("click");
-                            $("#tr-" + TaskType).click(function () {
-                                TaskType = $(this).find("td").eq(0).html();
-                                $("#apply_table_body tr").remove("#tr-" + TaskType);
-                                $("#search").click();
-                            });
-                        },
-                        onCancel: function (e) {
-
-                        }
-                    });
-                })
+                setTableTrClick();
             });
 
         </script>
@@ -229,7 +220,7 @@
                                             <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-icon-search" id="search"></button>
                                         </div>
                                         <!--  ajax脚本  -->
-                                        <script th:src="@{/assets/js/ajax/material.apply.ajax.js}" src="../../static/assets/js/ajax/material.apply.ajax.js"></script>
+                                        <script th:src="@{/assets/js/ajax/material.application.ajax.js}" src="../../static/assets/js/ajax/material.apply.ajax.js"></script>
                                     </div>
 
                                 </div>

@@ -1,7 +1,10 @@
 package xyz.kakusei.fams.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +51,7 @@ public class OrderController {
     @PostMapping("/query")
     @ResponseBody
     public PageInfo<Order> query(OrderQueryObject orderQueryObject) {
-        PageHelper.startPage(1, setting.getPageSize());
+        PageHelper.startPage(orderQueryObject.getPageNum(), setting.getPageSize());
         PageInfo<Order> result = new PageInfo<Order>(orderService.queryByCriteria(orderQueryObject));
         return result;
     }
@@ -76,7 +79,7 @@ public class OrderController {
     }
     @RequiredPermission({"Order Detail","order:detail"})
     @GetMapping("/{id}")
-    public String order(Model model,@PathVariable("id") Long id) {
+    public String order(Model model,@PathVariable("id") Long id) throws JsonProcessingException {
         model.addAttribute("order", orderService.queryById(id));
         model.addAttribute("customers", customerService.queryAll());
         model.addAttribute("states", orderService.queryAllState());

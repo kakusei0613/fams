@@ -33,8 +33,8 @@
             <div class="container-fluid am-cf">
                 <div class="row">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑员工 <small>Amaze UI</small></div>
-                        <p class="page-header-description">您可以在此编辑员工信息。</p>
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 编辑个人信息 <small>Amaze UI</small></div>
+                        <p class="page-header-description">您可以在此编辑个人信息。</p>
                     </div>
                 </div>
 
@@ -55,7 +55,8 @@
                                 <form action="/employee/edit" id="editForm" class="am-form tpl-form-line-form" method="post">
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">员工号 </label>
-                                        <div class="am-u-sm-9" th:text="${employee.id}">
+                                        <div class="am-u-sm-9">
+                                            <input  type="text" name="id" th:value="${employee.id}">
                                         </div>
                                     </div>
 
@@ -74,7 +75,7 @@
 
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">性别 </label>
-                                        <div class="am-u-sm-9" th:text="${gender.name}">
+                                        <div class="am-u-sm-9" th:text="${employee.gender.name}">
                                         </div>
                                     </div>
 
@@ -126,9 +127,7 @@
 
                                     <div class="am-form-group">
                                         <label class="am-u-sm-3 am-form-label">角色 </label>
-                                        <div class="am-u-sm-9"></div>
-                                        <div class="am-u-sm-3"></div>
-                                        <div class="am-u-sm-12 am-u-md-4">
+                                        <div class="am-u-sm-9">
                                             <select multiple style="height: 150px;">
                                                 <option th:each="role:${employee.roleList}" th:text="${role?.name}"></option>
                                             </select>
